@@ -1,6 +1,6 @@
 {
   "name": "SparkKit",
-  "description": "The open-source developer toolkit for production-ready SaaS and AI applications.",
+  "description": "An early-stage open-source project exploring a foundation for modern SaaS and AI applications.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

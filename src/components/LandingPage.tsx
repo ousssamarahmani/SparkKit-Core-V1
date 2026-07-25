@@ -34,9 +34,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setActiveSection, setS
 
             {/* Main Headline */}
             <h1 className="text-5xl sm:text-[76px] leading-[0.95] font-bold tracking-tighter text-white">
-              The Platform for <br className="hidden sm:inline" />
+              The platform for <br className="hidden sm:inline" />
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
-                Modern SaaS & AI Apps.
+                Modern SaaS & AI apps
               </span>
             </h1>
 
