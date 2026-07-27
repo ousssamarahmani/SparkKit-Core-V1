@@ -1,6 +1,6 @@
 # SparkKit
 
-SparkKit is a planned open-source starter toolkit for building SaaS and AI applications.
+SparkKit is a planned open-source starter toolkit for building Smalls software  and AI applications.
 
 ## Current status
 
