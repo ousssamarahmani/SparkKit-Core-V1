@@ -1,0 +1,35 @@
+name: Feature request
+description: Propose an outcome that fits the current roadmap.
+title: "[Proposal]: "
+labels: ["proposal", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Developer problem
+      description: Describe the problem before describing a solution.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should a developer be able to accomplish?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Proposed scope and tradeoffs
+      description: Include alternatives and ongoing maintenance cost where possible.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I reviewed TASKS.md and the post-0.1 candidates.
+          required: true
+        - label: I am not claiming that this feature already exists.
+          required: true

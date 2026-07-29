@@ -1,0 +1,11 @@
+{
+  "extends": "../../tooling/typescript/base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "useDefineForClassFields": false
+  },
+  "include": ["src", "vite.config.ts"]
+}

@@ -10,16 +10,30 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 ## Milestone 0 — Project foundation
 
-- [ ] **M0.1 Choose and document the application framework**
+- [x] **M0.1 Choose and document the application framework**
   - Acceptance: an architecture decision records the choice and supported Node.js versions.
-- [ ] **M0.2 Initialize the pnpm/Turborepo workspace**
+- [x] **M0.2 Initialize the pnpm/Turborepo workspace**
   - Acceptance: `pnpm install`, `pnpm lint`, `pnpm test`, and `pnpm build` run from the root.
-- [ ] **M0.3 Add shared TypeScript and lint configuration**
+- [x] **M0.3 Add shared TypeScript and lint configuration**
   - Acceptance: strict TypeScript is enabled in every workspace.
-- [ ] **M0.4 Add repository community files**
+- [x] **M0.4 Add repository community files**
   - Acceptance: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, security policy, and issue templates exist.
-- [ ] **M0.5 Add continuous integration**
+- [-] **M0.5 Add continuous integration**
   - Acceptance: clean-install, lint, type-check, test, and build jobs pass on a pull request.
+
+### Milestone 0 implementation evidence
+
+- Framework, runtime, scope, and governance decisions are recorded in `docs/adr/`.
+- `pnpm-workspace.yaml` and `turbo.json` coordinate `@sparkkit/docs` and `@sparkkit/web`.
+- The website is preserved in `apps/docs`; the initial Next.js reference shell is in `apps/web`.
+- The root install, lint, type-check, test, and build commands pass for both workspaces.
+- Both applications extend the strict TypeScript baseline in `tooling/typescript/base.json`.
+- `@sparkkit/eslint-config` exports shared base, React, and Next.js flat configurations and lints itself.
+- Maintained application code passes ESLint 10 with warnings treated as errors.
+- Repository license, contribution guide, code of conduct, security policy, and issue templates are present.
+- Community regression tests verify required files, private security routing, and pull-request quality checks.
+- CI uses read-only permissions, frozen pnpm installs, dependency caching, concurrency cancellation, and the same lint/type-check/test/build gates verified locally.
+- M0.5 remains in progress until the pnpm workflow passes on a pull request.
 
 ## Milestone 1 — Database and tenancy
 

@@ -8,13 +8,15 @@ Build one vertical slice at a time. Each milestone must leave the repository run
 
 ### Stage 0 — Resolve core choices
 
-Decide:
+Accepted decisions:
 
-- full-stack application framework;
-- authentication library and first sign-in methods;
-- supported Node.js and pnpm versions;
-- test runner and end-to-end test tool;
-- open-source license.
+- Next.js 16 App Router and React 19;
+- Better Auth, beginning with email/password and one OAuth provider;
+- Node.js 24 LTS and pnpm 11;
+- PostgreSQL and Prisma;
+- Vitest and Playwright;
+- Docker as the first deployment profile;
+- MIT license.
 
 Deliverable: short architecture decision records. Avoid implementation until choices that affect the repository shape are settled.
 
@@ -164,14 +166,13 @@ When a new idea appears:
 
 ## 7. First working session
 
-The next implementation session should complete Stage 0 and begin Stage 1:
+Stage 0 decisions and repository standards are complete. The first Stage 1 session delivered:
 
-1. Select the full-stack framework and auth library.
-2. Select the license.
-3. Initialize pnpm and Turborepo.
-4. Create shared configuration packages.
-5. Add one minimal application.
-6. Make the root quality commands pass.
+1. The website prototype in `apps/docs` without changing its public behavior.
+2. A pnpm 11 workspace and Turborepo task graph.
+3. A shared strict TypeScript baseline in `tooling/typescript`.
+4. A minimal Next.js 16 reference application in `apps/web`.
+5. Passing root install, lint, type-check, test, and build commands.
 
-That produces a truthful foundation on which the rest of SparkKit can be built.
+The shared lint configuration is complete and the CI workflow mirrors the full local gate. The remaining Stage 1 work verifies that workflow on a pull request and creates minimal package boundaries. After that gate passes, implementation moves to the database and tenancy milestone.
 

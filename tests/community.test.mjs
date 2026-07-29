@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import { access, readFile } from 'node:fs/promises';
+import test from 'node:test';
+
+const requiredFiles = [
+  'LICENSE',
+  'CONTRIBUTING.md',
+  'CODE_OF_CONDUCT.md',
+  'SECURITY.md',
+  '.github/ISSUE_TEMPLATE/bug_report.yml',
+  '.github/ISSUE_TEMPLATE/feature_request.yml',
+  '.github/ISSUE_TEMPLATE/config.yml',
+  '.github/PULL_REQUEST_TEMPLATE.md',
+];
+
+test('required open-source community files exist', async () => {
+  await Promise.all(requiredFiles.map((path) => access(path)));
+});
+
+test('the license is MIT and community reporting routes are explicit', async () => {
+  const [license, contributing, conduct, security, issueConfig, pullRequest] = await Promise.all([
+    readFile('LICENSE', 'utf8'),
+    readFile('CONTRIBUTING.md', 'utf8'),
+    readFile('CODE_OF_CONDUCT.md', 'utf8'),
+    readFile('SECURITY.md', 'utf8'),
+    readFile('.github/ISSUE_TEMPLATE/config.yml', 'utf8'),
+    readFile('.github/PULL_REQUEST_TEMPLATE.md', 'utf8'),
+  ]);
+
+  assert.match(license, /^MIT License/);
+  assert.match(contributing, /pnpm install --frozen-lockfile/);
+  assert.match(conduct, /harassment-free community/i);
+  assert.match(security, /Do not open a public issue/i);
+  assert.match(issueConfig, /blank_issues_enabled: false/);
+  assert.match(issueConfig, /github\.com\/ousssamarahmani\/\.SparkKit\/security/);
+  assert.match(pullRequest, /pnpm lint/);
+  assert.match(pullRequest, /No secrets, credentials, personal data/);
+});

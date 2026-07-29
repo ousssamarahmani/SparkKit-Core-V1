@@ -4,13 +4,39 @@ SparkKit is a planned open-source starter toolkit for building SaaS and AI appli
 
 ## Current status
 
-The existing React application is a **product concept and interactive prototype**. The production toolkit, CLI, backend packages, database layer, authentication, billing, and AI integrations are planned work.
+SparkKit now has a pnpm/Turborepo foundation. The public React website remains a **product concept and interactive prototype**, while a minimal Next.js reference application establishes the boundary for implementation. The CLI, backend packages, database layer, authentication, billing, and AI integrations are still planned work.
+
+## Workspace
+
+```text
+apps/
+  docs/  # Public concept site (Vite, port 3000)
+  web/   # Next.js reference application (port 3001)
+tooling/
+  eslint/      # Shared base, React, and Next.js lint rules
+  typescript/  # Shared strict TypeScript baseline
+```
+
+```powershell
+pnpm install --frozen-lockfile
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
 
 ## Planning documents
 
 - [Architecture](./ARCHITECTURE.md) — target system design, boundaries, security rules, and decisions.
 - [Tasks](./TASKS.md) — prioritized backlog with acceptance criteria.
 - [Implementation plan](./IMPLEMENTATION.md) — recommended build sequence and release gates.
+
+## Community
+
+- [Contributing](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)
+- [Support](./.github/SUPPORT.md)
 
 ## Initial product goal
 
