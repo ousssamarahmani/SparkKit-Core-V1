@@ -18,7 +18,7 @@ Nothing below should be marked complete until its acceptance criteria pass.
   - Acceptance: strict TypeScript is enabled in every workspace.
 - [x] **M0.4 Add repository community files**
   - Acceptance: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, security policy, and issue templates exist.
-- [-] **M0.5 Add continuous integration**
+- [x] **M0.5 Add continuous integration**
   - Acceptance: clean-install, lint, type-check, test, and build jobs pass on a pull request.
 
 ### Milestone 0 implementation evidence
@@ -33,7 +33,7 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - Repository license, contribution guide, code of conduct, security policy, and issue templates are present.
 - Community regression tests verify required files, private security routing, and pull-request quality checks.
 - CI uses read-only permissions, frozen pnpm installs, dependency caching, concurrency cancellation, and the same lint/type-check/test/build gates verified locally.
-- M0.5 remains in progress until the pnpm workflow passes on a pull request.
+- Pull request #1 verified the complete pnpm workflow on GitHub Actions: frozen install, lint, type-check, test, and build all passed.
 
 ## Milestone 1 — Database and tenancy
 

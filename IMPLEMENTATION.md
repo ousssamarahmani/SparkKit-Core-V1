@@ -174,5 +174,5 @@ Stage 0 decisions and repository standards are complete. The first Stage 1 sessi
 4. A minimal Next.js 16 reference application in `apps/web`.
 5. Passing root install, lint, type-check, test, and build commands.
 
-The shared lint configuration is complete and the CI workflow mirrors the full local gate. The remaining Stage 1 work verifies that workflow on a pull request and creates minimal package boundaries. After that gate passes, implementation moves to the database and tenancy milestone.
+Milestone 0 is complete. Pull request #1 verified the frozen install, lint, type-check, test, and production build gates on GitHub Actions. The next implementation stage creates minimal package boundaries, then moves into the database and tenancy milestone.
 
