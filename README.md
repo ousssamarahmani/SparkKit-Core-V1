@@ -17,7 +17,7 @@ The existing React application is a **product concept and interactive prototype*
 The first usable release will provide:
 
 1. A working `create-sparkkit` CLI.
-2. One maintained SaaS starter template.
+2. One maintained Smalls Software template.
 3. Authentication and organization-based multi-tenancy.
 4. PostgreSQL persistence through Prisma.
 5. An optional server-side AI chat feature.
