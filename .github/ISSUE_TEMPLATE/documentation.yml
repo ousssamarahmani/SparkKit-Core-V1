@@ -1,0 +1,39 @@
+name: Documentation improvement
+description: Report missing, unclear, or incorrect SparkKit documentation.
+title: "[Docs]: "
+labels: ["documentation", "triage"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Documentation area
+      options:
+        - README and getting started
+        - Architecture or ADRs
+        - Package documentation
+        - Website
+        - Contribution guide
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is unclear or incorrect?
+      description: Link to the page or file and explain where you became blocked.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Describe the information or example that would resolve the problem.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched for an existing issue about this documentation.
+          required: true
+        - label: I verified the issue against the latest default branch.
+          required: true

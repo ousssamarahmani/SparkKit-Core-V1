@@ -9,6 +9,9 @@ const requiredFiles = [
   'SECURITY.md',
   '.github/ISSUE_TEMPLATE/bug_report.yml',
   '.github/ISSUE_TEMPLATE/feature_request.yml',
+  '.github/ISSUE_TEMPLATE/documentation.yml',
+  'CHANGELOG.md',
+  'GOVERNANCE.md',
   '.github/ISSUE_TEMPLATE/config.yml',
   '.github/PULL_REQUEST_TEMPLATE.md',
 ];
@@ -32,7 +35,7 @@ test('the license is MIT and community reporting routes are explicit', async () 
   assert.match(conduct, /harassment-free community/i);
   assert.match(security, /Do not open a public issue/i);
   assert.match(issueConfig, /blank_issues_enabled: false/);
-  assert.match(issueConfig, /github\.com\/ousssamarahmani\/\.SparkKit\/security/);
+  assert.match(issueConfig, /github\.com\/ousssamarahmani\/SparkKit-Core-V1\/security/);
   assert.match(pullRequest, /pnpm lint/);
   assert.match(pullRequest, /No secrets, credentials, personal data/);
 });
