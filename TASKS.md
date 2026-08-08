@@ -37,7 +37,7 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 ## Milestone 1 — Database and tenancy
 
-- [ ] **M1.1 Create `@sparkkit/db`**
+- [x] **M1.1 Create `@sparkkit/db`**
   - Acceptance: Prisma client generation and migrations run from documented commands.
 - [ ] **M1.2 Model users, organizations, and memberships**
   - Acceptance: constraints prevent duplicate memberships and invalid roles.
@@ -49,6 +49,16 @@ Nothing below should be marked complete until its acceptance criteria pass.
   - Acceptance: integration tests prove cross-tenant reads and writes are rejected.
 
 ## Milestone 2 — Authentication and authorization
+
+### M1.1 implementation evidence
+
+- `packages/db` defines a server-only PostgreSQL boundary with Prisma ORM 7.
+- Prisma configuration, schema formatting, validation, client generation, and
+  development/deployment migration commands are documented in the package README.
+- The package compiles to an importable ESM entry point and exposes a PostgreSQL
+  driver-adapter client factory without opening a connection at import time.
+- Package tests execute Prisma validation and offline migration SQL generation;
+  the full root lint, type-check, test, and build gate includes `@sparkkit/db`.
 
 - [ ] **M2.1 Integrate the selected auth library**
   - Acceptance: a user can register/sign in, sign out, and restore a session.
@@ -110,6 +120,21 @@ Nothing below should be marked complete until its acceptance criteria pass.
   - Acceptance: CLI and generated application are installable from the release candidate.
 - [ ] **M6.5 Publish version 0.1**
   - Acceptance: tagged source, npm package, release notes, and migration notes are public.
+
+## Open-source adoption workstream
+
+- [x] **OA.1 Establish honest repository positioning**
+  - Acceptance: the README clearly separates implemented capabilities from the version 0.1 target.
+- [ ] **OA.2 Validate setup with ten developers**
+  - Acceptance: results record completion rate, setup time, and repeated failure points without invented metrics.
+- [ ] **OA.3 Publish three maintained example applications**
+  - Acceptance: each example includes source, screenshots, setup instructions, and the SparkKit version used.
+- [ ] **OA.4 Prepare version 0.1 launch assets**
+  - Acceptance: a short demo, screenshots, release notes, repository description, topics, and launch post are ready.
+- [ ] **OA.5 Establish contributor operations**
+  - Acceptance: Discussions, scoped `good first issue` work, triage expectations, and contributor recognition are active.
+- [ ] **OA.6 Review adoption evidence after launch**
+  - Acceptance: generated-project success, setup time, active usage, npm downloads, examples, contributors, stars, and forks are reported only from documented sources.
 
 ## Post-0.1 candidates
 

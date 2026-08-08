@@ -174,5 +174,5 @@ Stage 0 decisions and repository standards are complete. The first Stage 1 sessi
 4. A minimal Next.js 16 reference application in `apps/web`.
 5. Passing root install, lint, type-check, test, and build commands.
 
-Milestone 0 is complete. Pull request #1 verified the frozen install, lint, type-check, test, and production build gates on GitHub Actions. The next implementation stage creates minimal package boundaries, then moves into the database and tenancy milestone.
+Milestone 0 is complete. Pull request #1 verified the frozen install, lint, type-check, test, and production build gates on GitHub Actions. M1.1 now establishes the `@sparkkit/db` package, Prisma 7 client generation, and documented migration commands. The next database task models users, organizations, and constrained memberships before the local PostgreSQL profile is added.
 

@@ -1,0 +1,40 @@
+{
+  "name": "@sparkkit/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "prisma generate && tsc -p tsconfig.build.json && node -e \"import('./dist/index.js')\"",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});require('node:fs').rmSync('src/generated',{recursive:true,force:true})\"",
+    "db:format": "prisma format",
+    "db:generate": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:diff": "prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script",
+    "db:migrate:status": "prisma migrate status",
+    "db:validate": "prisma validate",
+    "lint": "eslint . --max-warnings 0",
+    "test": "node --test tests/*.test.mjs && prisma validate && prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script",
+    "typecheck": "prisma generate && tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@sparkkit/eslint-config": "workspace:*",
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.15.6",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.8.0",
+    "prisma": "^7.9.1",
+    "typescript": "^5.9.3"
+  }
+}

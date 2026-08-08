@@ -6,6 +6,7 @@ coverage/
 .turbo/
 *.tsbuildinfo
 .DS_Store
+packages/db/src/generated/
 *.log
 .env*
 !.env.example
