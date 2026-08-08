@@ -5,7 +5,7 @@ import {
   Sparkles, Terminal, X,
 } from 'lucide-react';
 
-const githubUrl = 'https://github.com/ousssamarahmani/.SparkKit';
+const githubUrl = 'https://github.com/ousssamarahmani/SparkKit-Core-V1';
 
 const principles = [
   { icon: Package, title: 'Portable by default', text: 'Own the generated code, run it locally, and deploy it without requiring a Sparkbase account.' },
@@ -30,10 +30,10 @@ const workflow = [
 ];
 
 const roadmap = [
-  ['01', 'Repository foundation', 'Next', 'Create the real workspace, shared configuration, tests and CI.'],
-  ['02', 'Reference SaaS', 'Planned', 'Implement authentication, organizations, PostgreSQL and verified tenant isolation.'],
-  ['03', 'Project generator', 'Planned', 'Generate a clean application and validate that it installs, tests and builds.'],
-  ['04', 'Deployment profiles', 'Planned', 'Add Docker first, then optional AWS/EKS examples and a Sparkbase manifest.'],
+  ['01', 'Repository foundation', 'Complete', 'The real workspace, shared configuration, community files, tests and CI are established.'],
+  ['02', 'Data and tenancy', 'Next', 'Implement organizations, memberships, local PostgreSQL and verified tenant isolation.'],
+  ['03', 'Authentication and reference SaaS', 'Planned', 'Add sign-in, organization onboarding, authorization and one complete application flow.'],
+  ['04', 'Project generator', 'Planned', 'Generate a clean application and validate that it installs, tests and builds.'],
 ];
 
 function BrandLogo({ compact = false }: { compact?: boolean }) {
@@ -88,7 +88,7 @@ export default function SparkKitSite() {
               <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">for Small Software &amp; AI apps</span>
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Build purpose-built applications with developers or AI agents. Add authentication, organizations, data and optional AI—then own the code, run it locally and deploy anywhere.</p>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is currently a concept prototype and public implementation plan. The CLI, packages and deployment profiles described below are planned, not released.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, public site, application shell and initial database package work today. Authentication, the complete template, CLI and deployment profiles are planned, not released.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"><Github className="h-4 w-4" /> Follow the project</a>
               <a href="#workflow" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5">See the developer flow <ArrowRight className="h-4 w-4" /></a>
@@ -144,7 +144,7 @@ export default function SparkKitSite() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8"><span className="flex items-center gap-3 text-zinc-300"><BrandLogo compact /><span>by Sparkbase</span></span><span>Early-stage open-source project. Planned capabilities are not yet implemented.</span><a href={githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-zinc-300 hover:text-white"><Github className="h-4 w-4" /> GitHub</a></div></footer>
+      <footer className="border-t border-white/10"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8"><span className="flex items-center gap-3 text-zinc-300"><BrandLogo compact /><span>by Sparkbase</span></span><span>Early-stage open-source project. Roadmap capabilities are clearly labelled.</span><a href={githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-zinc-300 hover:text-white"><Github className="h-4 w-4" /> GitHub</a></div></footer>
     </div>
   );
 }

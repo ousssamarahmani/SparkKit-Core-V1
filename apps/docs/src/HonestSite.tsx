@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, Boxes, Check, Cloud, Code2, FileText, Github, Menu, Sparkles, X } from 'lucide-react';
 
-const githubUrl = 'https://github.com/ousssamarahmani/.SparkKit';
+const githubUrl = 'https://github.com/ousssamarahmani/SparkKit-Core-V1';
 
 const currentState = [
   ['Interactive concept', 'A React prototype communicating the direction, interface ideas, and intended developer experience.', Code2],

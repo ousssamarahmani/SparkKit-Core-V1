@@ -20,6 +20,15 @@
 > Prisma database package work today. Authentication, the complete SaaS template,
 > and `create-sparkkit` CLI are being built in public.
 
+## Current project UI
+
+![SparkKit project site showing the Small Software and AI application positioning](./docs/screenshots/sparkkit-project-site-hero.jpg)
+
+This is the current runnable SparkKit project site from `apps/docs`. A screenshot
+of the generated reference application will replace it after the authenticated,
+organization-aware UI is implemented and verified in Milestone 3.
+
+
 ## Why SparkKit
 
 AI agents and developers can create purpose-built software faster than ever, but
