@@ -62,12 +62,12 @@ export const monetizationStrategy: StrategySection[] = [
 export const openSourceStrategy: StrategySection[] = [
   {
     id: 'governance',
-    title: 'Open Source Governance & Permissive MIT',
+    title: 'Open Source Governance & Apache-2.0',
     summary: 'Building trust through true open source commitments and community ownership.',
     points: [
       {
-        title: 'MIT License Security',
-        description: 'No SSPL or restrictive licenses. SparkKit core packages will remain 100% MIT licensed forever.'
+        title: 'Apache-2.0 License',
+        description: 'A permissive open-source license with an explicit patent grant and no vendor lock-in.'
       },
       {
         title: 'Open RFC Process',

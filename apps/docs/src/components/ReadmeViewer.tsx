@@ -121,7 +121,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({
                 ★ {starCount.toLocaleString()} GitHub Stars
               </span>
               <span className="px-3 py-1 rounded bg-white/10 text-zinc-200 font-bold border border-white/10">
-                License: MIT
+                License: Apache-2.0
               </span>
               <span className="px-3 py-1 rounded bg-white/10 text-zinc-200 font-bold border border-white/10">
                 v1.2.0 NPM

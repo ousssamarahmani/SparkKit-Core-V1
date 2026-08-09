@@ -20,7 +20,7 @@ test('required open-source community files exist', async () => {
   await Promise.all(requiredFiles.map((path) => access(path)));
 });
 
-test('the license is MIT and community reporting routes are explicit', async () => {
+test('the license is Apache-2.0 and community reporting routes are explicit', async () => {
   const [license, contributing, conduct, security, issueConfig, pullRequest] = await Promise.all([
     readFile('LICENSE', 'utf8'),
     readFile('CONTRIBUTING.md', 'utf8'),
@@ -30,7 +30,7 @@ test('the license is MIT and community reporting routes are explicit', async () 
     readFile('.github/PULL_REQUEST_TEMPLATE.md', 'utf8'),
   ]);
 
-  assert.match(license, /^MIT License/);
+  assert.match(license, /Apache License/);
   assert.match(contributing, /pnpm install --frozen-lockfile/);
   assert.match(conduct, /harassment-free community/i);
   assert.match(security, /Do not open a public issue/i);

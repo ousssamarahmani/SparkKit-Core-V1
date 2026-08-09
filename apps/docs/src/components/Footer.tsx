@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveSection }) => {
             The open-source developer toolkit for production-ready SaaS and AI applications. Built for Next.js 15, Better Auth, Vercel AI SDK, and Sparkbase Cloud.
           </p>
           <div className="text-xs text-zinc-500 font-mono">
-            License: MIT Open Source
+            License: Apache-2.0 Open Source
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveSection }) => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500">
-        <div>© 2026 Sparkbase Inc. All rights reserved. Open source under MIT.</div>
+        <div>© 2026 Sparkbase Inc. Open source under Apache-2.0.</div>
         <div className="flex items-center gap-4 mt-2 sm:mt-0 font-mono text-[11px]">
           <span className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>

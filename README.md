@@ -7,7 +7,7 @@
   data boundaries, and optional AI—then own the code and deploy it anywhere.
 
   [![CI](https://img.shields.io/github/actions/workflow/status/ousssamarahmani/SparkKit-Core-V1/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions/workflows/ci.yml)
-  [![License: MIT](https://img.shields.io/badge/license-MIT-white?style=flat-square)](./LICENSE)
+  [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-white?style=flat-square)](./LICENSE)
   [![Roadmap](https://img.shields.io/badge/status-early%20stage-f5c542?style=flat-square)](./TASKS.md)
   [![GitHub stars](https://img.shields.io/github/stars/ousssamarahmani/SparkKit-Core-V1?style=flat-square)](https://github.com/ousssamarahmani/SparkKit-Core-V1/stargazers)
 
@@ -178,4 +178,4 @@ earn adoption through convenience, not lock-in.
 
 ## License
 
-SparkKit is available under the [MIT License](./LICENSE).
+SparkKit is available under the [Apache License 2.0](./LICENSE).

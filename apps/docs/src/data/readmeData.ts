@@ -17,7 +17,7 @@ export const githubReadmeMarkdown = `# ⚡ SparkKit
 
   <p>
     <a href="https://github.com/sparkbase/sparkkit"><img src="https://img.shields.io/github/stars/sparkbase/sparkkit?style=for-the-badge&logo=github&color=FF5500" alt="GitHub Stars" /></a>
-    <a href="https://github.com/sparkbase/sparkkit/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License" /></a>
+    <a href="https://github.com/sparkbase/sparkkit/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge" alt="Apache License 2.0" /></a>
     <a href="https://npmjs.com/package/create-sparkkit"><img src="https://img.shields.io/npm/v/create-sparkkit?style=for-the-badge&color=000000&logo=npm" alt="NPM Version" /></a>
     <a href="https://discord.gg/sparkkit"><img src="https://img.shields.io/discord/123456789?style=for-the-badge&logo=discord&color=5865F2" alt="Discord Community" /></a>
   </p>
@@ -117,5 +117,5 @@ sparkkit/
 
 ## 📄 License
 
-SparkKit is open-source software licensed under the [MIT License](LICENSE).
+SparkKit is open-source software licensed under the [Apache License 2.0](LICENSE).
 `;

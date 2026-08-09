@@ -194,7 +194,7 @@ export const StrategyRoadmapView: React.FC = () => {
               <h3 className="font-bold text-lg text-white">Open Source Governance</h3>
             </div>
             <p className="text-xs text-zinc-400 leading-relaxed">
-              SparkKit is committed to permissive open source licensing. All core packages are 100% MIT licensed forever with zero vendor lock-in.
+              SparkKit is committed to permissive open-source licensing under Apache-2.0, with an explicit patent grant and zero vendor lock-in.
             </p>
             <div className="space-y-2 pt-2">
               {openSourceStrategy[0].points.map((pt, idx) => (
