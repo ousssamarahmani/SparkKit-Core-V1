@@ -130,6 +130,12 @@ The detailed boundaries, security rules, and technology decisions live in
 See the [task backlog](./TASKS.md) for acceptance criteria and the
 [implementation plan](./IMPLEMENTATION.md) for release gates.
 
+## From the project
+
+Read [Why AI Agents Need an Open-Source Foundation for Small Software](./docs/articles/why-ai-agents-need-an-open-source-foundation-for-small-software.md)
+for the problem SparkKit is designed to solve, the case for portable application
+foundations, and the principles guiding the project.
+
 ## Repository map
 
 ```text
@@ -143,6 +149,7 @@ tooling/
   typescript/ Shared strict TypeScript baseline
 docs/
   adr/        Architecture decision records
+  articles/   Long-form project writing and artwork
 ```
 
 ## Contributing
