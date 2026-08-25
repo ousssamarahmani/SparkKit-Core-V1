@@ -39,3 +39,20 @@ test('the license is Apache-2.0 and community reporting routes are explicit', as
   assert.match(pullRequest, /pnpm lint/);
   assert.match(pullRequest, /No secrets, credentials, personal data/);
 });
+
+test('local PostgreSQL has a persistent and health-checked Compose profile', async () => {
+  const [compose, packageJson] = await Promise.all([
+    readFile('compose.yaml', 'utf8'),
+    readFile('package.json', 'utf8').then(JSON.parse),
+  ]);
+
+  assert.match(compose, /postgres:\s*\n\s*image: postgres:17-alpine/);
+  assert.match(compose, /127\.0\.0\.1:5432:5432/);
+  assert.match(compose, /pg_isready -U sparkkit -d sparkkit/);
+  assert.match(compose, /sparkkit-postgres:\s*$/m);
+  assert.equal(
+    packageJson.scripts['db:up'],
+    'docker compose up --detach --wait postgres',
+  );
+  assert.equal(packageJson.scripts['db:down'], 'docker compose down');
+});

@@ -16,7 +16,7 @@ Accepted decisions:
 - PostgreSQL and Prisma;
 - Vitest and Playwright;
 - Docker as the first deployment profile;
-- MIT license.
+- Apache License 2.0.
 
 Deliverable: short architecture decision records. Avoid implementation until choices that affect the repository shape are settled.
 
@@ -175,4 +175,3 @@ Stage 0 decisions and repository standards are complete. The first Stage 1 sessi
 5. Passing root install, lint, type-check, test, and build commands.
 
 Milestone 0 is complete. Pull request #1 verified the frozen install, lint, type-check, test, and production build gates on GitHub Actions. M1.1 now establishes the `@sparkkit/db` package, Prisma 7 client generation, and documented migration commands. The next database task models users, organizations, and constrained memberships before the local PostgreSQL profile is added.
-

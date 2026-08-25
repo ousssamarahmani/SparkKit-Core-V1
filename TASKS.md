@@ -39,11 +39,11 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 - [x] **M1.1 Create `@sparkkit/db`**
   - Acceptance: Prisma client generation and migrations run from documented commands.
-- [ ] **M1.2 Model users, organizations, and memberships**
+- [x] **M1.2 Model users, organizations, and memberships**
   - Acceptance: constraints prevent duplicate memberships and invalid roles.
-- [ ] **M1.3 Add local PostgreSQL**
+- [x] **M1.3 Add local PostgreSQL**
   - Acceptance: Docker Compose starts the database and the health check succeeds.
-- [ ] **M1.4 Add deterministic seed data**
+- [x] **M1.4 Add deterministic seed data**
   - Acceptance: seeding creates two tenants and can be rerun safely.
 - [ ] **M1.5 Add tenant isolation helpers**
   - Acceptance: integration tests prove cross-tenant reads and writes are rejected.
@@ -59,6 +59,37 @@ Nothing below should be marked complete until its acceptance criteria pass.
   driver-adapter client factory without opening a connection at import time.
 - Package tests execute Prisma validation and offline migration SQL generation;
   the full root lint, type-check, test, and build gate includes `@sparkkit/db`.
+
+### M1.2 implementation evidence
+
+- Prisma models define users, organizations, and memberships with UUID primary
+  keys and timestamps.
+- PostgreSQL restricts membership roles to `OWNER`, `ADMIN`, and `MEMBER`.
+- Unique constraints prevent duplicate user emails, organization slugs, and
+  duplicate memberships within an organization.
+- Membership foreign keys cascade on user or organization deletion, and the
+  committed migration preserves the schema constraints.
+- Package tests verify the schema and migration contract; the full root lint,
+  type-check, test, and build gate passes.
+
+### M1.3 implementation evidence
+
+- Docker Compose runs PostgreSQL 17 on `127.0.0.1:5432` with a persistent named
+  volume and a `pg_isready` health check.
+- Root commands start, stop, and inspect the local database consistently.
+- The live container reached `healthy`, Prisma applied the committed migration,
+  and `prisma migrate status` reported the schema up to date.
+- Live PostgreSQL inspection confirmed the tenancy tables and the three allowed
+  membership roles.
+
+### M1.4 implementation evidence
+
+- Prisma's explicit seed workflow upserts two stable development users, two
+  organizations, and one owner membership for each tenant.
+- Running the seed twice completed successfully and left exactly two users, two
+  organizations, and two memberships in the live PostgreSQL database.
+- Package tests verify stable fixture identifiers, upsert-only behavior, and the
+  documented seed command; the full root quality gate passes.
 
 - [ ] **M2.1 Integrate the selected auth library**
   - Acceptance: a user can register/sign in, sign out, and restore a session.

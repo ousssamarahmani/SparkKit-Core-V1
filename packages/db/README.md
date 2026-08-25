@@ -15,6 +15,18 @@ pnpm --filter @sparkkit/db db:generate
 pnpm --filter @sparkkit/db db:migrate:diff
 ```
 
+Start the local PostgreSQL service and wait for its health check:
+
+```powershell
+pnpm db:up
+```
+
+The service binds only to `127.0.0.1:5432`, stores data in the named
+`sparkkit-postgres` volume, and uses the development-only credentials from
+`.env.example`. Stop it with `pnpm db:down`; add `--volumes` to the underlying
+`docker compose down` command only when you intentionally want to erase local
+database data.
+
 The diff command generates the SQL represented by the current schema without
 connecting to a database. After local PostgreSQL is introduced in M1.3, create
 and apply development migrations with:
@@ -29,5 +41,29 @@ Apply committed migrations in CI or production with:
 pnpm --filter @sparkkit/db db:migrate:deploy
 ```
 
+Create or reconcile the deterministic development fixtures with:
+
+```powershell
+pnpm --filter @sparkkit/db db:seed
+```
+
+The seed is safe to rerun. It upserts two users, two organizations, and their
+owner memberships using stable identifiers instead of creating duplicates.
+
 `DATABASE_URL` is server-only. The documented local default is intended only
 for the Docker development profile that will be added in M1.3.
+
+## Tenancy model
+
+The initial schema separates identity from organization access:
+
+- `User` owns a unique email address.
+- `Organization` owns a unique URL-safe slug.
+- `Membership` joins one user to one organization with an `OWNER`, `ADMIN`, or
+  `MEMBER` role.
+
+PostgreSQL and Prisma enforce one membership per user and organization. Deleting
+a user or organization cascades to its memberships so join records cannot become
+orphaned. Application authorization must still verify the active membership on
+every tenant-scoped operation; the schema constraint is a foundation, not a
+replacement for authorization.

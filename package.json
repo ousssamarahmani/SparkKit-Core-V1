@@ -11,6 +11,9 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test && node --test tests/*.test.mjs",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs --follow postgres",
+    "db:up": "docker compose up --detach --wait postgres",
     "dev:docs": "pnpm --filter @sparkkit/docs dev",
     "dev:web": "pnpm --filter @sparkkit/web dev"
   },

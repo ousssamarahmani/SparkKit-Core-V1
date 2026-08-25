@@ -18,6 +18,7 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:diff": "prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script",
     "db:migrate:status": "prisma migrate status",
+    "db:seed": "prisma generate && prisma db seed",
     "db:validate": "prisma validate",
     "lint": "eslint . --max-warnings 0",
     "test": "node --test tests/*.test.mjs && prisma validate && prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script",
@@ -35,6 +36,7 @@
     "dotenv": "^17.4.2",
     "eslint": "^10.8.0",
     "prisma": "^7.9.1",
+    "tsx": "^4.23.12",
     "typescript": "^5.9.3"
   }
 }
