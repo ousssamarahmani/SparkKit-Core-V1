@@ -75,3 +75,17 @@ test('the initial migration preserves role and membership constraints', async ()
   );
   assert.match(migration, /ON DELETE CASCADE ON UPDATE CASCADE/g);
 });
+
+test('the database schema includes Better Auth session models', async () => {
+  const [schema, migration] = await Promise.all([
+    read('prisma/schema.prisma'),
+    read('prisma/migrations/20260825190000_add_better_auth/migration.sql'),
+  ]);
+
+  assert.match(schema, /model Session\s*{/);
+  assert.match(schema, /token\s+String\s+@unique/);
+  assert.match(schema, /model Account\s*{/);
+  assert.match(schema, /model Verification\s*{/);
+  assert.match(migration, /CREATE TABLE "Session"/);
+  assert.match(migration, /CREATE TABLE "Account"/);
+});

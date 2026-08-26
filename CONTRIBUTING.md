@@ -26,6 +26,9 @@ Install and validate every workspace from the repository root:
 
 ```bash
 pnpm install --frozen-lockfile
+pnpm db:up
+pnpm --filter @sparkkit/db db:migrate:deploy
+pnpm --filter @sparkkit/db db:seed
 pnpm lint
 pnpm typecheck
 pnpm test
@@ -34,8 +37,9 @@ pnpm build
 
 The current workspaces include `@sparkkit/docs`, the public product site;
 `@sparkkit/web`, the initial Next.js reference application; and `@sparkkit/db`,
-the Prisma/PostgreSQL boundary. A contribution is ready when every root command
-passes.
+the Prisma/PostgreSQL boundary. Database integration tests require the healthy
+local Compose service shown above. A contribution is ready when every root
+command passes.
 
 Lint rules come from `@sparkkit/eslint-config`; workspace-specific configs
 should extend its base, React, or Next.js exports. The unmounted legacy concept

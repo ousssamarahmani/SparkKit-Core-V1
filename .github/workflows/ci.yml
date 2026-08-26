@@ -18,6 +18,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: sparkkit
+          POSTGRES_USER: sparkkit
+          POSTGRES_PASSWORD: sparkkit
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sparkkit -d sparkkit"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://sparkkit:sparkkit@localhost:5432/sparkkit
+      BETTER_AUTH_SECRET: ci-only-better-auth-secret-at-least-32-characters
+      BETTER_AUTH_URL: http://localhost:3001
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -47,7 +67,10 @@ jobs:
         run: pnpm typecheck
 
       - name: Test
-        run: pnpm test
+        run: |
+          pnpm --filter @sparkkit/db db:migrate:deploy
+          pnpm --filter @sparkkit/db db:seed
+          pnpm test
 
       - name: Build
         run: pnpm build

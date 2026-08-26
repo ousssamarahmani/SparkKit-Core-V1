@@ -17,6 +17,10 @@ test('the public site labels unreleased capabilities honestly', async () => {
   assert.match(source, /with developers or AI agents/);
   assert.match(source, /planned, not released/i);
   assert.match(source, /AWS and Kubernetes are deployment targets, not SparkKit requirements/i);
+  assert.match(source, /Software developers/);
+  assert.match(source, /AI developers & agents/);
+  assert.match(source, /Local setup, step by step/);
+  assert.match(source, /email\/password sessions work/i);
 });
 
 test('page metadata does not claim production readiness', async () => {

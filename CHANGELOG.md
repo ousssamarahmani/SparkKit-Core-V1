@@ -13,7 +13,14 @@ releases.
 - pnpm and Turborepo workspace foundation.
 - Public project site and Next.js reference application shell.
 - Shared strict TypeScript and ESLint configurations.
-- Prisma/PostgreSQL database package foundation.
+- Prisma/PostgreSQL database package with constrained memberships, migrations,
+  deterministic tenant fixtures, and scoped project operations.
+- Local PostgreSQL 17 Docker Compose profile with persistent storage and health
+  checks.
+- Live integration tests for membership verification and rejected cross-tenant
+  project reads and writes.
+- Better Auth email/password registration, sign-in, sign-out, and persistent
+  PostgreSQL sessions, verified through the real authentication handler.
 - Community health files and continuous integration.
 
 ### Changed

@@ -17,7 +17,7 @@
 > [!IMPORTANT]
 > SparkKit is under active development and is not yet a released starter kit.
 > The repository foundation, documentation site, Next.js application shell, and
-> Prisma database package work today. Authentication, the complete SaaS template,
+> Prisma database package and email/password authentication work today. The complete SaaS template,
 > and `create-sparkkit` CLI are being built in public.
 
 ## Current project UI
@@ -55,10 +55,11 @@ It is designed around four promises:
 | pnpm + Turborepo monorepo | Available | Repository root |
 | Public SparkKit concept site | Available | [`apps/docs`](./apps/docs) |
 | Next.js reference application shell | Available | [`apps/web`](./apps/web) |
-| Prisma/PostgreSQL package foundation | Available | [`packages/db`](./packages/db) |
+| Tenant-scoped Prisma/PostgreSQL data layer | Available | [`packages/db`](./packages/db) |
+| Better Auth email/password sessions | Available | [`apps/web`](./apps/web) |
 | Shared strict TypeScript and ESLint configuration | Available | [`tooling`](./tooling) |
 | CI validation for lint, types, tests, and builds | Available | [GitHub Actions](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions) |
-| Authentication, tenancy UI, and project generator | Planned | [Public roadmap](./TASKS.md) |
+| Organization onboarding, tenancy UI, and project generator | Planned | [Public roadmap](./TASKS.md) |
 
 ## Run the repository
 
@@ -67,11 +68,15 @@ It is designed around four promises:
 - Node.js 24 or 26
 - pnpm 11.9.0
 - Git
+- Docker Desktop or another Docker Compose-compatible runtime
 
 ```bash
 git clone https://github.com/ousssamarahmani/SparkKit-Core-V1.git
 cd SparkKit-Core-V1
 pnpm install --frozen-lockfile
+pnpm db:up
+pnpm --filter @sparkkit/db db:migrate:deploy
+pnpm --filter @sparkkit/db db:seed
 pnpm check
 ```
 
@@ -118,7 +123,7 @@ The detailed boundaries, security rules, and technology decisions live in
 ## Road to version 0.1
 
 - [x] **M0 — Foundation:** monorepo, shared tooling, community files, and CI.
-- [ ] **M1 — Data:** organizations, memberships, local PostgreSQL, seeds, and
+- [x] **M1 — Data:** organizations, memberships, local PostgreSQL, seeds, and
   tested tenant isolation.
 - [ ] **M2 — Identity:** authentication, onboarding, sessions, and role checks.
 - [ ] **M3 — Reference SaaS:** one complete organization-aware application.

@@ -45,7 +45,7 @@ Nothing below should be marked complete until its acceptance criteria pass.
   - Acceptance: Docker Compose starts the database and the health check succeeds.
 - [x] **M1.4 Add deterministic seed data**
   - Acceptance: seeding creates two tenants and can be rerun safely.
-- [ ] **M1.5 Add tenant isolation helpers**
+- [x] **M1.5 Add tenant isolation helpers**
   - Acceptance: integration tests prove cross-tenant reads and writes are rejected.
 
 ## Milestone 2 — Authentication and authorization
@@ -91,8 +91,33 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - Package tests verify stable fixture identifiers, upsert-only behavior, and the
   documented seed command; the full root quality gate passes.
 
-- [ ] **M2.1 Integrate the selected auth library**
+### M1.5 implementation evidence
+
+- `createTenantDatabase` verifies membership before returning a scoped data API;
+  its implementation class cannot be constructed through the package exports.
+- The first tenant-owned `Project` model carries a required `organizationId`,
+  indexed foreign key, and cascading organization relationship.
+- Project list, lookup, create, update, and delete operations derive their tenant
+  scope from the verified context and never accept an organization ID as data.
+- Live PostgreSQL integration tests prove a user cannot enter another tenant or
+  read, update, or delete another tenant's project.
+- GitHub Actions now provisions PostgreSQL, applies migrations, seeds fixtures,
+  and runs the isolation suite as part of the normal test gate.
+
+- [x] **M2.1 Integrate the selected auth library**
   - Acceptance: a user can register/sign in, sign out, and restore a session.
+
+### M2.1 implementation evidence
+
+- Better Auth 1.7 is connected to Next.js through the catch-all API route with
+  email/password registration and sign-in enabled.
+- Prisma stores users, credential accounts, sessions, and verification records
+  in PostgreSQL through a versioned migration.
+- The React client is available to the application shell, while production
+  startup rejects a missing or undersized authentication secret.
+- A live handler-level integration test registers a user, restores the cookie
+  session, signs out, verifies invalidation, signs in again, and restores the
+  new session. The repository-wide lint, type-check, test, and build gate passes.
 - [ ] **M2.2 Add organization onboarding**
   - Acceptance: a new user can create an organization and becomes its owner.
 - [ ] **M2.3 Implement role checks**
