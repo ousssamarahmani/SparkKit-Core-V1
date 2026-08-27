@@ -75,6 +75,10 @@ organization ID before accessing organization-owned records. It verifies the
 membership once and returns an API whose project reads and writes always include
 the active `organizationId`.
 
+The explicit role policy gives owners full control, allows admins to manage
+memberships and projects, and lets members read, create, and update projects
+without destructive or membership-management permissions.
+
 ```ts
 const tenantDb = await createTenantDatabase(prisma, {
   userId: session.user.id,

@@ -1,4 +1,10 @@
-import type { PrismaClient, Project } from './generated/prisma/client.js';
+import type {
+  MembershipRole,
+  PrismaClient,
+  Project,
+} from './generated/prisma/client.js';
+
+import { assertOrganizationPermission } from './authorization.js';
 
 export interface TenantContext {
   organizationId: string;
@@ -52,12 +58,14 @@ class ScopedTenantDatabase implements TenantDatabase {
   constructor(
     private readonly client: PrismaClient,
     context: TenantContext,
+    private readonly role: MembershipRole,
   ) {
     this.organizationId = context.organizationId;
     this.userId = context.userId;
   }
 
   listProjects(): Promise<Project[]> {
+    assertOrganizationPermission(this.role, 'project:read');
     return this.client.project.findMany({
       where: { organizationId: this.organizationId },
       orderBy: { createdAt: 'asc' },
@@ -65,6 +73,7 @@ class ScopedTenantDatabase implements TenantDatabase {
   }
 
   async requireProject(projectId: string): Promise<Project> {
+    assertOrganizationPermission(this.role, 'project:read');
     const project = await this.client.project.findFirst({
       where: {
         id: projectId,
@@ -80,6 +89,7 @@ class ScopedTenantDatabase implements TenantDatabase {
   }
 
   createProject(input: CreateTenantProjectInput): Promise<Project> {
+    assertOrganizationPermission(this.role, 'project:create');
     return this.client.project.create({
       data: {
         organizationId: this.organizationId,
@@ -93,6 +103,7 @@ class ScopedTenantDatabase implements TenantDatabase {
     projectId: string,
     input: UpdateTenantProjectInput,
   ): Promise<Project> {
+    assertOrganizationPermission(this.role, 'project:update');
     const result = await this.client.project.updateMany({
       where: {
         id: projectId,
@@ -114,6 +125,7 @@ class ScopedTenantDatabase implements TenantDatabase {
   }
 
   async deleteProject(projectId: string): Promise<void> {
+    assertOrganizationPermission(this.role, 'project:delete');
     const result = await this.client.project.deleteMany({
       where: {
         id: projectId,
@@ -138,12 +150,12 @@ export async function createTenantDatabase(
         userId: context.userId,
       },
     },
-    select: { id: true },
+    select: { id: true, role: true },
   });
 
   if (membership === null) {
     throw new TenantAccessError('The user is not a member of this organization.');
   }
 
-  return new ScopedTenantDatabase(client, context);
+  return new ScopedTenantDatabase(client, context, membership.role);
 }

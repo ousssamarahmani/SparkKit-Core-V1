@@ -20,6 +20,8 @@ function request(path: string, init?: RequestInit) {
 function sessionCookie(response: Response): string {
   const setCookie = response.headers.get('set-cookie');
   assert.ok(setCookie, 'the auth response should set a session cookie');
+  assert.match(setCookie, /HttpOnly/i);
+  assert.match(setCookie, /SameSite=Lax/i);
   return setCookie.split(';', 1)[0];
 }
 

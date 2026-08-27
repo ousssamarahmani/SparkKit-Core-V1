@@ -21,6 +21,10 @@ releases.
   project reads and writes.
 - Better Auth email/password registration, sign-in, sign-out, and persistent
   PostgreSQL sessions, verified through the real authentication handler.
+- Authenticated organization onboarding with atomic owner membership creation.
+- Owner, admin, and member authorization checks enforced by tenant data helpers.
+- Hardened authentication configuration with trusted origins, secure production
+  cookies, CSRF validation, sign-in throttling, and production environment checks.
 - Community health files and continuous integration.
 
 ### Changed

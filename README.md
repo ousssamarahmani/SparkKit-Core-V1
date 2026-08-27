@@ -57,6 +57,9 @@ It is designed around four promises:
 | Next.js reference application shell | Available | [`apps/web`](./apps/web) |
 | Tenant-scoped Prisma/PostgreSQL data layer | Available | [`packages/db`](./packages/db) |
 | Better Auth email/password sessions | Available | [`apps/web`](./apps/web) |
+| Authenticated organization onboarding | Available | [`apps/web`](./apps/web) |
+| Owner, admin, and member role enforcement | Available | [`packages/db`](./packages/db) |
+| Auth and session security baseline | Available | [`docs/security/authentication.md`](./docs/security/authentication.md) |
 | Shared strict TypeScript and ESLint configuration | Available | [`tooling`](./tooling) |
 | CI validation for lint, types, tests, and builds | Available | [GitHub Actions](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions) |
 | Organization onboarding, tenancy UI, and project generator | Planned | [Public roadmap](./TASKS.md) |

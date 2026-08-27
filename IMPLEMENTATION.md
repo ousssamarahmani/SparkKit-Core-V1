@@ -179,6 +179,10 @@ profile, constrained user/organization membership model, deterministic two-tenan
 seed, and tenant-scoped project data API. Live integration tests reject invalid
 membership and cross-tenant reads and writes. M2.1 adds Better Auth-backed
 email/password registration, sign-in, sign-out, and session restoration through
-the Next.js route and PostgreSQL. The next delivery stage is M2.2 organization
-onboarding, building on both the authenticated user identity and verified tenant
-boundary.
+the Next.js route and PostgreSQL. M2.2 adds authenticated organization creation
+with the initial owner membership committed in the same database transaction.
+M2.3 adds a deny-by-default owner, admin, and member permission matrix enforced
+by tenant data helpers and verified against live memberships. The next delivery
+M2.4 makes the canonical HTTPS origin, strong secret, secure cookie policy,
+CSRF/origin validation, and sign-in rate limiting explicit and tested. Milestone
+2 is complete; the next delivery stage is M3.1, the responsive application shell.

@@ -118,12 +118,49 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - A live handler-level integration test registers a user, restores the cookie
   session, signs out, verifies invalidation, signs in again, and restores the
   new session. The repository-wide lint, type-check, test, and build gate passes.
-- [ ] **M2.2 Add organization onboarding**
+- [x] **M2.2 Add organization onboarding**
   - Acceptance: a new user can create an organization and becomes its owner.
-- [ ] **M2.3 Implement role checks**
+
+### M2.2 implementation evidence
+
+- An authenticated `POST /api/organizations` endpoint creates organizations
+  from validated names and URL-safe slugs.
+- Organization creation and the initial `OWNER` membership run in one database
+  transaction, preventing partially created tenants.
+- Duplicate slugs return a conflict response and unauthenticated requests are
+  rejected before database writes.
+- A live integration test registers a new user, creates an organization through
+  the endpoint, and verifies the persisted owner membership.
+- [x] **M2.3 Implement role checks**
   - Acceptance: owner, admin, and member permissions have automated tests.
-- [ ] **M2.4 Secure session and auth endpoints**
+
+### M2.3 implementation evidence
+
+- A deny-by-default permission matrix defines organization, membership, and
+  project capabilities for `OWNER`, `ADMIN`, and `MEMBER` roles.
+- Database-backed authorization verifies active organization membership before
+  granting a permission.
+- Tenant-scoped project helpers enforce read, create, update, and delete
+  permissions at the data boundary; callers cannot bypass checks accidentally.
+- Automated tests cover all three roles and prove that a member cannot delete a
+  project while an admin can.
+- [x] **M2.4 Secure session and auth endpoints**
   - Acceptance: secure cookie settings, CSRF strategy, rate limiting, and environment validation are documented and tested where practical.
+
+### M2.4 implementation evidence
+
+- Production startup requires an HTTPS canonical URL outside local loopback, a
+  signing secret of at least 32 characters, and HTTPS-only exact trusted origins.
+- Host-only authentication cookies explicitly use `HttpOnly`, `SameSite=Lax`,
+  and production-only `Secure`; cross-subdomain sharing is disabled.
+- Better Auth CSRF and origin checks remain enabled, and SparkKit-owned mutation
+  endpoints apply the same trusted-origin policy before session lookup.
+- Rate limiting is always enabled, with stricter five-per-minute rules for email
+  registration and password sign-in.
+- Automated tests verify invalid-origin rejection, throttling, environment
+  failures, cookie attributes, and trusted-origin matching. Operational proxy
+  and multi-instance requirements are documented in
+  `docs/security/authentication.md`.
 
 ## Milestone 3 — First SaaS template
 
