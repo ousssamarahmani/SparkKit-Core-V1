@@ -45,7 +45,7 @@ Nothing below should be marked complete until its acceptance criteria pass.
   - Acceptance: Docker Compose starts the database and the health check succeeds.
 - [x] **M1.4 Add deterministic seed data**
   - Acceptance: seeding creates two tenants and can be rerun safely.
-- [ ] **M1.5 Add tenant isolation helpers**
+- [x] **M1.5 Add tenant isolation helpers**
   - Acceptance: integration tests prove cross-tenant reads and writes are rejected.
 
 ## Milestone 2 — Authentication and authorization
@@ -91,21 +91,103 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - Package tests verify stable fixture identifiers, upsert-only behavior, and the
   documented seed command; the full root quality gate passes.
 
-- [ ] **M2.1 Integrate the selected auth library**
+### M1.5 implementation evidence
+
+- `createTenantDatabase` verifies membership before returning a scoped data API;
+  its implementation class cannot be constructed through the package exports.
+- The first tenant-owned `Project` model carries a required `organizationId`,
+  indexed foreign key, and cascading organization relationship.
+- Project list, lookup, create, update, and delete operations derive their tenant
+  scope from the verified context and never accept an organization ID as data.
+- Live PostgreSQL integration tests prove a user cannot enter another tenant or
+  read, update, or delete another tenant's project.
+- GitHub Actions now provisions PostgreSQL, applies migrations, seeds fixtures,
+  and runs the isolation suite as part of the normal test gate.
+
+- [x] **M2.1 Integrate the selected auth library**
   - Acceptance: a user can register/sign in, sign out, and restore a session.
-- [ ] **M2.2 Add organization onboarding**
+
+### M2.1 implementation evidence
+
+- Better Auth 1.7 is connected to Next.js through the catch-all API route with
+  email/password registration and sign-in enabled.
+- Prisma stores users, credential accounts, sessions, and verification records
+  in PostgreSQL through a versioned migration.
+- The React client is available to the application shell, while production
+  startup rejects a missing or undersized authentication secret.
+- A live handler-level integration test registers a user, restores the cookie
+  session, signs out, verifies invalidation, signs in again, and restores the
+  new session. The repository-wide lint, type-check, test, and build gate passes.
+- [x] **M2.2 Add organization onboarding**
   - Acceptance: a new user can create an organization and becomes its owner.
-- [ ] **M2.3 Implement role checks**
+
+### M2.2 implementation evidence
+
+- An authenticated `POST /api/organizations` endpoint creates organizations
+  from validated names and URL-safe slugs.
+- Organization creation and the initial `OWNER` membership run in one database
+  transaction, preventing partially created tenants.
+- Duplicate slugs return a conflict response and unauthenticated requests are
+  rejected before database writes.
+- A live integration test registers a new user, creates an organization through
+  the endpoint, and verifies the persisted owner membership.
+- [x] **M2.3 Implement role checks**
   - Acceptance: owner, admin, and member permissions have automated tests.
-- [ ] **M2.4 Secure session and auth endpoints**
+
+### M2.3 implementation evidence
+
+- A deny-by-default permission matrix defines organization, membership, and
+  project capabilities for `OWNER`, `ADMIN`, and `MEMBER` roles.
+- Database-backed authorization verifies active organization membership before
+  granting a permission.
+- Tenant-scoped project helpers enforce read, create, update, and delete
+  permissions at the data boundary; callers cannot bypass checks accidentally.
+- Automated tests cover all three roles and prove that a member cannot delete a
+  project while an admin can.
+- [x] **M2.4 Secure session and auth endpoints**
   - Acceptance: secure cookie settings, CSRF strategy, rate limiting, and environment validation are documented and tested where practical.
+
+### M2.4 implementation evidence
+
+- Production startup requires an HTTPS canonical URL outside local loopback, a
+  signing secret of at least 32 characters, and HTTPS-only exact trusted origins.
+- Host-only authentication cookies explicitly use `HttpOnly`, `SameSite=Lax`,
+  and production-only `Secure`; cross-subdomain sharing is disabled.
+- Better Auth CSRF and origin checks remain enabled, and SparkKit-owned mutation
+  endpoints apply the same trusted-origin policy before session lookup.
+- Rate limiting is always enabled, with stricter five-per-minute rules for email
+  registration and password sign-in.
+- Automated tests verify invalid-origin rejection, throttling, environment
+  failures, cookie attributes, and trusted-origin matching. Operational proxy
+  and multi-instance requirements are documented in
+  `docs/security/authentication.md`.
 
 ## Milestone 3 — First SaaS template
 
-- [ ] **M3.1 Build the application shell**
+- [x] **M3.1 Build the application shell**
   - Acceptance: responsive sign-in, onboarding, dashboard, organization switcher, and settings screens exist.
-- [ ] **M3.2 Add a representative tenant-owned resource**
+
+### M3.1 implementation evidence
+
+- The reference application now includes responsive sign-in and registration,
+  authenticated organization onboarding, a tenant-aware dashboard, organization
+  switching, settings, and sign-out.
+- Dashboard and settings data comes from the active Better Auth session and real
+  organization memberships; unauthenticated access redirects to sign-in and users
+  without a membership continue through onboarding.
+- Static contract tests, integration tests, lint, type-check, production build,
+  and desktop/mobile browser review pass.
+- [x] **M3.2 Add a representative tenant-owned resource**
   - Acceptance: users can create, list, update, and delete projects only in an authorized organization.
+
+### M3.2 implementation evidence
+
+- Authenticated project collection and detail routes derive the user from the
+  Better Auth session and enter the existing verified tenant database boundary.
+- The dashboard lists real organization projects and provides responsive create,
+  edit, and delete interactions; delete is shown only to owner and admin roles.
+- Database-backed route tests complete the full CRUD lifecycle and reject access
+  to an organization outside the authenticated user's memberships.
 - [ ] **M3.3 Add error and empty states**
   - Acceptance: loading, empty, unauthorized, validation, and unexpected-error states are covered.
 - [ ] **M3.4 Add end-to-end smoke tests**

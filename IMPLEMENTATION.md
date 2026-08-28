@@ -174,4 +174,20 @@ Stage 0 decisions and repository standards are complete. The first Stage 1 sessi
 4. A minimal Next.js 16 reference application in `apps/web`.
 5. Passing root install, lint, type-check, test, and build commands.
 
-Milestone 0 is complete. Pull request #1 verified the frozen install, lint, type-check, test, and production build gates on GitHub Actions. M1.1 now establishes the `@sparkkit/db` package, Prisma 7 client generation, and documented migration commands. The next database task models users, organizations, and constrained memberships before the local PostgreSQL profile is added.
+Milestones 0 and 1 are complete. SparkKit now has a verified PostgreSQL Compose
+profile, constrained user/organization membership model, deterministic two-tenant
+seed, and tenant-scoped project data API. Live integration tests reject invalid
+membership and cross-tenant reads and writes. M2.1 adds Better Auth-backed
+email/password registration, sign-in, sign-out, and session restoration through
+the Next.js route and PostgreSQL. M2.2 adds authenticated organization creation
+with the initial owner membership committed in the same database transaction.
+M2.3 adds a deny-by-default owner, admin, and member permission matrix enforced
+by tenant data helpers and verified against live memberships. The next delivery
+M2.4 makes the canonical HTTPS origin, strong secret, secure cookie policy,
+CSRF/origin validation, and sign-in rate limiting explicit and tested. Milestone
+2 is complete. M3.1 adds the responsive sign-in, registration, onboarding,
+tenant-aware dashboard, organization switcher, settings, and sign-out experience.
+M3.2 exposes project CRUD through authenticated API routes and a responsive
+workspace interface while retaining the existing tenant-safe data boundary.
+The next delivery is M3.3, comprehensive loading, empty, authorization,
+validation, and unexpected-error states.

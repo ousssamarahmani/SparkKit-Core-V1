@@ -4,13 +4,13 @@ import type { ReactNode } from "react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "SparkKit App",
-  description: "The first SparkKit reference application workspace.",
+  title: "SparkKit Workspace",
+  description: "A secure, organization-aware SparkKit reference application.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

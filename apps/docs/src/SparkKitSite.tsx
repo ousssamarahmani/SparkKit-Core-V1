@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  ArrowRight, Boxes, Check, Cloud, Code2, Container, Database, Github,
+  ArrowRight, Bot, Boxes, Check, Cloud, Code2, Container, Database, Github,
   GitPullRequest, KeyRound, Menu, Network, Package, Server, ShieldCheck,
   Sparkles, Terminal, X,
 } from 'lucide-react';
 
 const githubUrl = 'https://github.com/ousssamarahmani/SparkKit-Core-V1';
+const workspaceUrl = import.meta.env.VITE_WORKSPACE_URL ?? 'http://localhost:3001/sign-in';
 
 const principles = [
   { icon: Package, title: 'Portable by default', text: 'Own the generated code, run it locally, and deploy it without requiring a Sparkbase account.' },
@@ -29,10 +30,36 @@ const workflow = [
   ['04', 'Deploy', 'docker build -t my-app .', 'Use Docker, Kubernetes, any cloud, or Sparkbase Cloud in the future.'],
 ];
 
+const localSetup = [
+  ['01', 'Clone and install', 'git clone https://github.com/ousssamarahmani/SparkKit-Core-V1.git\ncd SparkKit-Core-V1\npnpm install --frozen-lockfile'],
+  ['02', 'Start PostgreSQL', 'pnpm db:up'],
+  ['03', 'Prepare the database', 'pnpm --filter @sparkkit/db db:migrate:deploy\npnpm --filter @sparkkit/db db:seed'],
+  ['04', 'Run the project', 'pnpm dev:docs\n# Project page: http://localhost:3000\n\npnpm dev:web\n# Reference app: http://localhost:3001'],
+] as const;
+
+const developerPaths = [
+  {
+    icon: Code2,
+    audience: 'Software developers',
+    title: 'Start with the product foundation',
+    description: 'Use SparkKit as the base for a focused SaaS product, internal tool, customer portal, operations dashboard, or team utility.',
+    steps: ['Keep the responsive Next.js application and shared TypeScript standards.', 'Build features on tenant-scoped PostgreSQL data access.', 'Use Better Auth sessions as the identity boundary.', 'Extend the organization onboarding and role-aware workspace.', 'Test, containerize, and deploy to infrastructure you control.'],
+    outcome: 'You spend time on the product workflow instead of rebuilding authentication, tenancy, database conventions, and project tooling.',
+  },
+  {
+    icon: Bot,
+    audience: 'AI developers & agents',
+    title: 'Build AI features on a safe application shell',
+    description: 'Use the same foundation for assistants, document tools, workflow agents, extraction apps, and other purpose-built AI software.',
+    steps: ['Let an AI coding agent inspect the roadmap, architecture, and typed workspace.', 'Implement the product flow inside the owned repository.', 'Keep model keys and provider calls on the server.', 'Scope prompts, tools, files, and generated data to the active organization.', 'Add budgets, timeouts, evaluation, and auditability before production use.'],
+    outcome: 'AI accelerates implementation or becomes a product capability without replacing normal security, data isolation, tests, and deployment ownership.',
+  },
+] as const;
+
 const roadmap = [
   ['01', 'Repository foundation', 'Complete', 'The real workspace, shared configuration, community files, tests and CI are established.'],
-  ['02', 'Data and tenancy', 'Next', 'Implement organizations, memberships, local PostgreSQL and verified tenant isolation.'],
-  ['03', 'Authentication and reference SaaS', 'Planned', 'Add sign-in, organization onboarding, authorization and one complete application flow.'],
+  ['02', 'Data and tenancy', 'Complete', 'Organizations, memberships, local PostgreSQL and verified tenant isolation are implemented.'],
+  ['03', 'Authentication and reference SaaS', 'In progress', 'Sessions, onboarding, authorization, the responsive application shell and tenant-owned project CRUD work; comprehensive UI states are next.'],
   ['04', 'Project generator', 'Planned', 'Generate a clean application and validate that it installs, tests and builds.'],
 ];
 
@@ -57,7 +84,7 @@ function Label({ children, blue = false }: { children: React.ReactNode; blue?: b
 
 export default function SparkKitSite() {
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const links = [['workflow', 'How it works'], ['architecture', 'Architecture'], ['deployment', 'Deployment'], ['roadmap', 'Roadmap'], ['sparkbase', 'Sparkbase']];
+  const links = [['vision', 'Vision'], ['use-cases', 'Who it is for'], ['setup', 'Get started'], ['architecture', 'Architecture'], ['roadmap', 'Roadmap']];
 
   return (
     <div className="min-h-screen bg-[#070707] text-white selection:bg-amber-300 selection:text-black">
@@ -72,10 +99,11 @@ export default function SparkKitSite() {
           </nav>
           <div className="flex items-center gap-2">
             <a href={githubUrl} target="_blank" rel="noreferrer" className="hidden items-center gap-2 rounded-lg border border-white/15 px-3 py-2 text-xs font-medium transition hover:bg-white hover:text-black sm:flex"><Github className="h-4 w-4" /> View GitHub</a>
+            <a href={workspaceUrl} className="hidden items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-black transition hover:bg-zinc-200 sm:flex">Open Workspace <ArrowRight className="h-4 w-4" /></a>
             <button type="button" onClick={() => setMenuOpen(!menuOpen)} className="rounded-lg border border-white/15 p-2 lg:hidden" aria-label="Toggle navigation">{menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}</button>
           </div>
         </div>
-        {menuOpen && <nav className="grid gap-3 border-t border-white/10 px-5 py-4 text-sm text-zinc-300 lg:hidden">{links.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>}
+        {menuOpen && <nav className="grid gap-3 border-t border-white/10 px-5 py-4 text-sm text-zinc-300 lg:hidden">{links.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}<a href={workspaceUrl} className="mt-2 flex items-center justify-between rounded-lg bg-white px-3 py-2 font-semibold text-black">Open Workspace <ArrowRight className="h-4 w-4" /></a></nav>}
       </header>
 
       <main id="top">
@@ -88,12 +116,27 @@ export default function SparkKitSite() {
               <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">for Small Software &amp; AI apps</span>
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Build purpose-built applications with developers or AI agents. Add authentication, organizations, data and optional AI—then own the code, run it locally and deploy anywhere.</p>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, public site, application shell and initial database package work today. Authentication, the complete template, CLI and deployment profiles are planned, not released.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, PostgreSQL data layer, tenant isolation, email/password sessions, organization onboarding, responsive application shell and tenant-owned project workflows work today. The project generator, optional AI package and deployment profiles are planned, not released.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"><Github className="h-4 w-4" /> Follow the project</a>
-              <a href="#workflow" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5">See the developer flow <ArrowRight className="h-4 w-4" /></a>
+              <a href={workspaceUrl} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200">Open Workspace <ArrowRight className="h-4 w-4" /></a>
+              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5"><Github className="h-4 w-4" /> View source</a>
             </div>
           </div>
+        </section>
+
+        <section id="vision" className="border-b border-white/10 py-20 sm:py-28">
+          <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div><Label>Product vision</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">A reliable starting point for small, useful software.</h2><p className="mt-5 leading-7 text-zinc-400">SparkKit is for applications that are narrower than a large enterprise platform but deserve the same care around identity, data ownership, isolation, testing, and deployment.</p></div>
+            <div className="grid gap-4 sm:grid-cols-2"><VisionCard number="01" title="Humans and agents build together" text="A software developer can work directly in the codebase or delegate bounded work to an AI coding agent using the same architecture and quality gates." /><VisionCard number="02" title="The application stays yours" text="SparkKit produces a normal TypeScript project. Your product is not trapped inside a proprietary builder or required managed cloud." /><VisionCard number="03" title="AI is a capability, not the foundation" text="Add models where they improve the product while authentication, tenancy, permissions and data remain ordinary application concerns." /><VisionCard number="04" title="Proof before promises" text="Features move from planned to available only when code, tests and documentation exist in the public repository." /></div>
+          </div>
+        </section>
+
+        <section id="use-cases" className="border-b border-white/10 py-20 sm:py-28">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Who SparkKit is for</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Two development paths. One secure foundation.</h2><p className="mt-5 leading-7 text-zinc-400">Use SparkKit to build software with AI assistance, to build AI into the product, or both. The engineering boundary stays the same.</p></div><div className="grid gap-5 lg:grid-cols-2">{developerPaths.map(({ icon: Icon, audience, title, description, steps, outcome }) => <article key={audience} className="rounded-3xl border border-white/10 bg-white/[0.025] p-7 sm:p-9"><div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black"><Icon className="h-5 w-5 text-amber-200" /></span><p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">{audience}</p></div><h3 className="mt-6 text-2xl font-semibold">{title}</h3><p className="mt-4 leading-7 text-zinc-400">{description}</p><ol className="mt-7 grid gap-3">{steps.map((step, index) => <li key={step} className="flex gap-3 text-sm leading-6 text-zinc-300"><span className="font-mono text-xs text-zinc-600">0{index + 1}</span>{step}</li>)}</ol><p className="mt-7 border-t border-white/10 pt-6 text-sm leading-6 text-zinc-400"><span className="font-medium text-white">Outcome: </span>{outcome}</p></article>)}</div></div>
+        </section>
+
+        <section id="setup" className="border-b border-white/10 py-20 sm:py-28">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Use the repository today</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Local setup, step by step</h2><p className="mt-5 leading-7 text-zinc-400">Requirements: Node.js 24 or 26, pnpm 11, Git, and Docker Desktop. These commands run the current source repository; the shorter <code className="text-zinc-300">create-sparkkit</code> flow remains a future milestone.</p></div><div className="grid gap-4 lg:grid-cols-2">{localSetup.map(([number, title, command]) => <article key={number} className="overflow-hidden rounded-2xl border border-white/10 bg-black"><div className="flex items-center gap-3 border-b border-white/10 px-5 py-4"><span className="font-mono text-xs text-zinc-600">{number}</span><h3 className="font-medium">{title}</h3></div><pre className="overflow-x-auto whitespace-pre-wrap p-5 font-mono text-xs leading-6 text-amber-100">{command}</pre></article>)}</div><div className="mt-6 rounded-2xl border border-blue-300/20 bg-blue-300/[0.05] p-6 text-sm leading-6 text-zinc-300"><strong className="text-white">Before production:</strong> replace the local authentication secret, use a production PostgreSQL connection, review cookie and CSRF settings, configure rate limits, and run <code>pnpm check</code>. Those hardening tasks are tracked openly in Milestone 2.4.</div></div>
         </section>
 
         <section className="border-b border-white/10 py-20 sm:py-24">
@@ -140,7 +183,7 @@ export default function SparkKitSite() {
 
         <section id="sparkbase" className="relative overflow-hidden py-20 sm:py-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_50%,rgba(59,130,246,0.12),transparent_35%)]" />
-          <div className="relative mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label blue>SparkKit and Sparkbase</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Open-source foundation. Optional managed cloud.</h2></div><div className="grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-2"><Relationship icon={Boxes} title="SparkKit" text="The open-source developer foundation. Build locally, own the source and deploy to infrastructure you choose." points={['Portable application code', 'Local development and Docker', 'No required cloud account']} /><article className="bg-blue-400/[0.045] p-7 sm:p-9"><div className="flex items-center gap-3"><Cloud className="h-5 w-5 text-blue-300" /><h3 className="text-xl font-semibold">Sparkbase Cloud</h3></div><p className="mt-5 leading-7 text-zinc-400">The planned commercial experience for deploying, securing, sharing and operating small software without exposing infrastructure complexity.</p><blockquote className="mt-7 border-l border-blue-300/30 pl-4 text-sm leading-6 text-zinc-300">“Google Docs for software—a cloud where humans and AI agents turn code into secure, shareable applications with a link.”</blockquote></article></div><div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-2xl border border-white/10 bg-black p-6 sm:flex-row sm:items-center"><div><p className="font-medium">The relationship stays optional.</p><p className="mt-1 text-sm text-zinc-500">SparkKit works independently. Sparkbase Cloud earns adoption through a better managed experience.</p></div><a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-sm text-zinc-300 hover:text-white"><GitPullRequest className="h-4 w-4" /> Follow development</a></div></div>
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label blue>SparkKit and Sparkbase</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Build with SparkKit. Run it on Sparkbase.</h2></div><div className="grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-2"><Relationship icon={Boxes} title="SparkKit" text="The open-source developer foundation. Build locally, own the source and deploy to infrastructure you choose." points={['Portable application code', 'Local development and Docker', 'No required cloud account']} /><article className="bg-blue-400/[0.045] p-7 sm:p-9"><div className="flex items-center gap-3"><Cloud className="h-5 w-5 text-blue-300" /><h3 className="text-xl font-semibold">Sparkbase Cloud</h3></div><p className="mt-5 leading-7 text-zinc-400">The planned commercial experience for deploying, securing, sharing and operating small software without exposing infrastructure complexity.</p><blockquote className="mt-7 border-l border-blue-300/30 pl-4 text-sm leading-6 text-zinc-300">“Google Docs for software—a cloud where humans and AI agents turn code into secure, shareable applications with a link.”</blockquote></article></div><div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-2xl border border-white/10 bg-black p-6 sm:flex-row sm:items-center"><div><p className="font-medium">The relationship stays optional.</p><p className="mt-1 text-sm text-zinc-500">SparkKit works independently. Sparkbase Cloud earns adoption through a better managed experience.</p></div><div className="flex flex-wrap gap-5"><a href={workspaceUrl} className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-white hover:text-blue-200">Open Workspace <ArrowRight className="h-4 w-4" /></a><a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-sm text-zinc-300 hover:text-white"><GitPullRequest className="h-4 w-4" /> Follow development</a></div></div></div>
         </section>
       </main>
 
@@ -159,4 +202,8 @@ function InfraColumn({ title, items }: { title: string; items: string[] }) {
 
 function Relationship({ icon: Icon, title, text, points }: { icon: typeof Boxes; title: string; text: string; points: string[] }) {
   return <article className="border-b border-white/10 bg-white/[0.025] p-7 sm:p-9 lg:border-b-0 lg:border-r"><div className="flex items-center gap-3"><Icon className="h-5 w-5 text-amber-200" /><h3 className="text-xl font-semibold">{title}</h3></div><p className="mt-5 leading-7 text-zinc-400">{text}</p><div className="mt-7 grid gap-3 text-sm text-zinc-300">{points.map(point => <p key={point} className="flex items-center gap-2"><Check className="h-4 w-4 text-zinc-500" />{point}</p>)}</div></article>;
+}
+
+function VisionCard({ number, title, text }: { number: string; title: string; text: string }) {
+  return <article className="rounded-2xl border border-white/10 bg-white/[0.025] p-6"><span className="font-mono text-xs text-zinc-600">{number}</span><h3 className="mt-8 text-lg font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-zinc-400">{text}</p></article>;
 }

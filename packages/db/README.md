@@ -67,3 +67,27 @@ a user or organization cascades to its memberships so join records cannot become
 orphaned. Application authorization must still verify the active membership on
 every tenant-scoped operation; the schema constraint is a foundation, not a
 replacement for authorization.
+
+## Tenant-scoped access
+
+Call `createTenantDatabase` with the authenticated user's ID and the active
+organization ID before accessing organization-owned records. It verifies the
+membership once and returns an API whose project reads and writes always include
+the active `organizationId`.
+
+The explicit role policy gives owners full control, allows admins to manage
+memberships and projects, and lets members read, create, and update projects
+without destructive or membership-management permissions.
+
+```ts
+const tenantDb = await createTenantDatabase(prisma, {
+  userId: session.user.id,
+  organizationId: session.activeOrganizationId,
+});
+
+const projects = await tenantDb.listProjects();
+```
+
+Do not expose the unrestricted Prisma client to request handlers. Client input
+may select an organization, but the server must pair it with the authenticated
+user ID and let the membership check establish the trusted tenant context.
