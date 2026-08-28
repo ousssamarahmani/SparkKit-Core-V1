@@ -1,103 +1,147 @@
 <div align="center">
   <img src="./apps/docs/public/sparkkit-logo.png" alt="SparkKit" width="360" />
 
-  # The open-source foundation for Small Software and AI-powered applications
+  # Build small software that is ready to become real software.
 
-  Build portable, production-minded applications with authentication, organizations,
-  data boundaries, and optional AI—then own the code and deploy it anywhere.
+  SparkKit is an open-source TypeScript foundation for portable SaaS, internal tools,
+  and AI-powered applications—with authentication, organizations, tenant-safe data,
+  and production-minded defaults built in.
 
   [![CI](https://img.shields.io/github/actions/workflow/status/ousssamarahmani/SparkKit-Core-V1/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions/workflows/ci.yml)
-  [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-white?style=flat-square)](./LICENSE)
-  [![Roadmap](https://img.shields.io/badge/status-early%20stage-f5c542?style=flat-square)](./TASKS.md)
+  [![License](https://img.shields.io/badge/license-Apache--2.0-111111?style=flat-square)](./LICENSE)
+  [![Status](https://img.shields.io/badge/status-early%20stage-C4943D?style=flat-square)](./TASKS.md)
   [![GitHub stars](https://img.shields.io/github/stars/ousssamarahmani/SparkKit-Core-V1?style=flat-square)](https://github.com/ousssamarahmani/SparkKit-Core-V1/stargazers)
 
-  [Architecture](./ARCHITECTURE.md) · [Roadmap](./TASKS.md) · [Contributing](./CONTRIBUTING.md) · [Security](./SECURITY.md)
+  [Project site](http://localhost:3000) · [Quick start](#quick-start) · [Architecture](./ARCHITECTURE.md) · [Roadmap](./TASKS.md) · [Contributing](./CONTRIBUTING.md)
 </div>
 
+---
+
+<picture>
+  <img src="./assets/github/sparkkit-repository-hero.png" alt="SparkKit applications flowing from an open foundation into secure managed infrastructure" width="100%" />
+</picture>
+
 > [!IMPORTANT]
-> SparkKit is under active development and is not yet a released starter kit.
-> The repository foundation, documentation site, Next.js application shell, and
-> Prisma database package and email/password authentication work today. The complete SaaS template,
-> and `create-sparkkit` CLI are being built in public.
+> SparkKit is being built in public and has not reached its first stable release.
+> The monorepo, project site, application shell, PostgreSQL data layer,
+> authentication, organization onboarding, role enforcement, and tenant-owned
+> project workflow are implemented today. The generator and optional AI layer are next.
 
-## Current project UI
+## What is SparkKit?
 
-![SparkKit project site showing the Small Software and AI application positioning](./docs/screenshots/sparkkit-project-site-hero.jpg)
+AI agents make application code dramatically easier to create. They do not make
+identity, tenant isolation, permissions, database migrations, testing, or deployment
+disappear. SparkKit provides that missing application foundation.
 
-This is the current runnable SparkKit project site from `apps/docs`. A screenshot
-of the generated reference application will replace it after the authenticated,
-organization-aware UI is implemented and verified in Milestone 3.
+It is designed for **Small Software**: focused products that serve one person, one
+team, or a narrow workflow—internal tools, customer portals, operational dashboards,
+personal AI tools, vertical applications, and compact SaaS products.
 
+- **Owned and portable.** The generated application is normal TypeScript code that
+  stays useful outside any managed platform.
+- **Secure by design.** Authentication, organizations, roles, and tenant boundaries
+  are part of the foundation.
+- **Agent-ready.** Clear conventions help software developers and coding agents work
+  on the same codebase safely.
+- **AI-optional.** AI capabilities remain modular, server-side, and removable.
+- **Cloud-optional.** Run locally or deploy to infrastructure you choose.
 
-## Why SparkKit
-
-AI agents and developers can create purpose-built software faster than ever, but
-shipping it securely still means rebuilding authentication, tenancy, database
-boundaries, testing, and deployment foundations.
-
-SparkKit is focused on **Small Software**: internal tools, team utilities,
-personal AI tools, operational dashboards, workflow applications, and focused
-SaaS products built for one person or a small group.
-
-It is designed around four promises:
-
-- **Own the code.** Generated applications are portable and remain yours.
-- **Secure defaults.** Authentication, authorization, and tenant isolation are
-  product requirements—not optional cleanup.
-- **Useful with or without AI.** AI capabilities are modular and server-side.
-- **Deploy anywhere.** Local development and open infrastructure come first;
-  managed services should earn adoption through convenience.
-
-## What works today
-
-| Capability | Status | Location |
+| Build with SparkKit | Operate with confidence | Keep your options open |
 | --- | --- | --- |
-| pnpm + Turborepo monorepo | Available | Repository root |
-| Public SparkKit concept site | Available | [`apps/docs`](./apps/docs) |
-| Responsive Next.js application shell | Available | [`apps/web`](./apps/web) |
-| Tenant-scoped Prisma/PostgreSQL data layer | Available | [`packages/db`](./packages/db) |
-| Better Auth email/password sessions | Available | [`apps/web`](./apps/web) |
-| Authenticated organization onboarding | Available | [`apps/web`](./apps/web) |
-| Owner, admin, and member role enforcement | Available | [`packages/db`](./packages/db) |
-| Auth and session security baseline | Available | [`docs/security/authentication.md`](./docs/security/authentication.md) |
-| Shared strict TypeScript and ESLint configuration | Available | [`tooling`](./tooling) |
-| CI validation for lint, types, tests, and builds | Available | [GitHub Actions](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions) |
-| Tenant-aware dashboard, organization switcher, and settings | Available | [`apps/web`](./apps/web) |
-| Tenant-owned project CRUD | Available | [`apps/web`](./apps/web) |
-| Project generator | Planned | [Public roadmap](./TASKS.md) |
+| Start from a coherent application contract instead of rebuilding the foundation. | Treat identity, tenancy, permissions, and verification as product features. | Own ordinary TypeScript code and choose where it runs. |
 
-## Run the repository
+## Quick start
 
-### Prerequisites
-
-- Node.js 24 or 26
-- pnpm 11.9.0
-- Git
-- Docker Desktop or another Docker Compose-compatible runtime
+### Run the project site
 
 ```bash
 git clone https://github.com/ousssamarahmani/SparkKit-Core-V1.git
 cd SparkKit-Core-V1
+corepack enable
 pnpm install --frozen-lockfile
-pnpm db:up
-pnpm --filter @sparkkit/db db:migrate:deploy
-pnpm --filter @sparkkit/db db:seed
-pnpm check
-```
-
-Start the public project site:
-
-```bash
 pnpm dev:docs
 ```
 
-Open [http://localhost:3000](http://localhost:3000). To run the Next.js
-reference shell instead, use `pnpm dev:web` and open
-[http://localhost:3001](http://localhost:3001).
+Open [http://localhost:3000](http://localhost:3000).
+
+### Run the complete local stack
+
+Prerequisites: Node.js 24 or 26, pnpm 11.9.0, Git, and Docker Desktop or another
+Docker Compose-compatible runtime.
+
+```bash
+pnpm db:up
+pnpm --filter @sparkkit/db db:migrate:deploy
+pnpm --filter @sparkkit/db db:seed
+pnpm dev:web
+```
+
+Open [http://localhost:3001](http://localhost:3001). Copy the documented values
+from [`.env.example`](./.env.example) when creating your local `.env` file.
+
+## What works today
+
+| Area | Available now |
+| --- | --- |
+| Foundation | pnpm workspace, Turborepo, strict TypeScript, shared ESLint, CI |
+| Data | Prisma, PostgreSQL, migrations, deterministic seeds, tenant isolation |
+| Identity | Email/password sessions, sign-in, sign-out, session restoration |
+| Teams | Organization onboarding and owner/admin/member authorization |
+| Application | Responsive shell, workspace navigation, tenant-owned project CRUD |
+| Documentation | Public project site, architecture decisions, security guide, roadmap |
+
+The next verified deliverables are complete empty/error states, end-to-end smoke
+tests, local setup documentation, and the `create-sparkkit` generator. See the
+[public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
+
+<details>
+<summary><strong>See the current project experience</strong></summary>
+
+<br />
+
+![SparkKit project site](./docs/screenshots/sparkkit-project-site-hero.jpg)
+
+The public project site runs from `apps/docs`; the authenticated reference
+application runs independently from `apps/web`.
+
+</details>
+
+## The product direction
+
+```text
+Developer or coding agent
+          │
+          ▼
+ SparkKit application foundation
+          │
+          ├── Next.js application
+          ├── Authentication and organizations
+          ├── Tenant-safe PostgreSQL data
+          ├── Tests and deployment conventions
+          └── Optional AI adapters
+          │
+          ▼
+ Infrastructure you choose
+          └── Sparkbase managed cloud (planned, optional)
+```
+
+**SparkKit** is the open-source standard and application foundation. **Sparkbase**
+is the planned managed cloud for deploying, securing, sharing, observing, and
+recovering SparkKit applications. SparkKit will remain useful without Sparkbase;
+the managed service must earn adoption through convenience rather than lock-in.
+
+### One standard, two paths
+
+| SparkKit | Sparkbase |
+| --- | --- |
+| Open-source application foundation | Planned managed operations platform |
+| Source code the developer owns | Deployment, observability, backups, and recovery |
+| Runs locally and on chosen infrastructure | An optional path optimized for convenience |
+| Designed for developers and coding agents | Designed for teams using the resulting software |
 
 ## Target developer experience
 
-The version 0.1 goal is a working three-command path:
+Version 0.1 is working toward a dependable three-command path:
 
 ```bash
 npx create-sparkkit my-app
@@ -105,87 +149,76 @@ cd my-app
 pnpm dev
 ```
 
-This command is **not published yet**. It will only be documented as available
-after a generated project installs, tests, builds, and starts on a clean machine.
-
-## Architecture at a glance
-
-```mermaid
-flowchart LR
-    Developer["Developer or coding agent"] --> CLI["create-sparkkit CLI<br/>planned"]
-    CLI --> App["Owned application code"]
-    App --> Web["Next.js application"]
-    App --> Auth["Authentication and RBAC<br/>planned"]
-    App --> Data["Prisma + PostgreSQL"]
-    App --> AI["Optional AI adapter<br/>planned"]
-    App --> Deploy["Local or chosen infrastructure"]
-    Deploy -. "optional managed path" .-> Cloud["Sparkbase Cloud<br/>planned"]
-```
-
-The detailed boundaries, security rules, and technology decisions live in
-[`ARCHITECTURE.md`](./ARCHITECTURE.md) and [`docs/adr`](./docs/adr).
-
-## Road to version 0.1
-
-- [x] **M0 — Foundation:** monorepo, shared tooling, community files, and CI.
-- [x] **M1 — Data:** organizations, memberships, local PostgreSQL, seeds, and
-  tested tenant isolation.
-- [ ] **M2 — Identity:** authentication, onboarding, sessions, and role checks.
-- [ ] **M3 — Reference SaaS:** one complete organization-aware application.
-- [ ] **M4 — Generator:** tested `create-sparkkit` CLI and publishable package.
-- [ ] **M5 — Optional AI:** provider-neutral interface and safe streaming example.
-- [ ] **M6 — Release:** Docker, security review, clean-machine verification, and
-  version 0.1.
-
-See the [task backlog](./TASKS.md) for acceptance criteria and the
-[implementation plan](./IMPLEMENTATION.md) for release gates.
-
-## From the project
-
-Read [Why AI Agents Need an Open-Source Foundation for Small Software](./docs/articles/why-ai-agents-need-an-open-source-foundation-for-small-software.md)
-for the problem SparkKit is designed to solve, the case for portable application
-foundations, and the principles guiding the project.
+The `create-sparkkit` package is **not published yet**. This README will only mark
+it available after a generated project installs, tests, builds, and starts on a
+clean machine.
 
 ## Repository map
 
 ```text
 apps/
-  docs/       Public product and documentation site
+  docs/       Project site and interactive documentation
   web/        Next.js reference application
 packages/
-  db/         Prisma schema, generated client, and migration workflow
+  db/         Prisma schema, tenant-safe data access, migrations, and seeds
 tooling/
-  eslint/     Shared ESLint configurations
-  typescript/ Shared strict TypeScript baseline
+  eslint/     Shared lint configuration
+  typescript/ Shared strict TypeScript configuration
 docs/
   adr/        Architecture decision records
   articles/   Long-form project writing and artwork
+  security/   Security design and operational guidance
 ```
+
+## Roadmap
+
+- [x] **Foundation** — workspace, shared tooling, governance, and CI
+- [x] **Database and tenancy** — PostgreSQL, organizations, memberships, and isolation
+- [x] **Identity and authorization** — authentication, onboarding, roles, and sessions
+- [ ] **Reference application** — shell and project CRUD complete; UX states and smoke tests remain
+- [ ] **Generator** — tested `create-sparkkit` CLI and publishable template
+- [ ] **Optional AI** — provider-neutral interface, adapter, streaming example, and tests
+- [ ] **Version 0.1** — production container, security review, and clean-machine verification
+
+Detailed work is tracked in [`TASKS.md`](./TASKS.md); sequencing and release gates
+live in [`IMPLEMENTATION.md`](./IMPLEMENTATION.md).
+
+## Development
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Run the complete repository gate with `pnpm check`. Database-specific setup and
+commands are documented in [`packages/db/README.md`](./packages/db/README.md).
 
 ## Contributing
 
-SparkKit welcomes focused contributions to code, documentation, testing, design,
-and examples. The best place to begin is the current milestone in
-[`TASKS.md`](./TASKS.md).
-
+Contributions to code, tests, documentation, design, and examples are welcome.
 Before opening a pull request:
 
-1. Read the [contribution guide](./CONTRIBUTING.md).
-2. Search existing issues and confirm the work fits the current milestone.
-3. Keep the change focused and add tests for behavior changes.
+1. Read the [contribution guide](./CONTRIBUTING.md) and [code of conduct](./CODE_OF_CONDUCT.md).
+2. Check the [current milestone](./TASKS.md) and keep the change focused.
+3. Add or update tests for behavior changes.
 4. Run `pnpm check` locally.
 
-Please report vulnerabilities privately according to [`SECURITY.md`](./SECURITY.md).
+Please report vulnerabilities privately according to the [security policy](./SECURITY.md).
 
-## SparkKit and Sparkbase
+## Documentation
 
-- **SparkKit** is the free, open-source developer toolkit.
-- **Sparkbase Cloud** is the planned managed platform for deploying, securing,
-  sharing, and operating Small Software.
-
-SparkKit will remain useful without Sparkbase Cloud. The managed platform should
-earn adoption through convenience, not lock-in.
+- [Architecture](./ARCHITECTURE.md) — boundaries, technology choices, and security model
+- [Requirements](./REQUIREMENTS.md) — product requirements and release scope
+- [Implementation plan](./IMPLEMENTATION.md) — delivery sequence and verification gates
+- [Authentication security](./docs/security/authentication.md) — session and endpoint baseline
+- [Project thesis](./docs/articles/why-ai-agents-need-an-open-source-foundation-for-small-software.md) — why Small Software needs an open foundation
 
 ## License
 
-SparkKit is available under the [Apache License 2.0](./LICENSE).
+SparkKit is open source under the [Apache License 2.0](./LICENSE).
+
+<div align="center">
+  <strong>Build with SparkKit. Run it anywhere.</strong>
+</div>
