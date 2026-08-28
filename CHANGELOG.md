@@ -25,6 +25,11 @@ releases.
 - Owner, admin, and member authorization checks enforced by tenant data helpers.
 - Hardened authentication configuration with trusted origins, secure production
   cookies, CSRF validation, sign-in throttling, and production environment checks.
+- Responsive reference application screens for sign-in, registration,
+  organization onboarding, tenant-aware dashboard navigation, organization
+  switching, settings, and sign-out.
+- Tenant-owned project creation, listing, editing, and deletion through
+  authenticated routes and a responsive workspace interface.
 - Community health files and continuous integration.
 
 ### Changed

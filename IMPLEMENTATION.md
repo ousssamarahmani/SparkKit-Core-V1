@@ -185,4 +185,9 @@ M2.3 adds a deny-by-default owner, admin, and member permission matrix enforced
 by tenant data helpers and verified against live memberships. The next delivery
 M2.4 makes the canonical HTTPS origin, strong secret, secure cookie policy,
 CSRF/origin validation, and sign-in rate limiting explicit and tested. Milestone
-2 is complete; the next delivery stage is M3.1, the responsive application shell.
+2 is complete. M3.1 adds the responsive sign-in, registration, onboarding,
+tenant-aware dashboard, organization switcher, settings, and sign-out experience.
+M3.2 exposes project CRUD through authenticated API routes and a responsive
+workspace interface while retaining the existing tenant-safe data boundary.
+The next delivery is M3.3, comprehensive loading, empty, authorization,
+validation, and unexpected-error states.

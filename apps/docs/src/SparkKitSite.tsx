@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 const githubUrl = 'https://github.com/ousssamarahmani/SparkKit-Core-V1';
+const workspaceUrl = import.meta.env.VITE_WORKSPACE_URL ?? 'http://localhost:3001/sign-in';
 
 const principles = [
   { icon: Package, title: 'Portable by default', text: 'Own the generated code, run it locally, and deploy it without requiring a Sparkbase account.' },
@@ -42,7 +43,7 @@ const developerPaths = [
     audience: 'Software developers',
     title: 'Start with the product foundation',
     description: 'Use SparkKit as the base for a focused SaaS product, internal tool, customer portal, operations dashboard, or team utility.',
-    steps: ['Keep the Next.js application and shared TypeScript standards.', 'Build features on tenant-scoped PostgreSQL data access.', 'Use Better Auth sessions as the identity boundary.', 'Add organization onboarding and role checks as those milestones land.', 'Test, containerize, and deploy to infrastructure you control.'],
+    steps: ['Keep the responsive Next.js application and shared TypeScript standards.', 'Build features on tenant-scoped PostgreSQL data access.', 'Use Better Auth sessions as the identity boundary.', 'Extend the organization onboarding and role-aware workspace.', 'Test, containerize, and deploy to infrastructure you control.'],
     outcome: 'You spend time on the product workflow instead of rebuilding authentication, tenancy, database conventions, and project tooling.',
   },
   {
@@ -58,7 +59,7 @@ const developerPaths = [
 const roadmap = [
   ['01', 'Repository foundation', 'Complete', 'The real workspace, shared configuration, community files, tests and CI are established.'],
   ['02', 'Data and tenancy', 'Complete', 'Organizations, memberships, local PostgreSQL and verified tenant isolation are implemented.'],
-  ['03', 'Authentication and reference SaaS', 'In progress', 'Email/password sessions work; organization onboarding, authorization and the complete UI are next.'],
+  ['03', 'Authentication and reference SaaS', 'In progress', 'Sessions, onboarding, authorization, the responsive application shell and tenant-owned project CRUD work; comprehensive UI states are next.'],
   ['04', 'Project generator', 'Planned', 'Generate a clean application and validate that it installs, tests and builds.'],
 ];
 
@@ -98,10 +99,11 @@ export default function SparkKitSite() {
           </nav>
           <div className="flex items-center gap-2">
             <a href={githubUrl} target="_blank" rel="noreferrer" className="hidden items-center gap-2 rounded-lg border border-white/15 px-3 py-2 text-xs font-medium transition hover:bg-white hover:text-black sm:flex"><Github className="h-4 w-4" /> View GitHub</a>
+            <a href={workspaceUrl} className="hidden items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-black transition hover:bg-zinc-200 sm:flex">Open Workspace <ArrowRight className="h-4 w-4" /></a>
             <button type="button" onClick={() => setMenuOpen(!menuOpen)} className="rounded-lg border border-white/15 p-2 lg:hidden" aria-label="Toggle navigation">{menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}</button>
           </div>
         </div>
-        {menuOpen && <nav className="grid gap-3 border-t border-white/10 px-5 py-4 text-sm text-zinc-300 lg:hidden">{links.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>}
+        {menuOpen && <nav className="grid gap-3 border-t border-white/10 px-5 py-4 text-sm text-zinc-300 lg:hidden">{links.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}<a href={workspaceUrl} className="mt-2 flex items-center justify-between rounded-lg bg-white px-3 py-2 font-semibold text-black">Open Workspace <ArrowRight className="h-4 w-4" /></a></nav>}
       </header>
 
       <main id="top">
@@ -114,10 +116,10 @@ export default function SparkKitSite() {
               <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">for Small Software &amp; AI apps</span>
             </h1>
             <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Build purpose-built applications with developers or AI agents. Add authentication, organizations, data and optional AI—then own the code, run it locally and deploy anywhere.</p>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, PostgreSQL data layer, tenant isolation and email/password sessions work today. The complete application UI, project generator, optional AI package and deployment profiles are planned, not released.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, PostgreSQL data layer, tenant isolation, email/password sessions, organization onboarding, responsive application shell and tenant-owned project workflows work today. The project generator, optional AI package and deployment profiles are planned, not released.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"><Github className="h-4 w-4" /> Follow the project</a>
-              <a href="#workflow" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5">See the developer flow <ArrowRight className="h-4 w-4" /></a>
+              <a href={workspaceUrl} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200">Open Workspace <ArrowRight className="h-4 w-4" /></a>
+              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5"><Github className="h-4 w-4" /> View source</a>
             </div>
           </div>
         </section>
@@ -181,7 +183,7 @@ export default function SparkKitSite() {
 
         <section id="sparkbase" className="relative overflow-hidden py-20 sm:py-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_50%,rgba(59,130,246,0.12),transparent_35%)]" />
-          <div className="relative mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label blue>SparkKit and Sparkbase</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Open-source foundation. Optional managed cloud.</h2></div><div className="grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-2"><Relationship icon={Boxes} title="SparkKit" text="The open-source developer foundation. Build locally, own the source and deploy to infrastructure you choose." points={['Portable application code', 'Local development and Docker', 'No required cloud account']} /><article className="bg-blue-400/[0.045] p-7 sm:p-9"><div className="flex items-center gap-3"><Cloud className="h-5 w-5 text-blue-300" /><h3 className="text-xl font-semibold">Sparkbase Cloud</h3></div><p className="mt-5 leading-7 text-zinc-400">The planned commercial experience for deploying, securing, sharing and operating small software without exposing infrastructure complexity.</p><blockquote className="mt-7 border-l border-blue-300/30 pl-4 text-sm leading-6 text-zinc-300">“Google Docs for software—a cloud where humans and AI agents turn code into secure, shareable applications with a link.”</blockquote></article></div><div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-2xl border border-white/10 bg-black p-6 sm:flex-row sm:items-center"><div><p className="font-medium">The relationship stays optional.</p><p className="mt-1 text-sm text-zinc-500">SparkKit works independently. Sparkbase Cloud earns adoption through a better managed experience.</p></div><a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-sm text-zinc-300 hover:text-white"><GitPullRequest className="h-4 w-4" /> Follow development</a></div></div>
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label blue>SparkKit and Sparkbase</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Build with SparkKit. Run it on Sparkbase.</h2></div><div className="grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-2"><Relationship icon={Boxes} title="SparkKit" text="The open-source developer foundation. Build locally, own the source and deploy to infrastructure you choose." points={['Portable application code', 'Local development and Docker', 'No required cloud account']} /><article className="bg-blue-400/[0.045] p-7 sm:p-9"><div className="flex items-center gap-3"><Cloud className="h-5 w-5 text-blue-300" /><h3 className="text-xl font-semibold">Sparkbase Cloud</h3></div><p className="mt-5 leading-7 text-zinc-400">The planned commercial experience for deploying, securing, sharing and operating small software without exposing infrastructure complexity.</p><blockquote className="mt-7 border-l border-blue-300/30 pl-4 text-sm leading-6 text-zinc-300">“Google Docs for software—a cloud where humans and AI agents turn code into secure, shareable applications with a link.”</blockquote></article></div><div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-2xl border border-white/10 bg-black p-6 sm:flex-row sm:items-center"><div><p className="font-medium">The relationship stays optional.</p><p className="mt-1 text-sm text-zinc-500">SparkKit works independently. Sparkbase Cloud earns adoption through a better managed experience.</p></div><div className="flex flex-wrap gap-5"><a href={workspaceUrl} className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-white hover:text-blue-200">Open Workspace <ArrowRight className="h-4 w-4" /></a><a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-sm text-zinc-300 hover:text-white"><GitPullRequest className="h-4 w-4" /> Follow development</a></div></div></div>
         </section>
       </main>
 

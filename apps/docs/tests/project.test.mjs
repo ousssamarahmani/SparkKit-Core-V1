@@ -20,7 +20,11 @@ test('the public site labels unreleased capabilities honestly', async () => {
   assert.match(source, /Software developers/);
   assert.match(source, /AI developers & agents/);
   assert.match(source, /Local setup, step by step/);
-  assert.match(source, /email\/password sessions work/i);
+  assert.match(source, /email\/password sessions, organization onboarding, responsive application shell/i);
+  assert.match(source, /tenant-owned project workflows work today/i);
+  assert.match(source, /tenant-owned project CRUD work/i);
+  assert.match(source, /Open Workspace/);
+  assert.match(source, /Build with SparkKit\. Run it on Sparkbase\./);
 });
 
 test('page metadata does not claim production readiness', async () => {

@@ -164,10 +164,30 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 ## Milestone 3 — First SaaS template
 
-- [ ] **M3.1 Build the application shell**
+- [x] **M3.1 Build the application shell**
   - Acceptance: responsive sign-in, onboarding, dashboard, organization switcher, and settings screens exist.
-- [ ] **M3.2 Add a representative tenant-owned resource**
+
+### M3.1 implementation evidence
+
+- The reference application now includes responsive sign-in and registration,
+  authenticated organization onboarding, a tenant-aware dashboard, organization
+  switching, settings, and sign-out.
+- Dashboard and settings data comes from the active Better Auth session and real
+  organization memberships; unauthenticated access redirects to sign-in and users
+  without a membership continue through onboarding.
+- Static contract tests, integration tests, lint, type-check, production build,
+  and desktop/mobile browser review pass.
+- [x] **M3.2 Add a representative tenant-owned resource**
   - Acceptance: users can create, list, update, and delete projects only in an authorized organization.
+
+### M3.2 implementation evidence
+
+- Authenticated project collection and detail routes derive the user from the
+  Better Auth session and enter the existing verified tenant database boundary.
+- The dashboard lists real organization projects and provides responsive create,
+  edit, and delete interactions; delete is shown only to owner and admin roles.
+- Database-backed route tests complete the full CRUD lifecycle and reject access
+  to an organization outside the authenticated user's memberships.
 - [ ] **M3.3 Add error and empty states**
   - Acceptance: loading, empty, unauthorized, validation, and unexpected-error states are covered.
 - [ ] **M3.4 Add end-to-end smoke tests**

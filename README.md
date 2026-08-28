@@ -54,7 +54,7 @@ It is designed around four promises:
 | --- | --- | --- |
 | pnpm + Turborepo monorepo | Available | Repository root |
 | Public SparkKit concept site | Available | [`apps/docs`](./apps/docs) |
-| Next.js reference application shell | Available | [`apps/web`](./apps/web) |
+| Responsive Next.js application shell | Available | [`apps/web`](./apps/web) |
 | Tenant-scoped Prisma/PostgreSQL data layer | Available | [`packages/db`](./packages/db) |
 | Better Auth email/password sessions | Available | [`apps/web`](./apps/web) |
 | Authenticated organization onboarding | Available | [`apps/web`](./apps/web) |
@@ -62,7 +62,9 @@ It is designed around four promises:
 | Auth and session security baseline | Available | [`docs/security/authentication.md`](./docs/security/authentication.md) |
 | Shared strict TypeScript and ESLint configuration | Available | [`tooling`](./tooling) |
 | CI validation for lint, types, tests, and builds | Available | [GitHub Actions](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions) |
-| Organization onboarding, tenancy UI, and project generator | Planned | [Public roadmap](./TASKS.md) |
+| Tenant-aware dashboard, organization switcher, and settings | Available | [`apps/web`](./apps/web) |
+| Tenant-owned project CRUD | Available | [`apps/web`](./apps/web) |
+| Project generator | Planned | [Public roadmap](./TASKS.md) |
 
 ## Run the repository
 
