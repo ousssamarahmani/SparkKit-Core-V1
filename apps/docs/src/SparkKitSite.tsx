@@ -110,16 +110,21 @@ export default function SparkKitSite() {
         <section className="relative overflow-hidden border-b border-white/10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.14),transparent_43%)]" />
           <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:py-40">
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300"><span className="h-1.5 w-1.5 rounded-full bg-amber-300" />The first open-source project from Sparkbase</div>
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/[0.07] px-3 py-1.5 text-xs text-amber-100"><span className="h-1.5 w-1.5 rounded-full bg-amber-300" />Open source · Human + Agent · Cloud optional</div>
             <h1 className="max-w-6xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-7xl lg:text-[88px]">
-              The open-source foundation
-              <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">for Small Software &amp; AI apps</span>
+              Build small software
+              <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">that is ready to become real software.</span>
             </h1>
-            <p className="mt-8 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Build purpose-built applications with developers or AI agents. Add authentication, organizations, data and optional AI—then own the code, run it locally and deploy anywhere.</p>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">SparkKit is an early-stage implementation. The workspace, PostgreSQL data layer, tenant isolation, email/password sessions, organization onboarding, responsive application shell and tenant-owned project workflows work today. The project generator, optional AI package and deployment profiles are planned, not released.</p>
+            <p className="mt-8 max-w-3xl text-base leading-7 text-zinc-300 sm:text-xl sm:leading-8">SparkKit is the open-source application foundation for focused software built by developers and AI coding agents—without giving up security, portability, or ownership.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">Start with authentication, organizations, tenant-safe PostgreSQL data, and a working project workspace. Extend the source you own, run it locally, and deploy it wherever you choose.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={workspaceUrl} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200">Open Workspace <ArrowRight className="h-4 w-4" /></a>
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5"><Github className="h-4 w-4" /> View source</a>
+              <a href={workspaceUrl} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200">Explore the workspace <ArrowRight className="h-4 w-4" /></a>
+              <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5"><Github className="h-4 w-4" /> View on GitHub</a>
+            </div>
+            <div className="mt-12 grid max-w-4xl gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
+              <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-emerald-300">Works today</span><p className="mt-2 text-sm text-zinc-300">Authentication &amp; sessions</p></div>
+              <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-emerald-300">Works today</span><p className="mt-2 text-sm text-zinc-300">Organizations &amp; tenant isolation</p></div>
+              <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-amber-200">Next</span><p className="mt-2 text-sm text-zinc-300">Generate your own SparkKit app</p></div>
             </div>
           </div>
         </section>

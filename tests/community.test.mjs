@@ -73,3 +73,21 @@ test('local PostgreSQL has a persistent and health-checked Compose profile', asy
   );
   assert.equal(packageJson.scripts['db:down'], 'docker compose down');
 });
+
+test('the README is a complete local setup guide', async () => {
+  const [readme, environment] = await Promise.all([
+    readFile('README.md', 'utf8'),
+    readFile('.env.example', 'utf8'),
+  ]);
+
+  assert.match(readme, /Node\.js 24 or 26/);
+  assert.match(readme, /Copy-Item apps\/web\/\.env\.example apps\/web\/\.env\.local/);
+  assert.match(readme, /pnpm db:up/);
+  assert.match(readme, /db:migrate:deploy/);
+  assert.match(readme, /Project site: \[http:\/\/localhost:3000/);
+  assert.match(readme, /Reference application: \[http:\/\/localhost:3001/);
+  assert.match(readme, /pnpm e2e/);
+  assert.match(readme, /docker compose down --volumes/);
+  assert.match(readme, /### Troubleshooting/);
+  assert.doesNotMatch(environment, /GEMINI_API_KEY|AI Studio|APP_URL/);
+});

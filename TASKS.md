@@ -215,8 +215,20 @@ Nothing below should be marked complete until its acceptance criteria pass.
   primary user is denied access to that tenant's projects with a verified `403`.
 - Playwright runs through `pnpm e2e`, and CI installs Chromium and executes the
   smoke test after the repository-wide test suite.
-- [ ] **M3.5 Document local setup**
+- [x] **M3.5 Document local setup**
   - Acceptance: a new contributor can run the template using only the README.
+
+### M3.5 implementation evidence
+
+- The README now provides an ordered prerequisites-to-first-workspace path for
+  Windows, macOS, and Linux contributors.
+- Environment setup points to the file the Next.js application actually reads,
+  explains local-only secrets, and removes obsolete AI Studio variables.
+- Database startup, migration, optional seed behavior, both development servers,
+  account onboarding, verification commands, shutdown, and destructive reset are
+  documented with expected ports and outcomes.
+- Troubleshooting covers Docker availability, port conflicts, PostgreSQL health,
+  authentication origins, generated Prisma types, and Playwright installation.
 
 ## Milestone 4 — Project generator
 

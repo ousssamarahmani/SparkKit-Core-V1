@@ -13,15 +13,15 @@ test('the public entry renders the current SparkKit site', async () => {
 test('the public site labels unreleased capabilities honestly', async () => {
   const source = await read('src/SparkKitSite.tsx');
   assert.match(source, /aria-label="SparkKit"/);
-  assert.match(source, /for Small Software &amp; AI apps/);
-  assert.match(source, /with developers or AI agents/);
-  assert.match(source, /planned, not released/i);
+  assert.match(source, /Build small software/);
+  assert.match(source, /ready to become real software/);
+  assert.match(source, /built by developers and AI coding agents/);
+  assert.match(source, /Open source · Human \+ Agent · Cloud optional/);
+  assert.match(source, /Generate your own SparkKit app/);
   assert.match(source, /AWS and Kubernetes are deployment targets, not SparkKit requirements/i);
   assert.match(source, /Software developers/);
   assert.match(source, /AI developers & agents/);
   assert.match(source, /Local setup, step by step/);
-  assert.match(source, /email\/password sessions, organization onboarding, responsive application shell/i);
-  assert.match(source, /tenant-owned project workflows work today/i);
   assert.match(source, /tenant-owned project CRUD work/i);
   assert.match(source, /Open Workspace/);
   assert.match(source, /Build with SparkKit\. Run it on Sparkbase\./);

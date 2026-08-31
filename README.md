@@ -52,32 +52,142 @@ personal AI tools, vertical applications, and compact SaaS products.
 
 ## Quick start
 
-### Run the project site
+### 1. Install the prerequisites
+
+You need:
+
+- [Git](https://git-scm.com/downloads)
+- Node.js 24 or 26 (`node --version`)
+- pnpm 11.9.0 through Corepack (`pnpm --version`)
+- Docker Desktop, or another Docker Compose-compatible runtime
+
+Start Docker before continuing. On Windows, Docker Desktop should use its WSL 2
+engine. Confirm the required tools are available:
+
+```bash
+git --version
+node --version
+corepack enable
+corepack prepare pnpm@11.9.0 --activate
+pnpm --version
+docker --version
+docker compose version
+```
+
+### 2. Clone and install
 
 ```bash
 git clone https://github.com/ousssamarahmani/SparkKit-Core-V1.git
 cd SparkKit-Core-V1
-corepack enable
 pnpm install --frozen-lockfile
-pnpm dev:docs
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Run every remaining command from the repository root unless a step says otherwise.
 
-### Run the complete local stack
+### 3. Configure the reference application
 
-Prerequisites: Node.js 24 or 26, pnpm 11.9.0, Git, and Docker Desktop or another
-Docker Compose-compatible runtime.
+Copy the safe local example to the environment file read by Next.js:
+
+```bash
+# macOS or Linux
+cp apps/web/.env.example apps/web/.env.local
+
+# Windows PowerShell
+Copy-Item apps/web/.env.example apps/web/.env.local
+```
+
+The example connects to the PostgreSQL container on `localhost:5432` and serves
+the application at `http://localhost:3001`. Its development secret is only for
+local use. Never commit `.env.local` or reuse its secret in a deployed environment.
+
+### 4. Start and prepare PostgreSQL
 
 ```bash
 pnpm db:up
 pnpm --filter @sparkkit/db db:migrate:deploy
 pnpm --filter @sparkkit/db db:seed
+```
+
+`pnpm db:up` waits for PostgreSQL to become healthy. The migration creates the
+schema. The optional, repeatable seed adds two deterministic tenant fixtures for
+database development; it does not create passwords for signing into the web app.
+
+Check the container at any time with:
+
+```bash
+docker compose ps
+```
+
+### 5. Run SparkKit
+
+Open two terminals in the repository root.
+
+Terminal 1 - public project site:
+
+```bash
+pnpm dev:docs
+```
+
+Terminal 2 - authenticated reference application:
+
+```bash
 pnpm dev:web
 ```
 
-Open [http://localhost:3001](http://localhost:3001). Copy the documented values
-from [`.env.example`](./.env.example) when creating your local `.env` file.
+Open:
+
+- Project site: [http://localhost:3000](http://localhost:3000)
+- Reference application: [http://localhost:3001](http://localhost:3001)
+
+On the reference application, choose **Create account**, register with a local test
+email and a password of at least eight characters, name the first organization,
+and create a project. You can then sign out and sign back in with that account.
+
+### 6. Verify the repository
+
+Keep PostgreSQL running, stop the development servers with `Ctrl+C`, then run:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm e2e
+```
+
+The browser smoke test installs separately on a fresh machine. If Chromium is not
+already available, run `pnpm exec playwright install chromium` once, then rerun
+`pnpm e2e`.
+
+### Stop or reset the local database
+
+Stop PostgreSQL without deleting its data:
+
+```bash
+pnpm db:down
+```
+
+To deliberately erase the local SparkKit database and begin again, run the
+following command, then repeat step 4:
+
+```bash
+docker compose down --volumes
+```
+
+> [!WARNING]
+> `docker compose down --volumes` permanently deletes the local PostgreSQL volume.
+
+### Troubleshooting
+
+| Problem | Resolution |
+| --- | --- |
+| Docker cannot connect | Start Docker Desktop and wait until its engine reports that it is running. |
+| Port `5432` is already in use | Stop the other PostgreSQL service or change both the Compose port and `DATABASE_URL`. |
+| Port `3000` or `3001` is already in use | Stop the process using that port before restarting the corresponding development server. |
+| Prisma cannot reach PostgreSQL | Run `docker compose ps`; wait for `postgres` to show `healthy`, then rerun the migration. |
+| Authentication reports an origin error | Keep `BETTER_AUTH_URL=http://localhost:3001` and access the app through that same origin. |
+| Generated Prisma types are missing | Run `pnpm --filter @sparkkit/db db:generate`, then rerun `pnpm typecheck`. |
+| Browser smoke tests cannot find Chromium | Run `pnpm exec playwright install chromium`. |
 
 ## What works today
 
@@ -90,8 +200,7 @@ from [`.env.example`](./.env.example) when creating your local `.env` file.
 | Application | Responsive shell, workspace navigation, tenant-owned project CRUD |
 | Documentation | Public project site, architecture decisions, security guide, roadmap |
 
-The next verified deliverables are end-to-end smoke tests, local setup
-documentation, and the `create-sparkkit` generator. See the
+The next verified deliverable is the `create-sparkkit` generator. See the
 [public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
 
 <details>
