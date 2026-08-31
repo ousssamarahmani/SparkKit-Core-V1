@@ -189,5 +189,8 @@ CSRF/origin validation, and sign-in rate limiting explicit and tested. Milestone
 tenant-aware dashboard, organization switcher, settings, and sign-out experience.
 M3.2 exposes project CRUD through authenticated API routes and a responsive
 workspace interface while retaining the existing tenant-safe data boundary.
-The next delivery is M3.3, comprehensive loading, empty, authorization,
-validation, and unexpected-error states.
+M3.3 completes loading, empty, authorization, validation, and unexpected-error
+states. M3.4 adds a real Chromium smoke workflow for onboarding, login,
+organization switching, project creation, and cross-tenant denial, with the
+same workflow enforced in CI. The next delivery is M3.5, a complete local setup
+guide that a new contributor can follow using only the README.

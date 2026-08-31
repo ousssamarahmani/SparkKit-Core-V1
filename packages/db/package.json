@@ -22,7 +22,7 @@
     "db:validate": "prisma validate",
     "lint": "eslint . --max-warnings 0",
     "test": "node --test tests/*.test.mjs && prisma validate && prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script && tsx --test tests/*.integration.test.ts",
-    "typecheck": "prisma generate && tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",

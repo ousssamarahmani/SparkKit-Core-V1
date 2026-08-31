@@ -4,14 +4,27 @@ import { createTenantDatabase } from '@sparkkit/db';
 
 import { AppShell } from '../../components/app-shell';
 import { ProjectManager } from '../../components/project-manager';
+import { WorkspaceState } from '../../components/workspace-state';
 import { database } from '../../lib/database';
 import { requireWorkspace } from '../../lib/workspace';
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ organization?: string }> }) {
   const [{ session, memberships }, query] = await Promise.all([requireWorkspace(), searchParams]);
   if (memberships.length === 0) redirect('/onboarding');
-  const active = memberships.find(({ organizationId }) => organizationId === query.organization) ?? memberships[0];
   const organizations = memberships.map(({ organization, role }) => ({ id: organization.id, name: organization.name, role }));
+  const requested = query.organization
+    ? memberships.find(({ organizationId }) => organizationId === query.organization)
+    : undefined;
+
+  if (query.organization && !requested) {
+    return (
+      <AppShell user={session.user} organizations={organizations}>
+        <WorkspaceState eyebrow="Access denied" title="That workspace is not available." description="You are signed in, but you do not have membership in the requested organization. SparkKit has not exposed any of its projects or settings." />
+      </AppShell>
+    );
+  }
+
+  const active = requested ?? memberships[0];
   const tenant = await createTenantDatabase(database, { organizationId: active.organizationId, userId: session.user.id });
   const projects = (await tenant.listProjects()).map((project) => ({
     id: project.id,

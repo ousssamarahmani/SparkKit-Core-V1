@@ -1,73 +1,125 @@
-# SparkKit — Product & Technical Requirements Document (PRD/TRD)
+# SparkKit Product and Technical Requirements
 
-## 1. Executive Summary & Vision
-SparkKit is an enterprise-grade, open-source Turborepo starter toolkit designed to drastically reduce the time to build and deploy production-ready SaaS and AI applications. It unifies monorepo package architecture, multi-tenant database schemas with PostgreSQL and `pgvector`, modern authentication (Better Auth), type-safe APIs (tRPC/Zod), and AI agent orchestration (Gemini / Vercel AI SDK).
+## Purpose
 
----
+SparkKit is an early-stage, open-source TypeScript application foundation for
+portable Small Software and AI-powered applications. It is not yet a released
+starter kit. Requirements are promoted into the implemented product only when
+their acceptance criteria and verification pass.
 
-## 2. Functional Requirements (FR)
+The product direction is defined in [`VISION.md`](./VISION.md); the delivery
+sequence and evidence are tracked in [`TASKS.md`](./TASKS.md).
 
-### FR-1: Monorepo Package Workspace (`apps/` & `packages/`)
-- **FR-1.1**: Multi-package Turborepo workspace managing shared core libraries.
-- **FR-1.2**: `@sparkkit/core`: Shared utilities, design system tokens, layout primitive components, and error handlers.
-- **FR-1.3**: `@sparkkit/auth`: Authentication adapters supporting Passkeys, OAuth 2.0, Magic Links, and Session Management via Better Auth.
-- **FR-1.4**: `@sparkkit/ai`: Vercel AI SDK wrappers, Gemini 2.5 Flash integrations, streaming helpers, and pgvector RAG document search tools.
-- **FR-1.5**: `@sparkkit/db`: Prisma ORM client with PostgreSQL schema, migrations pipeline, and multi-tenant isolation helpers.
+## Version 0.1 outcome
 
-### FR-2: Database & Multi-Tenancy Architecture
-- **FR-2.1**: Relational PostgreSQL database managed via Prisma ORM.
-- **FR-2.2**: Tenant isolation with `Organization`, `OrganizationMember`, and role-based access control (RBAC: `OWNER`, `ADMIN`, `MEMBER`).
-- **FR-2.3**: Built-in support for vector embeddings (`pgvector` 1536-dim vectors) in the `KnowledgeDoc` model for RAG workflows.
-- **FR-2.4**: Stripe billing and subscription management tracking (`Subscription` model with `ACTIVE`, `CANCELED`, `PAST_DUE` states).
+An external developer can generate and run one organization-aware application
+without founder assistance, retain ownership of ordinary TypeScript source code,
+and safely extend it with tenant-owned business resources.
 
-### FR-3: AI & Agent Orchestration Engine
-- **FR-3.1**: Server-side Gemini API client (`@google/genai`) and Vercel AI SDK integration.
-- **FR-3.2**: Streaming tool invocation logs and real-time execution telemetry.
-- **FR-3.3**: Document chunking and embedding generation pipeline for semantic vector search over knowledge bases.
+## Functional requirements
 
-### FR-4: Starter Template Architectures
-- **FR-4.1**: 10 production-ready starter templates available via CLI (`npx create-sparkkit`):
-  1. AI SaaS Boilerplate (`ai-saas`)
-  2. Multi-Tenant Enterprise SaaS (`b2b-saas`)
-  3. AI Agent Workflow Builder (`ai-agent-flow`)
-  4. Internal Backoffice Admin (`internal-admin`)
-  5. Headless E-Commerce (`headless-store`)
-  6. Developer API Platform (`developer-api`)
-  7. Real-Time Collaboration Workspace (`collab-workspace`)
-  8. Customer Support Portal (`support-desk`)
-  9. Content Management Engine (`cms-engine`)
-  10. FinTech Analytics Dashboard (`fintech-dashboard`)
+### Foundation
 
----
+- A pnpm/Turborepo workspace coordinates applications, packages, and shared tooling.
+- Every maintained workspace uses strict TypeScript and shared lint rules.
+- CI performs a locked install, lint, type-check, tests, and production builds.
+- The repository includes contribution, governance, conduct, and security policies.
 
-## 3. Non-Functional Requirements (NFR)
+### Data and tenancy
 
-### NFR-1: Performance & Latency
-- **NFR-1.1**: Server Response Time: Sub-100ms API response latency for cached routes.
-- **NFR-1.2**: Cold Start: Turborepo dev server startup under 3 seconds using Vite / HMR.
-- **NFR-1.3**: AI Latency: Gemini 2.5 Flash time-to-first-token (TTFT) under 400ms.
+- PostgreSQL and Prisma provide versioned schema migrations and deterministic seeds.
+- Users may belong to multiple organizations through unique memberships.
+- Organization roles are `OWNER`, `ADMIN`, and `MEMBER`.
+- Every tenant-owned record carries an organization boundary.
+- Server operations enter tenant context only after authenticated membership is verified.
+- Integration tests prove cross-tenant reads and mutations are rejected.
 
-### NFR-2: Security & Compliance
-- **NFR-2.1**: Zero client-side API key leakage. All LLM keys (`GEMINI_API_KEY`, etc.) strictly server-side.
-- **NFR-2.2**: Tenant Data Isolation: DB queries scoped by `organizationId`.
-- **NFR-2.3**: CSRF protection, secure HTTP-only cookies, and rate limiting on API endpoints.
+### Authentication and authorization
 
-### NFR-3: Developer Experience (DX) & Maintainability
-- **NFR-3.1**: End-to-end type safety from DB models (Prisma) through API layer (tRPC/Zod) to React frontend components.
-- **NFR-3.2**: Zero configuration setup via `npx create-sparkkit`.
-- **NFR-3.3**: Strict ESLint + TypeScript strict mode compliance across all packages.
+- Email/password registration, sign-in, sign-out, and session restoration work through Better Auth.
+- Production configuration requires a strong secret and secure origin policy.
+- CSRF/origin validation, secure cookies, and authentication rate limits remain enabled.
+- Privileged operations are deny-by-default and enforced server-side.
 
----
+### Reference application
 
-## 4. System Architecture & Tech Stack
+- A responsive Next.js application supports registration, onboarding, dashboard,
+  organization switching, settings, and sign-out.
+- A representative tenant-owned `Project` resource supports authorized create,
+  list, update, and delete operations.
+- Loading, empty, unauthorized, validation, and unexpected-error states are explicit and accessible.
+- End-to-end smoke tests cover the primary journey and negative tenant boundaries.
 
-| Layer | Technology |
-|---|---|
-| **Monorepo Engine** | Turborepo, pnpm workspaces |
-| **Frontend Framework** | React 19, Vite, Tailwind CSS v4 |
-| **Icons & Motion** | Lucide React, Motion (`motion/react`) |
-| **Backend & API** | Node.js, Express, tRPC, Zod |
-| **Database & ORM** | PostgreSQL, Prisma ORM, pgvector extension |
-| **Authentication** | Better Auth (Passkeys, OAuth, WebAuthn) |
-| **AI Integration** | `@google/genai` (Gemini 2.5 Flash), Vercel AI SDK |
-| **Payments** | Stripe Checkout & Webhooks |
+### Project generator
+
+- `create-sparkkit` validates project names and refuses unsafe overwrites.
+- It generates one complete, documented template without repository-only paths or secrets.
+- Package-manager, install/no-install, and optional Git initialization choices are tested.
+- CI generates a project in a temporary directory and verifies install, type-check,
+  tests, build, and startup.
+- Package metadata and an npm dry run are inspected before publication.
+
+### Optional AI capability
+
+- AI is not required for the core application to run.
+- A minimal provider-neutral server interface precedes any provider adapter.
+- The first example uses a fake provider in tests and keeps all credentials server-side.
+- Missing optional AI configuration disables the feature gracefully.
+- Runtime agents, tool authorization, approvals, and audit are post-foundation work
+  and require separate acceptance criteria.
+
+## Non-functional requirements
+
+### Security
+
+- No secrets are exposed through browser bundles or public environment variables.
+- External input is validated and internal exceptions are not returned raw.
+- Organization scope is never authorized solely from client input.
+- Security-sensitive logs redact tokens, credentials, and personal data.
+- Security and performance claims require recorded evidence.
+
+### Portability
+
+- SparkKit applications remain normal TypeScript applications.
+- Local development and self-hosting do not require Sparkbase.
+- Model providers and future managed services are replaceable integrations.
+- The open-source application is not artificially limited to force managed adoption.
+
+### Developer experience
+
+- Setup commands are exercised in CI or documented release checks.
+- A new contributor can run the application using only the repository documentation.
+- Repository conventions make a tenant-owned resource straightforward to add without weakening isolation.
+- Error messages identify actionable configuration or workflow problems.
+
+### Accessibility and quality
+
+- Interactive states expose appropriate labels, focus behavior, and status or alert semantics.
+- Reduced-motion preferences are respected.
+- Maintained code passes lint, strict type-checking, tests, and production builds.
+
+## Explicitly deferred
+
+The following are not version 0.1 commitments:
+
+- multiple starter-template catalogs;
+- Stripe billing;
+- pgvector/RAG pipelines;
+- passkeys, magic links, or enterprise SSO;
+- proprietary LLM or multi-agent orchestration;
+- a connector marketplace;
+- Kubernetes or Sparkbase infrastructure;
+- generalized human/agent principal abstractions;
+- production scale, latency, compliance, or enterprise-readiness claims.
+
+## Release gates
+
+Version 0.1 is ready only when:
+
+1. The root quality gate passes from a clean checkout.
+2. Tenant-isolation tests pass against a real PostgreSQL service.
+3. The reference journey passes end-to-end smoke tests.
+4. A generated project installs, migrates, seeds, tests, builds, and starts.
+5. A clean-machine setup succeeds using only generated documentation.
+6. Security review finds no unresolved release blocker.
+7. README and product documentation describe only verified behavior.

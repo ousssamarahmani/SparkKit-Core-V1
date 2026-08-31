@@ -12,6 +12,8 @@ const requiredFiles = [
   '.github/ISSUE_TEMPLATE/documentation.yml',
   'CHANGELOG.md',
   'GOVERNANCE.md',
+  'VISION.md',
+  'AI_CONTEXT.md',
   '.github/ISSUE_TEMPLATE/config.yml',
   '.github/PULL_REQUEST_TEMPLATE.md',
 ];
@@ -38,6 +40,21 @@ test('the license is Apache-2.0 and community reporting routes are explicit', as
   assert.match(issueConfig, /github\.com\/ousssamarahmani\/SparkKit-Core-V1\/security/);
   assert.match(pullRequest, /pnpm lint/);
   assert.match(pullRequest, /No secrets, credentials, personal data/);
+});
+
+test('product vision distinguishes verified foundation from future products', async () => {
+  const [vision, requirements, context, readme] = await Promise.all([
+    readFile('VISION.md', 'utf8'),
+    readFile('REQUIREMENTS.md', 'utf8'),
+    readFile('AI_CONTEXT.md', 'utf8'),
+    readFile('README.md', 'utf8'),
+  ]);
+
+  assert.match(vision, /The project generator, optional AI package.*do \*\*not\*\* exist yet/s);
+  assert.match(vision, /Build Sparkbase only.*operational demand/s);
+  assert.match(requirements, /Explicitly deferred/);
+  assert.match(context, /Do not implement the full Agent Harness/);
+  assert.match(readme, /\[Product vision\]\(\.\/VISION\.md\)/);
 });
 
 test('local PostgreSQL has a persistent and health-checked Compose profile', async () => {

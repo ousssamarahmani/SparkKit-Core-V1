@@ -188,10 +188,33 @@ Nothing below should be marked complete until its acceptance criteria pass.
   edit, and delete interactions; delete is shown only to owner and admin roles.
 - Database-backed route tests complete the full CRUD lifecycle and reject access
   to an organization outside the authenticated user's memberships.
-- [ ] **M3.3 Add error and empty states**
+- [x] **M3.3 Add error and empty states**
   - Acceptance: loading, empty, unauthorized, validation, and unexpected-error states are covered.
-- [ ] **M3.4 Add end-to-end smoke tests**
+
+### M3.3 implementation evidence
+
+- The dashboard has an accessible skeleton loading route with reduced-motion support.
+- An explicitly requested organization outside the signed-in user's memberships
+  renders an access-denied state without exposing tenant data.
+- The project manager covers the first-project empty state, trimmed-name
+  validation, save and delete progress, malformed responses, and network failures.
+- The dashboard error boundary preserves user data, reports unexpected rendering
+  failures, and offers an in-place retry action.
+- Workspace state regression tests pass with the repository-wide lint, type-check,
+  database integration, and test gates.
+- [x] **M3.4 Add end-to-end smoke tests**
   - Acceptance: onboarding, login, organization switching, and tenant isolation flows pass.
+
+### M3.4 implementation evidence
+
+- A real Chromium workflow registers a user, creates the first workspace, and
+  verifies the authenticated dashboard and first-project state.
+- The same workflow creates and switches to a second organization, creates a
+  project, signs out, and signs back in through the public UI.
+- A separately authenticated browser context creates another tenant, then the
+  primary user is denied access to that tenant's projects with a verified `403`.
+- Playwright runs through `pnpm e2e`, and CI installs Chromium and executes the
+  smoke test after the repository-wide test suite.
 - [ ] **M3.5 Document local setup**
   - Acceptance: a new contributor can run the template using only the README.
 

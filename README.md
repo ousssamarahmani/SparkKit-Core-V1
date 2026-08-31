@@ -12,7 +12,7 @@
   [![Status](https://img.shields.io/badge/status-early%20stage-C4943D?style=flat-square)](./TASKS.md)
   [![GitHub stars](https://img.shields.io/github/stars/ousssamarahmani/SparkKit-Core-V1?style=flat-square)](https://github.com/ousssamarahmani/SparkKit-Core-V1/stargazers)
 
-  [Project site](http://localhost:3000) · [Quick start](#quick-start) · [Architecture](./ARCHITECTURE.md) · [Roadmap](./TASKS.md) · [Contributing](./CONTRIBUTING.md)
+  [Project site](http://localhost:3000) · [Vision](./VISION.md) · [Quick start](#quick-start) · [Architecture](./ARCHITECTURE.md) · [Roadmap](./TASKS.md) · [Contributing](./CONTRIBUTING.md)
 </div>
 
 ---
@@ -90,8 +90,8 @@ from [`.env.example`](./.env.example) when creating your local `.env` file.
 | Application | Responsive shell, workspace navigation, tenant-owned project CRUD |
 | Documentation | Public project site, architecture decisions, security guide, roadmap |
 
-The next verified deliverables are complete empty/error states, end-to-end smoke
-tests, local setup documentation, and the `create-sparkkit` generator. See the
+The next verified deliverables are end-to-end smoke tests, local setup
+documentation, and the `create-sparkkit` generator. See the
 [public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
 
 <details>
@@ -175,7 +175,7 @@ docs/
 - [x] **Foundation** — workspace, shared tooling, governance, and CI
 - [x] **Database and tenancy** — PostgreSQL, organizations, memberships, and isolation
 - [x] **Identity and authorization** — authentication, onboarding, roles, and sessions
-- [ ] **Reference application** — shell and project CRUD complete; UX states and smoke tests remain
+- [ ] **Reference application** — shell, project CRUD, UX states, and browser smoke tests complete; setup documentation remains
 - [ ] **Generator** — tested `create-sparkkit` CLI and publishable template
 - [ ] **Optional AI** — provider-neutral interface, adapter, streaming example, and tests
 - [ ] **Version 0.1** — production container, security review, and clean-machine verification
@@ -209,6 +209,8 @@ Please report vulnerabilities privately according to the [security policy](./SEC
 
 ## Documentation
 
+- [Product vision](./VISION.md) — Small Software thesis, Human + Agent direction, validation gates, and Sparkbase relationship
+- [AI contributor context](./AI_CONTEXT.md) — security invariants and scope rules for coding assistants
 - [Architecture](./ARCHITECTURE.md) — boundaries, technology choices, and security model
 - [Requirements](./REQUIREMENTS.md) — product requirements and release scope
 - [Implementation plan](./IMPLEMENTATION.md) — delivery sequence and verification gates

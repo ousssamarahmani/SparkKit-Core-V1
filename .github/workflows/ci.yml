@@ -73,5 +73,11 @@ jobs:
           pnpm --filter @sparkkit/db db:seed
           pnpm test
 
+      - name: Install browser for end-to-end tests
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: End-to-end smoke test
+        run: pnpm e2e
+
       - name: Build
         run: pnpm build
