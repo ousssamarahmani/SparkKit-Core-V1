@@ -192,5 +192,10 @@ workspace interface while retaining the existing tenant-safe data boundary.
 M3.3 completes loading, empty, authorization, validation, and unexpected-error
 states. M3.4 adds a real Chromium smoke workflow for onboarding, login,
 organization switching, project creation, and cross-tenant denial, with the
-same workflow enforced in CI. The next delivery is M3.5, a complete local setup
-guide that a new contributor can follow using only the README.
+same workflow enforced in CI. M3.5 completes the prerequisites-to-first-workspace
+README path and troubleshooting guide. Milestone 3 is complete. M4.1 establishes
+the dependency-free `create-sparkkit` executable, strict project-name rules, and
+atomic overwrite refusal. M4.2 packages the verified application and data layer
+from an explicit allowlist, personalizes generated projects, excludes secrets
+and repository-only artifacts, and rolls back partial output. The next delivery
+is M4.3, adding package-manager, installation, and Git initialization choices.

@@ -198,9 +198,11 @@ docker compose down --volumes
 | Identity | Email/password sessions, sign-in, sign-out, session restoration |
 | Teams | Organization onboarding and owner/admin/member authorization |
 | Application | Responsive shell, workspace navigation, tenant-owned project CRUD |
+| Generator | Private CLI with safe target creation and a portable SaaS application template |
 | Documentation | Public project site, architecture decisions, security guide, roadmap |
 
-The next verified deliverable is the `create-sparkkit` generator. See the
+The next verified deliverable is adding package-manager, dependency-installation,
+and Git-initialization choices to `create-sparkkit`. See the
 [public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
 
 <details>
@@ -269,6 +271,7 @@ apps/
   docs/       Project site and interactive documentation
   web/        Next.js reference application
 packages/
+  create-sparkkit/ CLI validation, target safety, and portable SaaS template
   db/         Prisma schema, tenant-safe data access, migrations, and seeds
 tooling/
   eslint/     Shared lint configuration
@@ -284,8 +287,8 @@ docs/
 - [x] **Foundation** — workspace, shared tooling, governance, and CI
 - [x] **Database and tenancy** — PostgreSQL, organizations, memberships, and isolation
 - [x] **Identity and authorization** — authentication, onboarding, roles, and sessions
-- [ ] **Reference application** — shell, project CRUD, UX states, and browser smoke tests complete; setup documentation remains
-- [ ] **Generator** — tested `create-sparkkit` CLI and publishable template
+- [x] **Reference application** — shell, project CRUD, UX states, browser smoke tests, and complete local setup
+- [ ] **Generator** — safe CLI and portable application template complete; options, full generation CI, and publishing remain
 - [ ] **Optional AI** — provider-neutral interface, adapter, streaming example, and tests
 - [ ] **Version 0.1** — production container, security review, and clean-machine verification
 

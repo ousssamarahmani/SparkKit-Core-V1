@@ -232,10 +232,36 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 ## Milestone 4 — Project generator
 
-- [ ] **M4.1 Create `create-sparkkit` CLI**
+- [x] **M4.1 Create `create-sparkkit` CLI**
   - Acceptance: it validates project names and refuses unsafe overwrites.
-- [ ] **M4.2 Package the SaaS template**
+
+### M4.1 implementation evidence
+
+- A private `create-sparkkit` workspace package exposes a real executable and a
+  typed programmatic API without runtime dependencies.
+- Project names must be lowercase kebab-case, stay within npm's length limit,
+  and cannot be paths, special names, or Windows-reserved device names.
+- Target creation is atomic and refuses to overwrite an existing directory or
+  file, including when the target appears between validation and creation.
+- Unit and command-level tests verify successful creation, invalid input, and
+  overwrite refusal. Template contents intentionally remain M4.2.
+- [x] **M4.2 Package the SaaS template**
   - Acceptance: generated code contains no repository-only paths or secrets.
+
+### M4.2 implementation evidence
+
+- The CLI packages the verified Next.js application, PostgreSQL/Prisma data
+  layer, migrations, shared TypeScript and ESLint tooling, and local Compose
+  profile from an explicit allowlist.
+- Generated projects receive a personalized root package, Compose project name,
+  setup guide, example environment files, and Apache-2.0 license.
+- Local environment files, dependencies, build outputs, generated Prisma code,
+  browser artifacts, and repository-only paths are excluded from the template.
+- Generation copies into the atomically reserved target without overwriting and
+  removes partial output if template copying or personalization fails.
+- Automated tests inspect the complete generated file tree for secrets,
+  unresolved tokens, repository paths, excluded artifacts, and required SaaS
+  foundation files.
 - [ ] **M4.3 Add CLI options**
   - Acceptance: package manager, install/no-install, and Git initialization choices work.
 - [ ] **M4.4 Test generation**

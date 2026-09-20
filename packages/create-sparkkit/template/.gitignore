@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+coverage/
+.next/
+.turbo/
+.pnpm-store/
+*.tsbuildinfo
+.DS_Store
+packages/db/src/generated/
+*.log
+playwright-report/
+test-results/
+.env*
+!.env.example

@@ -110,6 +110,21 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/create-sparkkit:
+    devDependencies:
+      '@sparkkit/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@types/node':
+        specifier: ^24.10.0
+        version: 24.13.3
+      eslint:
+        specifier: ^10.8.0
+        version: 10.8.0(jiti@2.7.0)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/db:
     dependencies:
       '@prisma/adapter-pg':
