@@ -197,5 +197,7 @@ README path and troubleshooting guide. Milestone 3 is complete. M4.1 establishes
 the dependency-free `create-sparkkit` executable, strict project-name rules, and
 atomic overwrite refusal. M4.2 packages the verified application and data layer
 from an explicit allowlist, personalizes generated projects, excludes secrets
-and repository-only artifacts, and rolls back partial output. The next delivery
-is M4.3, adding package-manager, installation, and Git initialization choices.
+and repository-only artifacts, and rolls back partial output. M4.3 adds
+deterministic pnpm, npm, yarn, and Bun selection plus opt-in installation and
+Git initialization. The next delivery is M4.4, verifying a clean generated
+project through installation, type-checking, tests, and production build in CI.

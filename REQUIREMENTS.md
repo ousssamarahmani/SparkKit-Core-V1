@@ -110,6 +110,8 @@ The following are not version 0.1 commitments:
 - a connector marketplace;
 - Kubernetes or Sparkbase infrastructure;
 - generalized human/agent principal abstractions;
+- advanced agent authority graphs, delegation analysis, capability chaining,
+  blast-radius analysis, runtime containment, or security replay;
 - production scale, latency, compliance, or enterprise-readiness claims.
 
 ## Release gates

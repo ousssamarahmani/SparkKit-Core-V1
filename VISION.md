@@ -1,13 +1,14 @@
 # SparkKit and Sparkbase Vision
 
-**Status:** August 2026
+**Status:** September 2026
 **Purpose:** Product and engineering direction. This document describes both the
 implemented foundation and the longer-term thesis; future capabilities are labeled
 explicitly.
 
 ## The core idea
 
-> **Build small software that is ready to become real software.**
+> **SparkKit is an open application foundation for software built with AI coding
+> agents and designed for humans and agents to work together.**
 
 AI coding tools can generate application code increasingly quickly. They do not
 remove the application foundation required for real people and teams to use that
@@ -17,11 +18,39 @@ software safely:
 - organizations, memberships, roles, and permissions;
 - tenant-safe data access and migrations;
 - validation, testing, and predictable repository conventions;
-- environment configuration and deployment discipline.
+- environment configuration and deployment discipline;
+- background jobs, storage, tools, workflows, and observability.
 
 SparkKit provides that foundation as ordinary, portable TypeScript code. A
 developer—or a coding agent—should spend most of its time on the application's
 unique workflow instead of rebuilding the same security and tenancy layer.
+
+SparkKit grows from that foundation in three focused layers:
+
+```text
+                         SPARKKIT
+
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+ APP FOUNDATION      AGENT-NATIVE DX      APP RUNTIME
+        │                  │                  │
+ Auth                 AGENTS.md             Humans
+ Organizations        Agent Skills          Agents
+ PostgreSQL           CLI                   Roles
+ Multi-tenancy        Coding agents         Tools
+ RBAC                                      Approvals
+ Testing                                   Activity
+                                              │
+                                              ▼
+                                         MCP adapters
+                                              │
+                                       External systems
+```
+
+The application foundation remains the core. Agent-native development guidance
+helps coding agents extend it safely. Runtime primitives make humans and agents
+first-class application participants. MCP is an adapter at the edge, not the
+architecture around which SparkKit is designed.
 
 ## What is Small Software?
 
@@ -64,9 +93,12 @@ Sparkbase is the planned managed operations layer for software built with
 SparkKit. It is a long-term product direction, not a reason to build cloud
 infrastructure before demand exists.
 
-Potential responsibilities include deployments, environments, secrets,
-databases, logs, backups, recovery, team access, agent execution, policy, and
-audit. Sparkbase must earn adoption through convenience rather than lock-in.
+Potential responsibilities include application runtime, deployments,
+environments, secrets, databases, storage, queues, background jobs, agent
+workers, logs, monitoring, domains, scaling, backups, and recovery. Sparkbase
+must earn adoption through convenience rather than lock-in.
+
+> **SparkKit builds it. Sparkbase runs it.**
 
 ```text
 Developer or coding agent
@@ -99,6 +131,30 @@ The product should win one concrete workflow at a time. It should not sell an
 abstract future platform before outsiders can run and extend the current
 foundation.
 
+## Agent-native development experience
+
+SparkKit should be unusually easy for coding agents such as Codex, Claude Code,
+Cursor, and GitHub Copilot to extend correctly. This is a build-time concern,
+separate from agents that run inside a generated application.
+
+A coding agent should not need to rediscover SparkKit's architecture, tenant
+model, authorization rules, or verification requirements for every feature. A
+concise root `AGENTS.md` and one canonical `.agents/skills/` layer should teach
+those invariants without duplicating the same knowledge for every tool.
+
+The first three portable skills should remain deliberately narrow:
+
+1. **Add a tenant resource** — follow existing organization ownership, verified
+   tenant context, server authorization, validation, and isolation-test patterns.
+2. **Tenant security** — never trust a client-supplied organization boundary,
+   never substitute UI visibility for authorization, and test cross-tenant denial.
+3. **Verify a feature** — run the applicable type, lint, test, authorization,
+   isolation, build, and security checks before claiming completion.
+
+Thin tool-specific adapters are acceptable where required, but SparkKit should
+keep its architecture and security rules in one source of truth. Skills may gain
+references, templates, or scripts only when they make execution more deterministic.
+
 ## What exists today
 
 The repository currently contains verified implementations of:
@@ -109,10 +165,13 @@ The repository currently contains verified implementations of:
 - organization onboarding and owner/admin/member authorization;
 - a responsive application shell and tenant-owned project CRUD;
 - loading, empty, authorization, validation, and unexpected-error states;
-- architecture decisions, security documentation, and public task evidence.
+- architecture decisions, security documentation, and public task evidence;
+- a safe `create-sparkkit` CLI, packaged portable SaaS template, package-manager
+  selection, and opt-in dependency installation and Git initialization.
 
-The project generator, optional AI package, runtime-agent model, Agent Harness,
-and Sparkbase do **not** exist yet.
+Clean-machine generation verification, npm publication, the canonical agent
+skills, optional AI provider layer, runtime-agent model, Human + Agent reference
+workflow, MCP adapters, and Sparkbase do **not** exist yet.
 
 ## Human + Agent applications
 
@@ -131,9 +190,10 @@ Agentic applications also need:
 Agent → Organization → Scope → Tool policy → Resource
 ```
 
-Agents should not be treated as unrestricted API keys. A future SparkKit runtime
-agent may have an identity, owning organization, creator, permissions, tenant
-scope, allowed tools, approval requirements, and an execution history.
+Agents should be first-class application participants rather than unrestricted
+API keys. A future SparkKit runtime agent may have an identity, owning
+organization, creator, role, permissions, tenant scope, allowed tools, approval
+requirements, assigned work, and an execution history.
 
 This direction is distinct from coding agents such as Codex or Claude Code:
 
@@ -142,12 +202,14 @@ This direction is distinct from coding agents such as Codex or Claude Code:
 
 > **Agents can build the software, and agents can live inside the software.**
 
-## The future Agent Harness
+## The future minimal agent runtime
 
-Working term: **SparkKit Agent Harness**.
+The runtime Agent Harness is deliberately narrow: a small set of application
+primitives that lets an agent participate in SparkKit software under the same
+organization and permission model as human users. It is not a standalone agent
+framework.
 
-It is the security and execution boundary between a runtime AI agent and the
-application it operates inside. It should answer:
+It should answer:
 
 - Who is the agent and which organization owns it?
 - Who invoked it and on whose behalf is it acting?
@@ -155,9 +217,42 @@ application it operates inside. It should answer:
 - Which actions are allowed, denied, or require approval?
 - What did it request and what actually executed?
 
-It is not an LLM orchestration framework. Model execution may come from OpenAI,
-Anthropic, Gemini, a custom runtime, or another compatible framework. SparkKit's
-responsibility is the application boundary.
+That is enough for SparkKit. It is not an LLM orchestration framework, an
+advanced agent-security product, or a generalized authority-control platform.
+Model execution may come from OpenAI, Anthropic, Gemini, a custom runtime, or
+another compatible framework. SparkKit's responsibility ends at the clear,
+portable application boundary.
+
+The harness may provide:
+
+```text
+Agent identity
+  → Organization and role
+  → Application permissions
+  → Allowed tools and workflows
+  → Task execution
+  → Human approval where the application requires it
+  → Basic audit history
+```
+
+It must not expand into authority graphs, delegation-chain analysis, capability
+composition, blast-radius calculation, generalized runtime policy, isolation,
+containment, or security replay. Those are separate product concerns and do not
+belong in this repository.
+
+The first model should stay understandable to ordinary application developers:
+
+```text
+Application agent
+  ├── identity and owning organization
+  ├── creator, status, and application permissions
+  ├── allowed application tools
+  ├── ALLOW / DENY / REQUIRE_APPROVAL decisions
+  └── understandable activity history
+```
+
+SparkKit should extend the existing authorization model where it fits instead of
+creating a second, unrelated security system for agents.
 
 ### Tool authorization model
 
@@ -181,6 +276,18 @@ Record audit event
 MCP can be an adapter below this boundary. Connecting an MCP server must never
 grant unrestricted access by itself.
 
+### MCP interoperability
+
+MCP should connect external tools and services to SparkKit's application model;
+it should not leak into every package or replace the core tool abstraction. The
+order is always agent identity, application permission, tool registry, optional
+approval, execution, and activity recording. An MCP-backed tool passes through
+the same authorization path as a native application tool.
+
+The product value is not merely that SparkKit “supports MCP.” The value is that
+MCP tools can participate naturally in an application's organizations,
+permissions, approvals, and activity history.
+
 ### First proof, not a platform
 
 The first Agent Harness work should be one narrow support-agent demonstration:
@@ -191,8 +298,9 @@ The first Agent Harness work should be one narrow support-agent demonstration:
 4. A high-value refund requires owner approval.
 5. Every decision and execution produces an audit event.
 
-This single demo should prove identity, tenant scope, tool authorization,
-approval, and audit before broader agent infrastructure is considered.
+This single demo should prove identity, tenant scope, application permissions,
+tool authorization, approval, and basic audit before broader agent
+infrastructure is considered.
 
 ## Sequence of development
 
@@ -205,7 +313,13 @@ Reliable local setup
      ↓
 create-sparkkit
      ↓
+Generated-project CI and npm publishing readiness
+     ↓
 External developer validation
+     ↓
+AGENTS.md and the first three portable Agent Skills
+     ↓
+Coding-agent extension validation
      ↓
 Agent identity and tool authorization
      ↓
@@ -215,6 +329,10 @@ Demonstrated operational demand
      ↓
 Smallest useful Sparkbase layer
 ```
+
+Runtime agent primitives and MCP may remain experimental or move to version 0.2
+if they would delay a useful version 0.1. Distribution and external validation
+remain ahead of advanced agent functionality.
 
 ### Gate A — Foundation
 
@@ -252,12 +370,29 @@ SparkKit should pass three tests before broadening its platform scope:
 
 Every failure is product feedback, not merely a documentation problem.
 
+The equivalent coding-agent validation should ask multiple supported agents to
+add the same organization-owned feature and record completion, passing checks,
+tenant isolation, authorization, manual corrections, elapsed time, and confusing
+instructions. Results must be measured rather than invented.
+
+## Success measures
+
+SparkKit should optimize for evidence rather than vanity metrics:
+
+- **Core:** time to first working application, setup completion, repeated setup
+  failures, real generated projects, and developers who return.
+- **Agent-native DX:** feature completion, manual corrections, isolation and
+  authorization preservation, passing verification, and time to completion.
+- **Runtime agents:** ease of adding an agent and permissions, successful tool
+  execution, correct approvals, and understandable activity history.
+
 ## What SparkKit is not
 
 SparkKit is not trying to become:
 
 - another Supabase, Vercel, or standalone identity provider;
 - an LLM or multi-agent orchestration framework;
+- an advanced AI-agent security, authority-analysis, or containment platform;
 - an MCP implementation or connector marketplace;
 - a Kubernetes platform or generalized cloud provider;
 - a ten-template catalog before one template is excellent.
@@ -283,7 +418,8 @@ abstraction before a verified requirement justifies them.
 
 Primary:
 
-> **The open foundation for Small Software and AI-powered applications.**
+> **The open application foundation for software built with AI coding agents and
+> designed for humans and agents to work together.**
 
 Current promise:
 
@@ -295,7 +431,12 @@ Ecosystem:
 
 Future agent direction:
 
-> **Give every agent an identity, a scope, and only the tools it needs.**
+> **Built with agents. Designed for humans and agents.**
+
+Human + Agent applications:
+
+> **Give agents identities, roles, permissions, and tools inside the same
+> application model as users.**
 
 Long-term narrative:
 
@@ -309,6 +450,6 @@ Long-term narrative:
 
 ## The immediate mission
 
-> **Finish the foundation, make it generatable, prove outsiders can use it, prove
-> coding agents can extend it safely, then add runtime agents. Build Sparkbase only
-> after real usage creates operational demand.**
+> **Finish the generator, prove outsiders can use it, prove coding agents can
+> extend it safely, then add the smallest runtime-agent primitives. Build
+> Sparkbase only after real usage creates operational demand.**

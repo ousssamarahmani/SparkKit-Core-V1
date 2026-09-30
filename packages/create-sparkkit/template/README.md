@@ -15,7 +15,7 @@ A portable SaaS starter generated with [SparkKit](https://github.com/ousssamarah
 ## Requirements
 
 - Node.js 24 or 26
-- pnpm 11
+- {{PACKAGE_MANAGER}} (current stable release)
 - Docker Desktop or another PostgreSQL 17 instance
 
 ## Start locally
@@ -23,11 +23,11 @@ A portable SaaS starter generated with [SparkKit](https://github.com/ousssamarah
 ```powershell
 Copy-Item .env.example .env
 Copy-Item apps/web/.env.example apps/web/.env.local
-pnpm install
-pnpm db:up
-pnpm --filter @sparkkit/db db:migrate:deploy
-pnpm --filter @sparkkit/db db:seed
-pnpm dev:web
+{{PACKAGE_MANAGER}} install
+{{PACKAGE_MANAGER}} run db:up
+{{PACKAGE_MANAGER}} run db:migrate
+{{PACKAGE_MANAGER}} run db:seed
+{{PACKAGE_MANAGER}} run dev:web
 ```
 
 Open [http://localhost:3001](http://localhost:3001).
@@ -37,14 +37,14 @@ Replace `BETTER_AUTH_SECRET` in both environment files before using the applicat
 ## Verify
 
 ```powershell
-pnpm check
+{{PACKAGE_MANAGER}} run check
 ```
 
 ## Database lifecycle
 
 ```powershell
-pnpm db:logs
-pnpm db:down
+{{PACKAGE_MANAGER}} run db:logs
+{{PACKAGE_MANAGER}} run db:down
 ```
 
 The generated application is yours to modify and deploy under the Apache-2.0 license.

@@ -50,10 +50,14 @@ test('product vision distinguishes verified foundation from future products', as
     readFile('README.md', 'utf8'),
   ]);
 
-  assert.match(vision, /The project generator, optional AI package.*do \*\*not\*\* exist yet/s);
-  assert.match(vision, /Build Sparkbase only.*operational demand/s);
+  assert.match(vision, /package-manager\s+selection, and opt-in dependency installation and Git initialization/);
+  assert.match(vision, /Clean-machine generation verification, npm publication.*do \*\*not\*\* exist yet/s);
+  assert.match(vision, /AGENT-NATIVE DX[\s\S]*APP RUNTIME[\s\S]*MCP adapters/);
+  assert.match(vision, /Build[\s>]+Sparkbase only.*operational demand/s);
+  assert.match(vision, /It is not an LLM orchestration framework, an\s+advanced agent-security product/s);
   assert.match(requirements, /Explicitly deferred/);
-  assert.match(context, /Do not implement the full Agent Harness/);
+  assert.match(context, /Do not implement even the lightweight Agent Harness/);
+  assert.doesNotMatch(`${vision}\n${requirements}\n${context}\n${readme}`, /Vantar/i);
   assert.match(readme, /\[Product vision\]\(\.\/VISION\.md\)/);
 });
 

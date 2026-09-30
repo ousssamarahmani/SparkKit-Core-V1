@@ -262,8 +262,19 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - Automated tests inspect the complete generated file tree for secrets,
   unresolved tokens, repository paths, excluded artifacts, and required SaaS
   foundation files.
-- [ ] **M4.3 Add CLI options**
+- [x] **M4.3 Add CLI options**
   - Acceptance: package manager, install/no-install, and Git initialization choices work.
+
+### M4.3 implementation evidence
+
+- `--package-manager`/`--pm` selects pnpm, npm, yarn, or Bun and personalizes
+  package metadata, workspace commands, dependency syntax, and setup guidance.
+- `--install`/`--no-install` and `--git`/`--no-git` are explicit, conflicting
+  choices are rejected, and both operations default to off for deterministic use.
+- Optional setup commands run without a shell, report actionable failures, and
+  preserve the generated project so users can recover manually.
+- Unit and command-level tests cover parsing, safe defaults, npm-compatible
+  generation, selected setup commands, real Git initialization, and rerun safety.
 - [ ] **M4.4 Test generation**
   - Acceptance: CI generates a project in a temporary directory, installs it, type-checks it, tests it, and builds it.
 - [ ] **M4.5 Prepare npm publishing**

@@ -3,9 +3,8 @@
 
   # Build small software that is ready to become real software.
 
-  SparkKit is an open-source TypeScript foundation for portable SaaS, internal tools,
-  and AI-powered applications—with authentication, organizations, tenant-safe data,
-  and production-minded defaults built in.
+  SparkKit is an open-source TypeScript application foundation for software built
+  with AI coding agents and designed for humans and agents to work together.
 
   [![CI](https://img.shields.io/github/actions/workflow/status/ousssamarahmani/SparkKit-Core-V1/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/ousssamarahmani/SparkKit-Core-V1/actions/workflows/ci.yml)
   [![License](https://img.shields.io/badge/license-Apache--2.0-111111?style=flat-square)](./LICENSE)
@@ -25,7 +24,9 @@
 > SparkKit is being built in public and has not reached its first stable release.
 > The monorepo, project site, application shell, PostgreSQL data layer,
 > authentication, organization onboarding, role enforcement, and tenant-owned
-> project workflow are implemented today. The generator and optional AI layer are next.
+> project workflow are implemented today. The safe generator, portable SaaS
+> template, and deterministic setup options are also implemented; clean-machine
+> verification and the optional AI layer remain next.
 
 ## What is SparkKit?
 
@@ -41,8 +42,9 @@ personal AI tools, vertical applications, and compact SaaS products.
   stays useful outside any managed platform.
 - **Secure by design.** Authentication, organizations, roles, and tenant boundaries
   are part of the foundation.
-- **Agent-ready.** Clear conventions help software developers and coding agents work
-  on the same codebase safely.
+- **Built for humans, ready for agents.** Clear conventions help developers and
+  coding agents build safely today, with application-level identities, roles,
+  permissions, tools, and workflows planned for future runtime agents.
 - **AI-optional.** AI capabilities remain modular, server-side, and removable.
 - **Cloud-optional.** Run locally or deploy to infrastructure you choose.
 
@@ -198,11 +200,11 @@ docker compose down --volumes
 | Identity | Email/password sessions, sign-in, sign-out, session restoration |
 | Teams | Organization onboarding and owner/admin/member authorization |
 | Application | Responsive shell, workspace navigation, tenant-owned project CRUD |
-| Generator | Private CLI with safe target creation and a portable SaaS application template |
+| Generator | Private CLI with a portable SaaS template, package-manager selection, and optional install/Git setup |
 | Documentation | Public project site, architecture decisions, security guide, roadmap |
 
-The next verified deliverable is adding package-manager, dependency-installation,
-and Git-initialization choices to `create-sparkkit`. See the
+The next verified deliverable is exercising a newly generated project through
+install, type-check, test, and build in CI. See the
 [public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
 
 <details>
@@ -220,26 +222,44 @@ application runs independently from `apps/web`.
 ## The product direction
 
 ```text
-Developer or coding agent
-          │
-          ▼
- SparkKit application foundation
-          │
-          ├── Next.js application
-          ├── Authentication and organizations
-          ├── Tenant-safe PostgreSQL data
-          ├── Tests and deployment conventions
-          └── Optional AI adapters
-          │
-          ▼
- Infrastructure you choose
-          └── Sparkbase managed cloud (planned, optional)
+                         SPARKKIT
+
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+ App foundation      Agent-native DX     App runtime
+        │                  │                  │
+ Auth                 AGENTS.md             Humans
+ Organizations        Agent Skills          Agents
+ PostgreSQL           CLI                   Tools
+ Tenant isolation     Coding agents         Approvals
+ Testing                                   Activity
+                                              │
+                                         MCP adapters
 ```
 
 **SparkKit** is the open-source standard and application foundation. **Sparkbase**
 is the planned managed cloud for deploying, securing, sharing, observing, and
 recovering SparkKit applications. SparkKit will remain useful without Sparkbase;
 the managed service must earn adoption through convenience rather than lock-in.
+
+The foundation stays useful without AI. The agent-native layer will help Codex,
+Claude Code, Cursor, GitHub Copilot, and compatible coding agents extend a
+SparkKit application without rediscovering its architecture and security rules.
+The future runtime layer will provide small, provider-neutral primitives for
+organization-owned agents, application permissions, tools, human approvals, and
+activity history—not a general-purpose agent or workflow framework.
+
+Build-time and runtime agents are intentionally separate:
+
+| Build time | Runtime |
+| --- | --- |
+| Coding agents extend a SparkKit codebase | Application agents work alongside users |
+| `AGENTS.md` and portable Agent Skills guide the work | Identity, tenant scope, tools, approvals, and activity constrain actions |
+| Validation proves generated features preserve invariants | Application authorization decides allow, deny, or require approval |
+
+MCP comes later as an interoperability adapter beneath SparkKit's own agent,
+permission, tool, approval, and activity model. Connecting an MCP server will not
+grant authority by itself.
 
 ### One standard, two paths
 
@@ -259,6 +279,17 @@ npx create-sparkkit my-app
 cd my-app
 pnpm dev
 ```
+
+The current private CLI also supports deterministic setup choices:
+
+```bash
+create-sparkkit my-app --package-manager npm --install --git
+create-sparkkit my-app --pm bun --no-install --no-git
+```
+
+Supported package managers are `pnpm`, `npm`, `yarn`, and `bun`. Installation
+and Git initialization are disabled by default, so automation never performs
+extra work unless it is explicitly requested.
 
 The `create-sparkkit` package is **not published yet**. This README will only mark
 it available after a generated project installs, tests, builds, and starts on a
@@ -288,9 +319,16 @@ docs/
 - [x] **Database and tenancy** — PostgreSQL, organizations, memberships, and isolation
 - [x] **Identity and authorization** — authentication, onboarding, roles, and sessions
 - [x] **Reference application** — shell, project CRUD, UX states, browser smoke tests, and complete local setup
-- [ ] **Generator** — safe CLI and portable application template complete; options, full generation CI, and publishing remain
-- [ ] **Optional AI** — provider-neutral interface, adapter, streaming example, and tests
+- [ ] **Generator** — safe CLI, portable template, and setup options complete; full generation CI and publishing remain
+- [ ] **Agent-native DX** — concise `AGENTS.md`, three portable skills, and measured coding-agent validation
+- [ ] **Runtime agents** — narrow identity, permission, tool, approval, and activity primitives after distribution is proven
+- [ ] **Human + Agent proof** — one organization-aware support workflow instead of a generic chatbot milestone
+- [ ] **MCP interoperability** — experimental adapter after the core application tool model exists
 - [ ] **Version 0.1** — production container, security review, and clean-machine verification
+
+Version 0.1 remains a reliable, installable application foundation. Runtime
+agents and MCP may move to version 0.2 rather than delay distribution and
+external developer validation.
 
 Detailed work is tracked in [`TASKS.md`](./TASKS.md); sequencing and release gates
 live in [`IMPLEMENTATION.md`](./IMPLEMENTATION.md).
@@ -321,7 +359,7 @@ Please report vulnerabilities privately according to the [security policy](./SEC
 
 ## Documentation
 
-- [Product vision](./VISION.md) — Small Software thesis, Human + Agent direction, validation gates, and Sparkbase relationship
+- [Product vision](./VISION.md) — application foundation, agent-native development, Human + Agent runtime direction, MCP boundary, validation gates, and Sparkbase relationship
 - [AI contributor context](./AI_CONTEXT.md) — security invariants and scope rules for coding assistants
 - [Architecture](./ARCHITECTURE.md) — boundaries, technology choices, and security model
 - [Requirements](./REQUIREMENTS.md) — product requirements and release scope

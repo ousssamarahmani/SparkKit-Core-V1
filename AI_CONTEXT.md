@@ -60,8 +60,14 @@ tenant scope, tool policies, approvals, and audit events. SparkKit should provid
 the secure application boundary while remaining compatible with different model
 providers and agent frameworks.
 
-Do not implement the full Agent Harness unless the active task and acceptance
-criteria explicitly require it.
+The future SparkKit Agent Harness is intentionally limited to application-level
+identity, roles, permissions, tools, task execution, approvals, and basic audit.
+Do not add authority graphs, delegation-chain analysis, capability composition,
+blast-radius analysis, generalized runtime policy, isolation, containment, or
+security replay. Those concerns are outside this project.
+
+Do not implement even the lightweight Agent Harness unless the active task and
+acceptance criteria explicitly require it.
 
 ## Definition of useful progress
 
