@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  ArrowRight, Bot, Boxes, Check, Cloud, Code2, Container, Database, Github,
-  GitPullRequest, KeyRound, Menu, Network, Package, Server, ShieldCheck,
-  Sparkles, Terminal, X,
+  Activity, ArrowRight, Bot, Boxes, Check, Cloud, Code2, Container, Database,
+  Github, GitPullRequest, KeyRound, Menu, Network, Package, Plug, Server,
+  ShieldCheck, Sparkles, Terminal, Users, Wrench, X,
 } from 'lucide-react';
 
 const githubUrl = 'https://github.com/ousssamarahmani/SparkKit-Core-V1';
@@ -59,8 +59,10 @@ const developerPaths = [
 const roadmap = [
   ['01', 'Repository foundation', 'Complete', 'The real workspace, shared configuration, community files, tests and CI are established.'],
   ['02', 'Data and tenancy', 'Complete', 'Organizations, memberships, local PostgreSQL and verified tenant isolation are implemented.'],
-  ['03', 'Authentication and reference SaaS', 'In progress', 'Sessions, onboarding, authorization, the responsive application shell and tenant-owned project CRUD work; comprehensive UI states are next.'],
-  ['04', 'Project generator', 'Planned', 'Generate a clean application and validate that it installs, tests and builds.'],
+  ['03', 'Reference application', 'Complete', 'Sessions, onboarding, authorization, responsive workspace, project CRUD and browser smoke tests work.'],
+  ['04', 'Project distribution', 'In progress', 'The private generator and setup options work. Generated-project CI and npm publishing preparation are next.'],
+  ['05', 'Agent-native DX', 'Next', 'Add concise repository guidance, three portable skills and measured coding-agent validation.'],
+  ['06', 'Human + Agent runtime', 'Later', 'Prove narrow identity, permissions, tools, approvals and activity in one support workflow.'],
 ];
 
 function BrandLogo({ compact = false }: { compact?: boolean }) {
@@ -84,7 +86,7 @@ function Label({ children, blue = false }: { children: React.ReactNode; blue?: b
 
 export default function SparkKitSite() {
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const links = [['vision', 'Vision'], ['use-cases', 'Who it is for'], ['setup', 'Get started'], ['architecture', 'Architecture'], ['roadmap', 'Roadmap']];
+  const links = [['vision', 'Vision'], ['agent-model', 'Human + Agent'], ['use-cases', 'Who it is for'], ['setup', 'Get started'], ['roadmap', 'Roadmap']];
 
   return (
     <div className="min-h-screen bg-[#070707] text-white selection:bg-amber-300 selection:text-black">
@@ -110,13 +112,13 @@ export default function SparkKitSite() {
         <section className="relative overflow-hidden border-b border-white/10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.14),transparent_43%)]" />
           <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:py-40">
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/[0.07] px-3 py-1.5 text-xs text-amber-100"><span className="h-1.5 w-1.5 rounded-full bg-amber-300" />Open source · Human + Agent · Cloud optional</div>
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/[0.07] px-3 py-1.5 text-xs text-amber-100"><span className="h-1.5 w-1.5 rounded-full bg-amber-300" />Open source · Agent-native · Cloud optional</div>
             <h1 className="max-w-6xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-7xl lg:text-[88px]">
-              Build small software
-              <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">that is ready to become real software.</span>
+              Built with agents.
+              <span className="mt-2 block text-[0.82em] leading-[1.02] text-zinc-300">Designed for humans and agents.</span>
             </h1>
-            <p className="mt-8 max-w-3xl text-base leading-7 text-zinc-300 sm:text-xl sm:leading-8">SparkKit is the open-source application foundation for focused software built by developers and AI coding agents—without giving up security, portability, or ownership.</p>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">Start with authentication, organizations, tenant-safe PostgreSQL data, and a working project workspace. Extend the source you own, run it locally, and deploy it wherever you choose.</p>
+            <p className="mt-8 max-w-3xl text-base leading-7 text-zinc-300 sm:text-xl sm:leading-8">SparkKit is the open application foundation for software built with AI coding agents and designed for humans and agents to work together.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-500">Start with authentication, organizations, tenant-safe PostgreSQL data and tested application boundaries. Extend source you own, run it locally and deploy it wherever you choose.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a href={workspaceUrl} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200">Explore the workspace <ArrowRight className="h-4 w-4" /></a>
               <a href={githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm text-zinc-200 transition hover:bg-white/5"><Github className="h-4 w-4" /> View on GitHub</a>
@@ -124,24 +126,40 @@ export default function SparkKitSite() {
             <div className="mt-12 grid max-w-4xl gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
               <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-emerald-300">Works today</span><p className="mt-2 text-sm text-zinc-300">Authentication &amp; sessions</p></div>
               <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-emerald-300">Works today</span><p className="mt-2 text-sm text-zinc-300">Organizations &amp; tenant isolation</p></div>
-              <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-amber-200">Next</span><p className="mt-2 text-sm text-zinc-300">Generate your own SparkKit app</p></div>
+              <div className="bg-[#090909] p-5"><span className="text-xs font-medium uppercase tracking-[0.16em] text-emerald-300">Works today</span><p className="mt-2 text-sm text-zinc-300">Private app generator &amp; setup options</p></div>
             </div>
           </div>
         </section>
 
         <section id="vision" className="border-b border-white/10 py-20 sm:py-28">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            <div><Label>Product vision</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">A reliable starting point for small, useful software.</h2><p className="mt-5 leading-7 text-zinc-400">SparkKit is for applications that are narrower than a large enterprise platform but deserve the same care around identity, data ownership, isolation, testing, and deployment.</p></div>
-            <div className="grid gap-4 sm:grid-cols-2"><VisionCard number="01" title="Humans and agents build together" text="A software developer can work directly in the codebase or delegate bounded work to an AI coding agent using the same architecture and quality gates." /><VisionCard number="02" title="The application stays yours" text="SparkKit produces a normal TypeScript project. Your product is not trapped inside a proprietary builder or required managed cloud." /><VisionCard number="03" title="AI is a capability, not the foundation" text="Add models where they improve the product while authentication, tenancy, permissions and data remain ordinary application concerns." /><VisionCard number="04" title="Proof before promises" text="Features move from planned to available only when code, tests and documentation exist in the public repository." /></div>
+            <div><Label>Product vision</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">One foundation. Three focused layers.</h2><p className="mt-5 leading-7 text-zinc-400">The application foundation stays at the center. Agent-native guidance helps coding agents extend it safely. Future runtime primitives let humans and agents participate in the same organization and workflows.</p></div>
+            <div className="grid gap-4"><VisionCard number="01" title="Application foundation" text="Authentication, organizations, tenant isolation, authorization, PostgreSQL, tests and portable TypeScript code remain the core." /><VisionCard number="02" title="Agent-native development" text="A concise AGENTS.md and portable skills will teach coding agents how to add tenant-owned features and verify them safely." /><VisionCard number="03" title="Application runtime" text="Future agents receive identities, permissions, allowed tools, human approvals and understandable activity history inside the application." /><VisionCard number="04" title="MCP at the edge" text="MCP will connect external tools only after SparkKit identity, authorization, approval and activity checks—not replace them." /></div>
+          </div>
+        </section>
+
+        <section id="agent-model" className="border-b border-white/10 py-20 sm:py-28">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="mb-12 max-w-3xl"><Label>Two kinds of agents</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Build-time guidance is not runtime authority.</h2><p className="mt-5 leading-7 text-zinc-400">Coding agents and application agents solve different problems. SparkKit keeps their responsibilities and security boundaries explicit.</p></div>
+            <div className="grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-2">
+              <AgentLayer icon={Code2} status="Next" title="Coding agents build with SparkKit" text="Codex, Claude Code, Cursor, GitHub Copilot and compatible tools follow one canonical set of architecture and security conventions." points={['AGENTS.md explains the repository contract', 'Portable skills guide tenant-safe changes', 'Verification gates prevent premature completion']} />
+              <AgentLayer icon={Users} status="Future" title="Application agents work with humans" text="Runtime agents become organization-owned application participants rather than unrestricted model keys or background scripts." points={['Identity and organization scope', 'ALLOW · DENY · REQUIRE_APPROVAL', 'Tools, human approval and activity history']} future />
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <DirectionCard icon={Wrench} title="Application tools" text="Native and external tools share the same application authorization path." />
+              <DirectionCard icon={Activity} title="Visible activity" text="People can understand what an agent requested, what ran and what required approval." />
+              <DirectionCard icon={Plug} title="MCP adapter" text="MCP connects services later; it never grants application authority by itself." />
+            </div>
+            <p className="mt-6 rounded-2xl border border-amber-300/20 bg-amber-300/[0.05] p-5 text-sm leading-6 text-zinc-300"><strong className="text-amber-100">Scope discipline:</strong> runtime agents and MCP are product direction, not released capabilities. Version 0.1 remains focused on a reliable, installable application foundation.</p>
           </div>
         </section>
 
         <section id="use-cases" className="border-b border-white/10 py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Who SparkKit is for</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Two development paths. One secure foundation.</h2><p className="mt-5 leading-7 text-zinc-400">Use SparkKit to build software with AI assistance, to build AI into the product, or both. The engineering boundary stays the same.</p></div><div className="grid gap-5 lg:grid-cols-2">{developerPaths.map(({ icon: Icon, audience, title, description, steps, outcome }) => <article key={audience} className="rounded-3xl border border-white/10 bg-white/[0.025] p-7 sm:p-9"><div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black"><Icon className="h-5 w-5 text-amber-200" /></span><p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">{audience}</p></div><h3 className="mt-6 text-2xl font-semibold">{title}</h3><p className="mt-4 leading-7 text-zinc-400">{description}</p><ol className="mt-7 grid gap-3">{steps.map((step, index) => <li key={step} className="flex gap-3 text-sm leading-6 text-zinc-300"><span className="font-mono text-xs text-zinc-600">0{index + 1}</span>{step}</li>)}</ol><p className="mt-7 border-t border-white/10 pt-6 text-sm leading-6 text-zinc-400"><span className="font-medium text-white">Outcome: </span>{outcome}</p></article>)}</div></div>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Who SparkKit is for</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Developers and coding agents. One secure foundation.</h2><p className="mt-5 leading-7 text-zinc-400">Build focused software with AI assistance today, then add runtime agents only where they create real application value. The engineering boundary stays the same.</p></div><div className="grid gap-5 lg:grid-cols-2">{developerPaths.map(({ icon: Icon, audience, title, description, steps, outcome }) => <article key={audience} className="rounded-3xl border border-white/10 bg-white/[0.025] p-7 sm:p-9"><div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black"><Icon className="h-5 w-5 text-amber-200" /></span><p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">{audience}</p></div><h3 className="mt-6 text-2xl font-semibold">{title}</h3><p className="mt-4 leading-7 text-zinc-400">{description}</p><ol className="mt-7 grid gap-3">{steps.map((step, index) => <li key={step} className="flex gap-3 text-sm leading-6 text-zinc-300"><span className="font-mono text-xs text-zinc-600">0{index + 1}</span>{step}</li>)}</ol><p className="mt-7 border-t border-white/10 pt-6 text-sm leading-6 text-zinc-400"><span className="font-medium text-white">Outcome: </span>{outcome}</p></article>)}</div></div>
         </section>
 
         <section id="setup" className="border-b border-white/10 py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Use the repository today</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Local setup, step by step</h2><p className="mt-5 leading-7 text-zinc-400">Requirements: Node.js 24 or 26, pnpm 11, Git, and Docker Desktop. These commands run the current source repository; the shorter <code className="text-zinc-300">create-sparkkit</code> flow remains a future milestone.</p></div><div className="grid gap-4 lg:grid-cols-2">{localSetup.map(([number, title, command]) => <article key={number} className="overflow-hidden rounded-2xl border border-white/10 bg-black"><div className="flex items-center gap-3 border-b border-white/10 px-5 py-4"><span className="font-mono text-xs text-zinc-600">{number}</span><h3 className="font-medium">{title}</h3></div><pre className="overflow-x-auto whitespace-pre-wrap p-5 font-mono text-xs leading-6 text-amber-100">{command}</pre></article>)}</div><div className="mt-6 rounded-2xl border border-blue-300/20 bg-blue-300/[0.05] p-6 text-sm leading-6 text-zinc-300"><strong className="text-white">Before production:</strong> replace the local authentication secret, use a production PostgreSQL connection, review cookie and CSRF settings, configure rate limits, and run <code>pnpm check</code>. Those hardening tasks are tracked openly in Milestone 2.4.</div></div>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Use the repository today</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Local setup, step by step</h2><p className="mt-5 leading-7 text-zinc-400">Requirements: Node.js 24 or 26, pnpm 11, Git, and Docker Desktop. These commands run the current source repository. The private <code className="text-zinc-300">create-sparkkit</code> CLI and its setup options work today; npm publication and clean generated-project CI are still in progress.</p></div><div className="grid gap-4 lg:grid-cols-2">{localSetup.map(([number, title, command]) => <article key={number} className="overflow-hidden rounded-2xl border border-white/10 bg-black"><div className="flex items-center gap-3 border-b border-white/10 px-5 py-4"><span className="font-mono text-xs text-zinc-600">{number}</span><h3 className="font-medium">{title}</h3></div><pre className="overflow-x-auto whitespace-pre-wrap p-5 font-mono text-xs leading-6 text-amber-100">{command}</pre></article>)}</div><div className="mt-6 rounded-2xl border border-blue-300/20 bg-blue-300/[0.05] p-6 text-sm leading-6 text-zinc-300"><strong className="text-white">Before production:</strong> replace the local authentication secret, use a production PostgreSQL connection, review cookie and CSRF settings, configure rate limits, and run <code>pnpm check</code>.</div></div>
         </section>
 
         <section className="border-b border-white/10 py-20 sm:py-24">
@@ -183,7 +201,7 @@ export default function SparkKitSite() {
         </section>
 
         <section id="roadmap" className="border-b border-white/10 py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Open roadmap</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Build the proof before the promise</h2><p className="mt-5 leading-7 text-zinc-400">A milestone is complete only after its code, tests and documentation exist publicly.</p></div><div className="grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-4">{roadmap.map(([step, title, status, text]) => <article key={step} className="bg-[#0a0a0a] p-6"><div className="flex justify-between"><span className="font-mono text-xs text-zinc-600">{step}</span><span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-wider text-zinc-400">{status}</span></div><h3 className="mt-10 text-lg font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-zinc-400">{text}</p></article>)}</div></div>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="mb-12 max-w-3xl"><Label>Open roadmap</Label><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Distribute first. Prove agent value next.</h2><p className="mt-5 leading-7 text-zinc-400">Version 0.1 remains a reliable, installable application foundation. Runtime agents and MCP will not delay distribution or external developer validation.</p></div><div className="grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-3">{roadmap.map(([step, title, status, text]) => <article key={step} className="bg-[#0a0a0a] p-6"><div className="flex justify-between"><span className="font-mono text-xs text-zinc-600">{step}</span><span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-wider text-zinc-400">{status}</span></div><h3 className="mt-10 text-lg font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-zinc-400">{text}</p></article>)}</div></div>
         </section>
 
         <section id="sparkbase" className="relative overflow-hidden py-20 sm:py-28">
@@ -195,6 +213,14 @@ export default function SparkKitSite() {
       <footer className="border-t border-white/10"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8"><span className="flex items-center gap-3 text-zinc-300"><BrandLogo compact /><span>by Sparkbase</span></span><span>Early-stage open-source project. Roadmap capabilities are clearly labelled.</span><a href={githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-zinc-300 hover:text-white"><Github className="h-4 w-4" /> GitHub</a></div></footer>
     </div>
   );
+}
+
+function AgentLayer({ icon: Icon, status, title, text, points, future = false }: { icon: typeof Code2; status: string; title: string; text: string; points: string[]; future?: boolean }) {
+  return <article className={`p-7 sm:p-9 ${future ? 'bg-blue-400/[0.045]' : 'border-b border-white/10 bg-white/[0.025] lg:border-b-0 lg:border-r'}`}><div className="flex items-start justify-between gap-4"><span className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-black"><Icon className={`h-5 w-5 ${future ? 'text-blue-300' : 'text-amber-200'}`} /></span><span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] uppercase tracking-wider text-zinc-400">{status}</span></div><h3 className="mt-7 text-2xl font-semibold">{title}</h3><p className="mt-4 leading-7 text-zinc-400">{text}</p><div className="mt-7 grid gap-3">{points.map(point => <p key={point} className="flex gap-3 text-sm leading-6 text-zinc-300"><Check className="mt-1 h-4 w-4 shrink-0 text-zinc-500" />{point}</p>)}</div></article>;
+}
+
+function DirectionCard({ icon: Icon, title, text }: { icon: typeof Wrench; title: string; text: string }) {
+  return <article className="rounded-2xl border border-white/10 bg-black p-6"><Icon className="h-5 w-5 text-zinc-500" /><h3 className="mt-5 font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-zinc-400">{text}</p></article>;
 }
 
 function DeployCard({ icon: Icon, title, status, text }: { icon: typeof Container; title: string; status: string; text: string }) {

@@ -17,7 +17,7 @@
 ---
 
 <picture>
-  <img src="./assets/github/sparkkit-repository-hero.png" alt="SparkKit project website presenting the open-source foundation for Small Software and AI applications" width="100%" />
+  <img src="./assets/github/sparkkit-repository-hero.png" alt="SparkKit landing page presenting an open application foundation built with agents and designed for humans and agents" width="100%" />
 </picture>
 
 > [!IMPORTANT]
