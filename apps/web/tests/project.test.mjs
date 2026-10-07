@@ -127,3 +127,28 @@ test("the M3.4 browser smoke workflow is installed and enforced in CI", async ()
   assert.match(ci, /playwright install --with-deps chromium/);
   assert.match(ci, /run: pnpm e2e/);
 });
+
+test("project search filters by name and description with a connected, styled input", async () => {
+  const [manager, styles] = await Promise.all([
+    read("components/project-manager.tsx"),
+    read("app/styles.css"),
+  ]);
+
+  const labelTarget = manager.match(/<label htmlFor="([^"]+)">Search projects/)?.[1];
+  const inputId = manager.match(/<input id="([^"]+)"[^>]*placeholder="Search projects/)?.[1];
+  assert.ok(labelTarget, "search label should use htmlFor");
+  assert.equal(labelTarget, inputId);
+  assert.match(manager, /query\.trim\(\)\.toLowerCase\(\)/);
+  assert.match(manager, /project\.name\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
+  assert.match(manager, /\(project\.description \?\? ''\)\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
+  assert.match(manager, /className="project-search-control"/);
+  assert.match(styles, /\.project-search-control input/);
+});
+
+test("project search can be cleared and shows a no-results state", async () => {
+  const manager = await read("components/project-manager.tsx");
+  assert.match(manager, /Clear search/);
+  assert.match(manager, /onClick=\{\(\) => setQuery\(''\)\}/);
+  assert.match(manager, /No projects match/);
+  assert.match(manager, /Try a different name or description/);
+});
