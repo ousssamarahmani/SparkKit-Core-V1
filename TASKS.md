@@ -275,10 +275,35 @@ Nothing below should be marked complete until its acceptance criteria pass.
   preserve the generated project so users can recover manually.
 - Unit and command-level tests cover parsing, safe defaults, npm-compatible
   generation, selected setup commands, real Git initialization, and rerun safety.
-- [ ] **M4.4 Test generation**
+- [x] **M4.4 Test generation**
   - Acceptance: CI generates a project in a temporary directory, installs it, type-checks it, tests it, and builds it.
-- [ ] **M4.5 Prepare npm publishing**
+
+### M4.4 implementation evidence
+
+- CI builds the local `create-sparkkit` package and generates a clean project
+  beneath the runner's temporary directory without reusing repository artifacts.
+- The generated project installs independently, applies its PostgreSQL migrations,
+  then runs lint, type-check, test, and production-build gates.
+- Repository-only browser and workflow contract checks stay in the source repository
+  and are excluded from the portable application template.
+- CLI contract tests protect the generated-project CI job and its complete command
+  sequence against accidental removal.
+
+- [x] **M4.5 Prepare npm publishing**
   - Acceptance: package metadata, executable mapping, versioning, changelog, and dry-run package contents are verified.
+
+### M4.5 implementation evidence
+
+- `create-sparkkit` is versioned at `0.1.0` with Apache-2.0 licensing, public npm
+  publishing configuration, repository links, issue tracking, and search metadata.
+- The package includes dedicated usage documentation, the full project license,
+  compiled CLI/library output, and the portable application template.
+- The package verifier checks the executable mapping and shebang, runs
+  `npm pack --dry-run --json`, requires release assets, and rejects local or
+  repository-only artifacts.
+- CI runs the package verifier before exercising the generated application.
+
+Milestone 4 is complete. Publishing remains an explicit maintainer release action.
 
 ## Milestone 5 — Optional AI module
 

@@ -81,3 +81,87 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  validate-generated-project:
+    name: Validate generated SparkKit project
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: generated_sparkkit
+          POSTGRES_USER: sparkkit
+          POSTGRES_PASSWORD: sparkkit
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sparkkit -d generated_sparkkit"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://sparkkit:sparkkit@localhost:5432/generated_sparkkit
+      BETTER_AUTH_SECRET: generated-project-ci-secret-at-least-32-characters
+      BETTER_AUTH_URL: http://localhost:3001
+      BETTER_AUTH_TRUSTED_ORIGINS: ""
+      GENERATED_PROJECT: ${{ runner.temp }}/generated-sparkkit
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+          run_install: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install generator dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build create-sparkkit
+        run: pnpm --filter create-sparkkit build
+
+      - name: Verify npm package contents
+        run: pnpm --filter create-sparkkit pack:check
+
+      - name: Generate a clean project
+        run: |
+          cd "$RUNNER_TEMP"
+          node "$GITHUB_WORKSPACE/packages/create-sparkkit/dist/cli.js" generated-sparkkit --pm pnpm --no-install --no-git
+
+      - name: Install generated dependencies
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Apply generated database migrations
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm --filter @sparkkit/db db:migrate:deploy
+
+      - name: Lint generated project
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm lint
+
+      - name: Type-check generated project
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm typecheck
+
+      - name: Test generated project
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm test
+
+      - name: Build generated project
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm build

@@ -203,8 +203,9 @@ docker compose down --volumes
 | Generator | Private CLI with a portable SaaS template, package-manager selection, and optional install/Git setup |
 | Documentation | Public project site, architecture decisions, security guide, roadmap |
 
-The next verified deliverable is exercising a newly generated project through
-install, type-check, test, and build in CI. See the
+The generator is now exercised from a clean temporary directory through install,
+database migration, lint, type-check, test, and production build in CI. The next
+verified deliverable is npm publishing readiness. See the
 [public task backlog](./TASKS.md) for acceptance criteria and implementation evidence.
 
 <details>
@@ -280,7 +281,7 @@ cd my-app
 pnpm dev
 ```
 
-The current private CLI also supports deterministic setup choices:
+The release-ready CLI also supports deterministic setup choices:
 
 ```bash
 create-sparkkit my-app --package-manager npm --install --git
@@ -319,7 +320,7 @@ docs/
 - [x] **Database and tenancy** — PostgreSQL, organizations, memberships, and isolation
 - [x] **Identity and authorization** — authentication, onboarding, roles, and sessions
 - [x] **Reference application** — shell, project CRUD, UX states, browser smoke tests, and complete local setup
-- [ ] **Generator** — safe CLI, portable template, and setup options complete; full generation CI and publishing remain
+- [x] **Generator** — safe CLI, portable template, setup options, generation CI, and npm package validation
 - [ ] **Agent-native DX** — concise `AGENTS.md`, three portable skills, and measured coding-agent validation
 - [ ] **Runtime agents** — narrow identity, permission, tool, approval, and activity primitives after distribution is proven
 - [ ] **Human + Agent proof** — one organization-aware support workflow instead of a generic chatbot milestone
