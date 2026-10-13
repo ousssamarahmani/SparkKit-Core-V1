@@ -1,8 +1,27 @@
 {
   "name": "create-sparkkit",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "Create a portable SparkKit SaaS application.",
+  "license": "Apache-2.0",
+  "author": "Oussama Rahmani",
+  "homepage": "https://github.com/ousssamarahmani/SparkKit-Core-V1#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ousssamarahmani/SparkKit-Core-V1.git",
+    "directory": "packages/create-sparkkit"
+  },
+  "bugs": {
+    "url": "https://github.com/ousssamarahmani/SparkKit-Core-V1/issues"
+  },
+  "keywords": [
+    "sparkkit",
+    "create-app",
+    "nextjs",
+    "saas",
+    "typescript",
+    "postgresql",
+    "prisma"
+  ],
   "type": "module",
   "bin": {
     "create-sparkkit": "./dist/cli.js"
@@ -21,6 +40,7 @@
     "build": "pnpm run sync:template && tsc -p tsconfig.build.json",
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});require('node:fs').rmSync('template',{recursive:true,force:true})\"",
     "lint": "eslint . --max-warnings 0",
+    "pack:check": "pnpm run build && node scripts/verify-package.mjs",
     "sync:template": "node scripts/sync-template.mjs",
     "test": "pnpm run build && node --test tests/*.test.mjs",
     "typecheck": "tsc --noEmit"
@@ -33,5 +53,9 @@
   },
   "engines": {
     "node": ">=24 <27"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

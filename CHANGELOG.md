@@ -31,6 +31,8 @@ releases.
 - Tenant-owned project creation, listing, editing, and deletion through
   authenticated routes and a responsive workspace interface.
 - Community health files and continuous integration.
+- The release-ready `create-sparkkit` 0.1.0 package with public npm metadata,
+  executable mapping, portable template assets, and dry-run archive validation.
 
 ### Changed
 

@@ -20,6 +20,7 @@ import {
 
 const execFileAsync = promisify(execFile);
 const cliPath = fileURLToPath(new URL('../dist/cli.js', import.meta.url));
+const ciWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/ci.yml', import.meta.url));
 
 test('accepts lowercase kebab-case project names', () => {
   assert.equal(validateProjectName('customer-portal'), 'customer-portal');
@@ -210,4 +211,18 @@ test('removes a partial target when template generation fails', async (t) => {
     ProjectTemplateError,
   );
   await assert.rejects(access(target));
+});
+
+test('CI verifies a clean generated project from install through build', async () => {
+  const workflow = await readFile(ciWorkflowPath, 'utf8');
+
+  assert.match(workflow, /validate-generated-project:/);
+  assert.match(workflow, /node .*create-sparkkit\/dist\/cli\.js.*--no-install --no-git/);
+  assert.match(workflow, /working-directory: \$\{\{ env\.GENERATED_PROJECT \}\}/);
+  assert.match(workflow, /pnpm install --no-frozen-lockfile/);
+  assert.match(workflow, /pnpm --filter @sparkkit\/db db:migrate:deploy/);
+  assert.match(workflow, /run: pnpm lint/);
+  assert.match(workflow, /run: pnpm typecheck/);
+  assert.match(workflow, /run: pnpm test/);
+  assert.match(workflow, /run: pnpm build/);
 });

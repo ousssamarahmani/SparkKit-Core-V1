@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -30,6 +30,7 @@ const excludedNames = new Set([
   'generated',
   'node_modules',
   'playwright-report',
+  'repository.test.mjs',
   'test-results',
 ]);
 
@@ -142,6 +143,19 @@ for (const relativePath of copiedRootFiles) {
   await cp(path.join(repositoryRoot, relativePath), path.join(templateRoot, relativePath));
 }
 
+// Next.js rewrites this generated file while the source app is running. Keep the
+// distributable template independent from the repository's current dev state.
+await writeFile(
+  path.join(templateRoot, 'apps/web/next-env.d.ts'),
+  `/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+import "./.next/types/routes.d.ts";
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+`,
+);
+
 await writeFile(
   path.join(templateRoot, 'package.json'),
   `${JSON.stringify(rootPackage, null, 2)}\n`,
@@ -151,3 +165,4 @@ await writeFile(path.join(templateRoot, 'README.md'), templateReadme);
 const composePath = path.join(templateRoot, 'compose.yaml');
 const compose = await readFile(composePath, 'utf8');
 await writeFile(composePath, compose.replace(/^name: sparkkit$/m, 'name: {{PROJECT_NAME}}'));
+await copyFile(path.join(repositoryRoot, 'LICENSE'), path.join(packageRoot, 'LICENSE'));

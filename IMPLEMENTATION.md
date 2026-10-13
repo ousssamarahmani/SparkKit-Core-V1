@@ -199,5 +199,9 @@ atomic overwrite refusal. M4.2 packages the verified application and data layer
 from an explicit allowlist, personalizes generated projects, excludes secrets
 and repository-only artifacts, and rolls back partial output. M4.3 adds
 deterministic pnpm, npm, yarn, and Bun selection plus opt-in installation and
-Git initialization. The next delivery is M4.4, verifying a clean generated
-project through installation, type-checking, tests, and production build in CI.
+Git initialization. M4.4 now verifies a clean generated project through
+installation, database migration, linting, type-checking, tests, and production
+build in CI. M4.5 prepares `create-sparkkit` 0.1.0 with complete public-package
+metadata, release documentation, executable validation, and an npm archive
+dry-run enforced by CI. Milestone 4 is complete; the next delivery is M5.1,
+defining the minimal provider-neutral AI interface.
