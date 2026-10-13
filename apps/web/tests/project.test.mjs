@@ -152,3 +152,30 @@ test("project search can be cleared and shows a no-results state", async () => {
   assert.match(manager, /No projects match/);
   assert.match(manager, /Try a different name or description/);
 });
+
+test("project sorting offers four options with a connected label", async () => {
+  const manager = await read("components/project-manager.tsx");
+  const labelTarget = manager.match(/<label htmlFor="([^"]+)">Sort projects/)?.[1];
+  const selectId = manager.match(/<select id="([^"]+)"/)?.[1];
+  assert.ok(labelTarget, "sort label should use htmlFor");
+  assert.equal(labelTarget, selectId);
+  assert.match(manager, /useState<SortOption>\('newest'\)/);
+  assert.match(manager, /Newest first/);
+  assert.match(manager, /Oldest first/);
+  assert.match(manager, /Name A–Z/);
+  assert.match(manager, /Name Z–A/);
+});
+
+test("project sorting works with search and does not mutate the original list", async () => {
+  const [manager, styles] = await Promise.all([
+    read("components/project-manager.tsx"),
+    read("app/styles.css"),
+  ]);
+  assert.match(manager, /\[\.\.\.visibleProjects\]\.sort/);
+  assert.doesNotMatch(manager, /projects\.sort\(/);
+  assert.match(manager, /sortedProjects\.map/);
+  assert.match(manager, /No projects match/);
+  assert.match(manager, /Create your first small software project/);
+  assert.match(styles, /\.project-toolbar/);
+  assert.match(styles, /\.project-sort select/);
+});
