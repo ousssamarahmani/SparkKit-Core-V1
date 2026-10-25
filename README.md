@@ -358,6 +358,11 @@ Before opening a pull request:
 
 Please report vulnerabilities privately according to the [security policy](./SECURITY.md).
 
+SparkKit also documents the AI development tools used under maintainer
+direction, including Codex and Claude Code, in
+[`ACKNOWLEDGEMENTS.md`](./ACKNOWLEDGEMENTS.md). Git history remains the
+authoritative record of human contribution.
+
 ## Documentation
 
 - [Product vision](./VISION.md) — application foundation, agent-native development, Human + Agent runtime direction, MCP boundary, validation gates, and Sparkbase relationship

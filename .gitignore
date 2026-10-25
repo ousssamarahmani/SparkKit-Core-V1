@@ -11,5 +11,6 @@ packages/db/src/generated/
 *.log
 playwright-report/
 test-results/
+tmp/
 .env*
 !.env.example
