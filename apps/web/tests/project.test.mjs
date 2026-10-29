@@ -138,9 +138,7 @@ test("project search filters by name and description with a connected, styled in
   const inputId = manager.match(/<input id="([^"]+)"[^>]*placeholder="Search projects/)?.[1];
   assert.ok(labelTarget, "search label should use htmlFor");
   assert.equal(labelTarget, inputId);
-  assert.match(manager, /query\.trim\(\)\.toLowerCase\(\)/);
-  assert.match(manager, /project\.name\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
-  assert.match(manager, /\(project\.description \?\? ''\)\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
+  assert.match(manager, /filterAndSortProjects\(projects, query, sortOrder\)/);
   assert.match(manager, /className="project-search-control"/);
   assert.match(styles, /\.project-search-control input/);
 });
@@ -151,4 +149,30 @@ test("project search can be cleared and shows a no-results state", async () => {
   assert.match(manager, /onClick=\{\(\) => setQuery\(''\)\}/);
   assert.match(manager, /No projects match/);
   assert.match(manager, /Try a different name or description/);
+});
+
+test("project sorting offers four options with a connected label", async () => {
+  const manager = await read("components/project-manager.tsx");
+  const labelTarget = manager.match(/<label htmlFor="([^"]+)">Sort projects/)?.[1];
+  const selectId = manager.match(/<select id="([^"]+)"/)?.[1];
+  assert.ok(labelTarget, "sort label should use htmlFor");
+  assert.equal(labelTarget, selectId);
+  assert.match(manager, /useState<ProjectSortOption>\('newest'\)/);
+  assert.match(manager, /Newest first/);
+  assert.match(manager, /Oldest first/);
+  assert.match(manager, /Name A–Z/);
+  assert.match(manager, /Name Z–A/);
+});
+
+test("project sorting works with search and does not mutate the original list", async () => {
+  const [manager, styles] = await Promise.all([
+    read("components/project-manager.tsx"),
+    read("app/styles.css"),
+  ]);
+  assert.match(manager, /filterAndSortProjects\(projects, query, sortOrder\)/);
+  assert.match(manager, /sortedProjects\.map/);
+  assert.match(manager, /No projects match/);
+  assert.match(manager, /Create your first small software project/);
+  assert.match(styles, /\.project-toolbar/);
+  assert.match(styles, /\.project-sort select/);
 });
