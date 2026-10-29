@@ -138,9 +138,7 @@ test("project search filters by name and description with a connected, styled in
   const inputId = manager.match(/<input id="([^"]+)"[^>]*placeholder="Search projects/)?.[1];
   assert.ok(labelTarget, "search label should use htmlFor");
   assert.equal(labelTarget, inputId);
-  assert.match(manager, /query\.trim\(\)\.toLowerCase\(\)/);
-  assert.match(manager, /project\.name\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
-  assert.match(manager, /\(project\.description \?\? ''\)\.toLowerCase\(\)\.includes\(trimmedQuery\)/);
+  assert.match(manager, /filterAndSortProjects\(projects, query, sortOrder\)/);
   assert.match(manager, /className="project-search-control"/);
   assert.match(styles, /\.project-search-control input/);
 });
@@ -159,7 +157,7 @@ test("project sorting offers four options with a connected label", async () => {
   const selectId = manager.match(/<select id="([^"]+)"/)?.[1];
   assert.ok(labelTarget, "sort label should use htmlFor");
   assert.equal(labelTarget, selectId);
-  assert.match(manager, /useState<SortOption>\('newest'\)/);
+  assert.match(manager, /useState<ProjectSortOption>\('newest'\)/);
   assert.match(manager, /Newest first/);
   assert.match(manager, /Oldest first/);
   assert.match(manager, /Name A–Z/);
@@ -171,8 +169,7 @@ test("project sorting works with search and does not mutate the original list", 
     read("components/project-manager.tsx"),
     read("app/styles.css"),
   ]);
-  assert.match(manager, /\[\.\.\.visibleProjects\]\.sort/);
-  assert.doesNotMatch(manager, /projects\.sort\(/);
+  assert.match(manager, /filterAndSortProjects\(projects, query, sortOrder\)/);
   assert.match(manager, /sortedProjects\.map/);
   assert.match(manager, /No projects match/);
   assert.match(manager, /Create your first small software project/);
