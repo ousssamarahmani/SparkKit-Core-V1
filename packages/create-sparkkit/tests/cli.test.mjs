@@ -171,6 +171,7 @@ test('generates a personalized portable SaaS template without local secrets', as
   assert.doesNotMatch(combined, /{{PROJECT_NAME}}/);
   assert.doesNotMatch(combined, /\.SparkKit by Sparkbase Cloud/i);
   assert.doesNotMatch(combined, /(?:sk-|ghp_|github_pat_)[A-Za-z0-9_-]{20,}/);
+  assert.doesNotMatch(combined, /M3\.4 browser smoke workflow/);
 });
 
 test('personalizes generated instructions and workspace dependencies for npm', async (t) => {
