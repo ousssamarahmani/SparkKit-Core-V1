@@ -8,6 +8,19 @@
 
 Nothing below should be marked complete until its acceptance criteria pass.
 
+## Current priority and delivery rules
+
+**Current priority: M5.1 — define the external validation protocol.**
+
+- Milestones 5, 6, and 7 form the version 0.1 release path.
+- Runtime agents, the Human + Agent proof, MCP interoperability, and Sparkbase
+  remain gated work. They must not delay a useful version 0.1.
+- SparkKit stays useful without an AI provider, hosted control plane, or agent
+  runtime.
+- Every agent capability is deny-by-default, tenant-scoped, observable, and
+  covered by deterministic tests before it is presented as working.
+- Sparkbase work begins from documented user demand rather than assumptions.
+
 ## Milestone 0 — Project foundation
 
 - [x] **M0.1 Choose and document the application framework**
@@ -305,38 +318,193 @@ Nothing below should be marked complete until its acceptance criteria pass.
 
 Milestone 4 is complete. Publishing remains an explicit maintainer release action.
 
-## Milestone 5 — Optional AI module
+## Milestone 5 — Distribution and external validation
 
-- [ ] **M5.1 Define the minimal AI interface**
-  - Acceptance: the template is not coupled directly to a provider SDK.
-- [ ] **M5.2 Add one provider adapter**
-  - Acceptance: server-side streaming works with timeouts and normalized errors.
-- [ ] **M5.3 Add an example AI chat**
-  - Acceptance: it has input limits, rate limiting, cancellation, and no client-side secret.
-- [ ] **M5.4 Add fake-provider tests**
-  - Acceptance: CI tests success, stream failure, timeout, and cancellation without a real API key.
-- [ ] **M5.5 Document optional configuration**
-  - Acceptance: the starter works normally when AI variables are absent.
+- [ ] **M5.1 Define the external validation protocol**
+  - Acceptance: a versioned checklist records the tester environment, commands,
+    completion time, assistance given, outcome, and exact failure points without
+    collecting secrets or unnecessary personal information.
+- [ ] **M5.2 Verify the generated project on clean machines**
+  - Acceptance: independent Windows and macOS or Linux environments generate,
+    configure, migrate, seed, test, build, and run an application using only the
+    generated documentation.
+- [ ] **M5.3 Validate setup with ten external developers**
+  - Acceptance: ten non-maintainer attempts have documented completion rates,
+    setup times, assistance levels, and repeated failure points; incomplete
+    attempts remain visible in the results.
+- [ ] **M5.4 Fix repeated distribution failures**
+  - Acceptance: every issue repeated by two or more testers is fixed, documented,
+    deliberately deferred with rationale, or converted into a tracked issue with
+    an owner and acceptance criteria.
+- [ ] **M5.5 Record the Gate B decision**
+  - Acceptance: a short evidence report states whether an external developer can
+    use the CLI successfully and whether SparkKit is ready to proceed to
+    Agent-native DX; no unsupported success metrics are claimed.
 
-## Milestone 6 — Version 0.1 release
+## Milestone 6 — Agent-native developer experience
 
-- [ ] **M6.1 Perform security review**
-  - Acceptance: auth, tenant isolation, secret handling, dependencies, and logs have recorded results.
-- [ ] **M6.2 Add production Docker build**
-  - Acceptance: image builds, runs as non-root, and passes a health check.
-- [ ] **M6.3 Verify clean-machine setup**
-  - Acceptance: two independent testers complete the documented setup.
-- [ ] **M6.4 Publish release candidate**
-  - Acceptance: CLI and generated application are installable from the release candidate.
-- [ ] **M6.5 Publish version 0.1**
-  - Acceptance: tagged source, npm package, release notes, and migration notes are public.
+- [ ] **M6.1 Add the root `AGENTS.md` contract**
+  - Acceptance: the concise, version-controlled file explains repository layout,
+    supported commands, tenant and authorization boundaries, prohibited changes,
+    verification gates, and the definition of done for coding agents.
+- [ ] **M6.2 Define the portable Agent Skill format**
+  - Acceptance: a documented format covers purpose, inputs, allowed tools,
+    ordered procedure, security constraints, expected output, and verification;
+    it does not depend on one model vendor.
+- [ ] **M6.3 Implement `add-tenant-resource`**
+  - Acceptance: the skill guides an agent to add an organization-owned resource
+    with schema constraints, authorization at the data boundary, API validation,
+    migrations, tests, and documentation.
+- [ ] **M6.4 Implement `tenant-security`**
+  - Acceptance: the skill audits a feature for cross-tenant access, missing role
+    checks, unsafe identifiers, secret exposure, and incomplete negative tests,
+    and produces actionable evidence.
+- [ ] **M6.5 Implement `verify-feature`**
+  - Acceptance: the skill runs the required lint, type-check, test, build, tenant
+    isolation, and generated-project checks and reports failures without hiding or
+    rewriting them.
+- [ ] **M6.6 Validate coding-agent extension quality**
+  - Acceptance: at least two supported coding-agent workflows attempt the same
+    tenant-owned feature from a clean checkout; results record completion,
+    security mistakes, human corrections, elapsed time, and verification status.
+- [ ] **M6.7 Publish Agent-native DX documentation**
+  - Acceptance: maintainers and contributors can discover, run, review, and
+    update `AGENTS.md` and the three skills without proprietary services.
+
+## Milestone 7 — Version 0.1 release
+
+- [ ] **M7.1 Perform the version 0.1 security review**
+  - Acceptance: authentication, tenant isolation, authorization, secret handling,
+    dependencies, logs, generated output, and deployment defaults have recorded
+    findings and dispositions.
+- [ ] **M7.2 Add the production container profile**
+  - Acceptance: the application image builds reproducibly, runs as non-root,
+    accepts configuration only at runtime, exposes a health check, and documents
+    PostgreSQL and migration responsibilities.
+- [ ] **M7.3 Publish a release candidate**
+  - Acceptance: the CLI and generated application install from the candidate,
+    pass the clean-machine protocol, and include accurate release notes.
+- [ ] **M7.4 Publish `create-sparkkit` version 0.1**
+  - Acceptance: provenance, package contents, executable behavior, version,
+    license, and public installation are verified from the npm registry.
+- [ ] **M7.5 Publish SparkKit version 0.1**
+  - Acceptance: the tagged source, npm package, container instructions, release
+    notes, known limitations, migration notes, and verification evidence are
+    public and mutually consistent.
+
+## Milestone 8 — Minimal agent runtime experiment
+
+This milestone may move to version 0.2 if it would delay the version 0.1 release.
+
+- [ ] **M8.1 Record the runtime boundary ADR**
+  - Acceptance: the decision separates the open-source SparkKit primitives from
+    possible Sparkbase managed services and defines what remains application-owned.
+- [ ] **M8.2 Add tenant-scoped agent identity**
+  - Acceptance: every agent belongs to one organization and project, has a human
+    owner, cannot impersonate a user, and is rejected outside its assigned scope.
+- [ ] **M8.3 Define the agent capability model**
+  - Acceptance: capabilities use stable names such as `tickets.read` and
+    `refund.execute`, default to deny, and are stored separately from human roles.
+- [ ] **M8.4 Add a typed tool registry**
+  - Acceptance: tools declare validated input/output schemas, required capability,
+    side-effect class, timeout, and audit metadata before they can execute.
+- [ ] **M8.5 Implement the policy harness**
+  - Acceptance: one centralized evaluator returns `ALLOW`, `APPROVAL`, or `DENY`
+    for every tool request and cannot be bypassed by registered tools.
+- [ ] **M8.6 Implement human approval requests**
+  - Acceptance: approval-required actions pause before side effects, expose the
+    actor, arguments, risk, and expiry, and can be approved or rejected only by an
+    authorized human.
+- [ ] **M8.7 Add an append-only activity audit**
+  - Acceptance: requests, policy decisions, approvals, executions, failures, and
+    cancellations are attributable to a human or agent without recording secrets.
+- [ ] **M8.8 Add runtime safety limits**
+  - Acceptance: tool calls enforce cancellation, deadlines, bounded retries,
+    concurrency and cost limits, and an organization-level emergency stop.
+- [ ] **M8.9 Add deterministic fake-runtime tests**
+  - Acceptance: CI proves allow, approval, denial, cross-tenant rejection,
+    timeout, cancellation, audit redaction, and failure behavior without a paid
+    model or network access.
+- [ ] **M8.10 Add the first Agent Builder UI**
+  - Acceptance: an authorized user can create an agent, assign skills and tools,
+    configure capabilities, choose a human owner, pause the agent, and inspect its
+    effective policy; advanced model orchestration remains out of scope.
+
+## Milestone 9 — Human + Agent multiplayer proof
+
+- [ ] **M9.1 Define the Support AI demonstration**
+  - Acceptance: the organization-aware scenario and non-goals are documented
+    around one support workflow rather than a generic chatbot.
+- [ ] **M9.2 Add tenant-owned tickets and knowledge sources**
+  - Acceptance: ticket and knowledge data cannot be read or changed across
+    organizations and all access passes through the existing authorization layer.
+- [ ] **M9.3 Add the Support Agent configuration**
+  - Acceptance: the agent can search knowledge, read tickets, and create reply
+    drafts but cannot directly send replies or perform undeclared actions.
+- [ ] **M9.4 Add the refund approval workflow**
+  - Acceptance: a refund request pauses for an authorized human, records approval
+    or rejection, prevents replay, and executes at most once after approval.
+- [ ] **M9.5 Prove a denied destructive action**
+  - Acceptance: `customers.delete` or an equivalent destructive tool is denied,
+    produces no side effect, and appears in the audit trail.
+- [ ] **M9.6 Add the collaboration workspace**
+  - Acceptance: humans can see assignments, drafts, pending approvals, agent
+    state, effective permissions, recent runs, and the shared activity timeline.
+- [ ] **M9.7 Add end-to-end multiplayer verification**
+  - Acceptance: browser and runtime tests prove allowed, approval-required, denied,
+    cancellation, cross-tenant, and human handoff flows in one repeatable scenario.
+- [ ] **M9.8 Document the Gate D result**
+  - Acceptance: the evidence states what is implemented, experimental, unsafe for
+    production, or deferred; the demo is not presented as a general agent platform.
+
+## Milestone 10 — MCP interoperability experiment
+
+- [ ] **M10.1 Define the MCP adapter boundary**
+  - Acceptance: an ADR maps MCP servers and tools into SparkKit identity, tenancy,
+    capability, approval, timeout, and audit rules without granting implicit trust.
+- [ ] **M10.2 Add one experimental MCP connection**
+  - Acceptance: an administrator can configure one server using secret references,
+    allowlisted tools, explicit scopes, and a disabled-by-default setting.
+- [ ] **M10.3 Route MCP tools through the harness**
+  - Acceptance: MCP and native tools receive identical authorization, approval,
+    cancellation, redaction, and audit behavior.
+- [ ] **M10.4 Add adversarial MCP tests**
+  - Acceptance: CI covers unknown tools, changed schemas, unavailable servers,
+    timeouts, malicious output, cross-tenant attempts, and approval bypass attempts.
+- [ ] **M10.5 Document experimental MCP support**
+  - Acceptance: setup, threat model, supported subset, limitations, and safe removal
+    are documented without implying universal compatibility.
+
+## Milestone 11 — Evidence-driven Sparkbase
+
+- [ ] **M11.1 Interview teams using SparkKit**
+  - Acceptance: requests for hosting, secrets, monitoring, backups, deployment,
+    collaboration, or managed execution are recorded with frequency and context.
+- [ ] **M11.2 Define the smallest useful Sparkbase layer**
+  - Acceptance: the product brief solves the strongest documented operational
+    problem and explicitly rejects unrelated platform scope.
+- [ ] **M11.3 Prototype the multi-organization control plane**
+  - Acceptance: the workspace separates organizations, projects, environments,
+    members, agents, policies, approvals, runs, and audit data in its information
+    architecture and access model.
+- [ ] **M11.4 Validate the workspace with real users**
+  - Acceptance: representative users complete project, agent, approval, and audit
+    tasks; observed usability and trust failures are recorded and prioritized.
+- [ ] **M11.5 Define managed-runtime operations and security**
+  - Acceptance: tenancy, encryption, secret storage, regional data, backups,
+    incident response, observability, billing boundaries, and customer deletion
+    have reviewed requirements before production implementation.
+- [ ] **M11.6 Record the Gate E go/no-go decision**
+  - Acceptance: build, narrow, postpone, or reject Sparkbase scope based on
+    documented demand and willingness to adopt or pay, not repository interest alone.
 
 ## Open-source adoption workstream
 
 - [x] **OA.1 Establish honest repository positioning**
   - Acceptance: the README clearly separates implemented capabilities from the version 0.1 target.
 - [ ] **OA.2 Validate setup with ten developers**
-  - Acceptance: results record completion rate, setup time, and repeated failure points without invented metrics.
+  - Acceptance: Milestone 5 records completion rate, setup time, assistance, and
+    repeated failure points without invented metrics.
 - [ ] **OA.3 Publish three maintained example applications**
   - Acceptance: each example includes source, screenshots, setup instructions, and the SparkKit version used.
 - [ ] **OA.4 Prepare version 0.1 launch assets**
@@ -354,7 +522,9 @@ These should become separate proposals rather than being silently added to versi
 - Invitations and additional authentication methods.
 - pgvector knowledge base and RAG.
 - Additional starter templates.
-- Agent tools and orchestration.
 - Hosted deployment presets.
 - Telemetry and benchmarking.
+- Multi-agent planning and autonomous orchestration.
+- Additional model-provider adapters and routing.
+- Enterprise identity, compliance, and policy integrations.
 
