@@ -150,6 +150,10 @@ jobs:
         working-directory: ${{ env.GENERATED_PROJECT }}
         run: pnpm --filter @sparkkit/db db:migrate:deploy
 
+      - name: Seed generated database fixtures
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm --filter @sparkkit/db db:seed
+
       - name: Lint generated project
         working-directory: ${{ env.GENERATED_PROJECT }}
         run: pnpm lint

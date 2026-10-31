@@ -224,6 +224,7 @@ test('CI verifies a clean generated project from install through build', async (
   assert.match(workflow, /working-directory: \$\{\{ env\.GENERATED_PROJECT \}\}/);
   assert.match(workflow, /pnpm install --no-frozen-lockfile/);
   assert.match(workflow, /pnpm --filter @sparkkit\/db db:migrate:deploy/);
+  assert.match(workflow, /pnpm --filter @sparkkit\/db db:seed/);
   assert.match(workflow, /run: pnpm lint/);
   assert.match(workflow, /run: pnpm typecheck/);
   assert.match(workflow, /run: pnpm test/);
