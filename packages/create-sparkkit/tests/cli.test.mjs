@@ -217,6 +217,8 @@ test('CI verifies a clean generated project from install through build', async (
   const workflow = await readFile(ciWorkflowPath, 'utf8');
 
   assert.match(workflow, /validate-generated-project:/);
+  assert.match(workflow, /GENERATED_PROJECT: \$\{\{ github\.workspace \}\}\/\.\.\/generated-sparkkit/);
+  assert.doesNotMatch(workflow, /GENERATED_PROJECT:.*\$\{\{ runner\./);
   assert.match(workflow, /node .*create-sparkkit\/dist\/cli\.js.*--no-install --no-git/);
   assert.match(workflow, /working-directory: \$\{\{ env\.GENERATED_PROJECT \}\}/);
   assert.match(workflow, /pnpm install --no-frozen-lockfile/);
