@@ -20,6 +20,127 @@ Nothing below should be marked complete until its acceptance criteria pass.
 - Every agent capability is deny-by-default, tenant-scoped, observable, and
   covered by deterministic tests before it is presented as working.
 - Sparkbase work begins from documented user demand rather than assumptions.
+- The public landing page has its own `LP` workstream. It communicates the
+  vision and routes visitors into documentation, GitHub, or the Workspace, but
+  it is not evidence that Workspace, runtime, or Sparkbase capabilities ship.
+
+## Public landing page workstream — SparkKit and Sparkbase
+
+This workstream is deliberately separate from the authenticated Workspace and
+the numbered product milestones. The supplied agent-native SaaS landing-page
+reference defines the visual direction, not the implementation truth. Public
+copy must preserve the boundary below:
+
+> **Build with SparkKit. Run it on Sparkbase.**
+
+- **SparkKit:** the open-source developer foundation. Build locally, own the
+  source, and deploy to infrastructure you choose. It offers portable
+  application code, local development and Docker, and no required cloud
+  account.
+- **Sparkbase Cloud:** the planned commercial experience for deploying,
+  securing, sharing, and operating small software without exposing
+  infrastructure complexity. The long-term product idea is “Google Docs for
+  software—a cloud where humans and AI agents turn code into secure, shareable
+  applications with a link.” Planned capabilities must be labeled as planned.
+
+- [ ] **LP.1 Approve the landing-page product narrative**
+  - Acceptance: one reviewed messaging brief defines the primary audience,
+    visitor problem, promise, proof, calls to action, and the honest boundary
+    between available SparkKit features and planned Sparkbase capabilities.
+  - Verify: compare every headline and capability claim against `README.md`,
+    `VISION.md`, and the implemented repository; unsupported present-tense
+    claims are removed or labeled `planned`, `experimental`, or `early stage`.
+- [ ] **LP.2 Define the landing-page information architecture**
+  - Acceptance: a section map covers navigation, hero, trust/proof, product
+    split, agent-native workflow, open-source benefits, deployment model,
+    developer journey, documentation, roadmap/early-stage status, and final CTA.
+  - Verify: a first-time visitor can answer what SparkKit is, what Sparkbase may
+    become, what works today, who owns the code, and where each CTA leads.
+- [ ] **LP.3 Map visitor journeys and CTA hierarchy**
+  - Acceptance: developer, technical founder, AI developer, contributor, and
+    prospective Sparkbase user journeys each have one primary next action;
+    `View on GitHub`, `Read docs`, and `Open Workspace` are not presented as
+    equivalent when their intent differs.
+  - Verify: keyboard and mobile walkthroughs reach every primary destination
+    without dead links, misleading labels, or an authentication surprise.
+- [ ] **LP.4 Produce responsive UX wireframes**
+  - Acceptance: desktop, tablet, and mobile wireframes establish content order,
+    navigation behavior, hero composition, screenshot treatment, section
+    rhythm, CTA placement, and footer structure before visual polish begins.
+  - Verify: review the wireframes at 375, 768, 1280, and 1440 CSS pixels and
+    record decisions for collapsed navigation and long-copy wrapping.
+- [ ] **LP.5 Establish the SparkKit visual system**
+  - Acceptance: reusable tokens define the black, warm-gold, and restrained
+    cyan identity; typography, spacing, radii, borders, glows, focus states,
+    icons, cards, buttons, and dark-surface contrast are documented.
+  - Verify: token and component samples pass WCAG AA contrast for body text and
+    interactive states and remain recognizably SparkKit rather than a copy of
+    the visual reference.
+- [ ] **LP.6 Build the global navigation and hero**
+  - Acceptance: the responsive header, early-stage badge, approved headline,
+    supporting copy, primary/secondary CTAs, proof points, and optimized
+    Workspace product visual are implemented with correct semantic hierarchy.
+  - Verify: the hero clearly communicates human-and-agent application building,
+    remains usable without animation, and has no layout shift as media loads.
+- [ ] **LP.7 Build the SparkKit/Sparkbase product split**
+  - Acceptance: a dedicated comparison section explains open-source ownership,
+    local/Docker development, deployment choice, and no required cloud account
+    for SparkKit, while presenting Sparkbase Cloud only as the planned managed
+    operating experience.
+  - Verify: the section contains the approved “Build with SparkKit. Run it on
+    Sparkbase.” message and no wording implies that Sparkbase is available now.
+- [ ] **LP.8 Build the agent-native workflow and trust sections**
+  - Acceptance: the page explains Create, Build, Verify, and Deploy; human-agent
+    collaboration, tenant safety, permissions, approval, and audit concepts are
+    separated into implemented, experimental, and planned states.
+  - Verify: each claim links to repository evidence, documentation, or roadmap
+    context, and decorative partner marks are not used as implied endorsements.
+- [ ] **LP.9 Build reusable landing-page frontend components**
+  - Acceptance: navigation, buttons, badges, feature cards, workflow steps,
+    product comparison, code/CLI block, media frame, status labels, CTA banner,
+    and footer are typed, reusable, and driven by structured content where useful.
+  - Verify: component tests cover links, labels, variants, and keyboard behavior;
+    lint, type-check, and production build pass without duplicating Workspace UI.
+- [ ] **LP.10 Add motion and interaction polish**
+  - Acceptance: subtle reveal, hover, navigation, and media effects support the
+    hierarchy without blocking content, trapping focus, or depending on pointer
+    input; `prefers-reduced-motion` receives a stable experience.
+  - Verify: interactions work by keyboard and touch, reduced-motion mode removes
+    nonessential animation, and no animation creates measurable layout shift.
+- [ ] **LP.11 Implement only the required public backend boundary**
+  - Acceptance: public configuration supplies versioned CTA destinations and
+    release/status labels; any future waitlist or contact submission is a
+    separate opt-in feature with validation, rate limiting, consent, retention,
+    spam protection, and no dependency on Workspace session data.
+  - Verify: the landing page works fully as a static deployment when no form is
+    enabled, exposes no secrets, and fails safely when an external service is
+    unavailable.
+- [ ] **LP.12 Add metadata, social sharing, and structured discovery**
+  - Acceptance: canonical URL, title, description, favicon, Open Graph image,
+    social metadata, sitemap, robots policy, and appropriate structured data use
+    the approved honest positioning.
+  - Verify: local metadata tests pass and link-preview assets remain readable at
+    common social-card sizes without claiming unreleased capabilities.
+- [ ] **LP.13 Complete accessibility, performance, and browser QA**
+  - Acceptance: semantic landmarks, heading order, alternative text, visible
+    focus, skip navigation, keyboard operation, responsive behavior, and error
+    states are verified; image/font delivery is optimized to the agreed budget.
+  - Verify: automated accessibility and browser smoke tests pass; manual checks
+    cover keyboard, screen-reader landmarks, reduced motion, 200% zoom, mobile,
+    and current Chromium, Firefox, and WebKit engines.
+- [ ] **LP.14 Add privacy-conscious measurement and CTA validation**
+  - Acceptance: approved events measure only navigation and CTA outcomes needed
+    to improve the page, contain no secrets or Workspace content, and remain off
+    until the privacy approach and consent requirements are documented.
+  - Verify: event names and payloads are reviewed, development traffic is
+    excluded, and the page still works when measurement is blocked.
+- [ ] **LP.15 Run the landing-page release gate**
+  - Acceptance: content, design, frontend, backend boundary, accessibility,
+    performance, metadata, links, screenshots, and responsive behavior receive
+    recorded approval; known limitations and planned Sparkbase language remain
+    visible.
+  - Verify: `pnpm lint`, `pnpm typecheck`, relevant tests, and `pnpm build` pass;
+    the deployed preview is reviewed independently from the Workspace MVP.
 
 ## Milestone 0 — Project foundation
 
