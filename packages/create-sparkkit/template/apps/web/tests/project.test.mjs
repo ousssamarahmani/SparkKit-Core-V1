@@ -139,7 +139,7 @@ test("project sorting offers four options with a connected label", async () => {
   const selectId = manager.match(/<select id="([^"]+)"/)?.[1];
   assert.ok(labelTarget, "sort label should use htmlFor");
   assert.equal(labelTarget, selectId);
-  assert.match(manager, /useState<SortOption>\('newest'\)/);
+  assert.match(manager, /useState<ProjectSortOption>\('newest'\)/);
   assert.match(manager, /Newest first/);
   assert.match(manager, /Oldest first/);
   assert.match(manager, /Name A–Z/);
