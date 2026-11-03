@@ -171,6 +171,7 @@ test('generates a personalized portable SaaS template without local secrets', as
   assert.doesNotMatch(combined, /{{PROJECT_NAME}}/);
   assert.doesNotMatch(combined, /\.SparkKit by Sparkbase Cloud/i);
   assert.doesNotMatch(combined, /(?:sk-|ghp_|github_pat_)[A-Za-z0-9_-]{20,}/);
+  assert.doesNotMatch(combined, /M3\.4 browser smoke workflow/);
 });
 
 test('personalizes generated instructions and workspace dependencies for npm', async (t) => {
@@ -217,10 +218,13 @@ test('CI verifies a clean generated project from install through build', async (
   const workflow = await readFile(ciWorkflowPath, 'utf8');
 
   assert.match(workflow, /validate-generated-project:/);
+  assert.match(workflow, /GENERATED_PROJECT: \$\{\{ github\.workspace \}\}\/\.\.\/generated-sparkkit/);
+  assert.doesNotMatch(workflow, /GENERATED_PROJECT:.*\$\{\{ runner\./);
   assert.match(workflow, /node .*create-sparkkit\/dist\/cli\.js.*--no-install --no-git/);
   assert.match(workflow, /working-directory: \$\{\{ env\.GENERATED_PROJECT \}\}/);
   assert.match(workflow, /pnpm install --no-frozen-lockfile/);
   assert.match(workflow, /pnpm --filter @sparkkit\/db db:migrate:deploy/);
+  assert.match(workflow, /pnpm --filter @sparkkit\/db db:seed/);
   assert.match(workflow, /run: pnpm lint/);
   assert.match(workflow, /run: pnpm typecheck/);
   assert.match(workflow, /run: pnpm test/);

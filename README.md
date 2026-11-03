@@ -296,6 +296,115 @@ The `create-sparkkit` package is **not published yet**. This README will only ma
 it available after a generated project installs, tests, builds, and starts on a
 clean machine.
 
+## Building SparkKit applications with coding agents
+
+SparkKit does not need to build another coding agent first. Codex, Claude Code,
+Cursor, Devin, Antigravity, and other coding agents already provide models,
+repository access, file editing, terminal tools, and an agent loop. SparkKit's
+job is to give those agents one portable, testable way to understand and extend
+a SparkKit application safely.
+
+The planned integration has four layers:
+
+```text
+Codex / Claude Code / Cursor / Devin / Antigravity
+                         │
+                         ▼
+             Repository agent contract
+           AGENTS.md + SparkKit manifest
+                         │
+             ┌───────────┴───────────┐
+             ▼                       ▼
+      Portable Agent Skills    Deterministic CLI
+      add-tenant-resource      sparkkit doctor
+      tenant-security          sparkkit generate
+      verify-feature           sparkkit verify
+             │                       │
+             └───────────┬───────────┘
+                         ▼
+              Generated application
+       Auth + tenancy + data + tests + CI
+```
+
+These capabilities are roadmap work, not released integrations.
+
+### Repository contract
+
+Every generated project will include a concise root `AGENTS.md` that tells a
+coding agent:
+
+- how the repository is organized and which commands are supported;
+- where authentication, tenant isolation, and authorization are enforced;
+- which generated, secret, or security-sensitive files must not be changed;
+- when a migration, negative authorization test, or documentation update is
+  required; and
+- which verification gates define completed work.
+
+A small machine-readable SparkKit manifest will describe enabled capabilities,
+the tenancy model, and required checks so the CLI, CI, agents, and a future
+Sparkbase service read the same project configuration.
+
+### Portable Agent Skills
+
+Detailed workflows belong in repo-local, progressively loaded skills rather
+than one oversized instruction file. The canonical skills will live under
+`.agents/skills/` and may include instructions, focused references, and
+deterministic helper scripts.
+
+The first planned skills are:
+
+1. `add-tenant-resource` — add an organization-owned model, migration, data
+   boundary, API, UI, and positive and negative tests.
+2. `tenant-security` — audit cross-tenant access, role checks, identifiers,
+   secrets, and missing denial tests.
+3. `verify-feature` — run and report the required lint, type-check, test, build,
+   tenant-isolation, and generated-project checks.
+4. `create-agent-tool` — later, register a typed application tool with an
+   explicit capability, side-effect class, timeout, and audit metadata.
+5. `add-approval-action` — later, add a side effect that must pause for an
+   authorized human decision before execution.
+
+### Deterministic CLI before prompt cleverness
+
+Security-sensitive architecture should not depend on an agent reproducing a
+long prompt correctly. The agent should decide what needs to change, while
+SparkKit commands perform or verify repeatable operations. The target command
+surface includes:
+
+```bash
+sparkkit doctor
+sparkkit generate resource Ticket --tenant-owned
+sparkkit generate agent-tool tickets.read
+sparkkit verify
+sparkkit verify tenant-isolation
+sparkkit explain project
+```
+
+Skills explain the correct workflow, CLI commands handle deterministic work,
+and tests prove the result preserves SparkKit's invariants.
+
+### Thin adapters, one source of truth
+
+`AGENTS.md`, the SparkKit manifest, and `.agents/skills/` are the canonical
+contract. Tool-specific rules or setup files should remain thin adapters that
+point to that contract instead of duplicating its architecture. Each adapter
+must be generated or checked for drift and validated with the actual agent
+before the README claims support.
+
+Compatibility will be evaluated with the same representative task across
+agents: add a tenant-owned resource with CRUD, validation, role authorization,
+a migration, cross-tenant denial tests, documentation, and a complete
+verification run. Results will record whether the agent discovered the correct
+workflow, preserved security boundaries, ran the required checks, and produced
+a reviewable change.
+
+SparkKit should only build or adopt a hosted coding-agent harness later if
+Sparkbase proves demand for a managed “describe, review, build, and deploy”
+experience. That product would require isolated workspaces, durable sessions,
+Git integration, secret isolation, approvals, budgets, audit logs, cancellation,
+review, and rollback. It is not required for the open-source foundation or the
+version 0.1 release.
+
 ## Repository map
 
 ```text

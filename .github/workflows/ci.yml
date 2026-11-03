@@ -107,7 +107,7 @@ jobs:
       BETTER_AUTH_SECRET: generated-project-ci-secret-at-least-32-characters
       BETTER_AUTH_URL: http://localhost:3001
       BETTER_AUTH_TRUSTED_ORIGINS: ""
-      GENERATED_PROJECT: ${{ runner.temp }}/generated-sparkkit
+      GENERATED_PROJECT: ${{ github.workspace }}/../generated-sparkkit
 
     steps:
       - name: Check out repository
@@ -139,7 +139,7 @@ jobs:
 
       - name: Generate a clean project
         run: |
-          cd "$RUNNER_TEMP"
+          cd "$(dirname "$GENERATED_PROJECT")"
           node "$GITHUB_WORKSPACE/packages/create-sparkkit/dist/cli.js" generated-sparkkit --pm pnpm --no-install --no-git
 
       - name: Install generated dependencies
@@ -149,6 +149,10 @@ jobs:
       - name: Apply generated database migrations
         working-directory: ${{ env.GENERATED_PROJECT }}
         run: pnpm --filter @sparkkit/db db:migrate:deploy
+
+      - name: Seed generated database fixtures
+        working-directory: ${{ env.GENERATED_PROJECT }}
+        run: pnpm --filter @sparkkit/db db:seed
 
       - name: Lint generated project
         working-directory: ${{ env.GENERATED_PROJECT }}
