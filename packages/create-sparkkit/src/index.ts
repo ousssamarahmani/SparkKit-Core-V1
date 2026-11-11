@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -16,6 +16,7 @@ export interface CliArguments {
   packageManager: PackageManager;
   install: boolean;
   initializeGit: boolean;
+  dryRun: boolean;
 }
 
 export type CommandRunner = (
@@ -46,6 +47,20 @@ export interface CreateSparkKitProjectOptions {
   packageManager?: PackageManager;
 }
 
+export interface ProjectPlanOptions extends CreateSparkKitProjectOptions {
+  install?: boolean;
+  initializeGit?: boolean;
+}
+
+export interface SparkKitProjectPlan {
+  projectName: string;
+  target: string;
+  packageManager: PackageManager;
+  install: boolean;
+  initializeGit: boolean;
+  files: string[];
+}
+
 export interface SetupSparkKitProjectOptions {
   packageManager?: PackageManager;
   install?: boolean;
@@ -67,6 +82,7 @@ export function parseCliArguments(args: string[]): CliArguments {
   let packageManager: PackageManager = 'pnpm';
   let install = false;
   let initializeGit = false;
+  let dryRun = false;
   let installChoiceSeen = false;
   let gitChoiceSeen = false;
   const positional: string[] = [];
@@ -114,6 +130,11 @@ export function parseCliArguments(args: string[]): CliArguments {
       continue;
     }
 
+    if (argument === '--dry-run') {
+      dryRun = true;
+      continue;
+    }
+
     if (argument.startsWith('-')) {
       throw new Error(`Unknown option: ${argument}`);
     }
@@ -130,6 +151,7 @@ export function parseCliArguments(args: string[]): CliArguments {
     packageManager,
     install,
     initializeGit,
+    dryRun,
   };
 }
 
@@ -157,6 +179,41 @@ export function validateProjectName(projectName: string): string {
 
 export function resolveProjectTarget(projectName: string, cwd = process.cwd()): string {
   return path.resolve(cwd, validateProjectName(projectName));
+}
+
+async function listTemplateFiles(directory: string, relativeDirectory = ''): Promise<string[]> {
+  const entries = await readdir(path.join(directory, relativeDirectory), { withFileTypes: true });
+  const files = await Promise.all(entries.map(async (entry) => {
+    const relativePath = path.join(relativeDirectory, entry.name);
+    return entry.isDirectory()
+      ? listTemplateFiles(directory, relativePath)
+      : [relativePath];
+  }));
+  return files.flat().sort();
+}
+
+export async function planSparkKitProject(
+  projectName: string,
+  options: ProjectPlanOptions = {},
+): Promise<SparkKitProjectPlan> {
+  const target = resolveProjectTarget(projectName, options.cwd);
+  try {
+    await access(target);
+    throw new ProjectTargetExistsError(`Refusing to overwrite existing target: ${target}`);
+  } catch (error) {
+    if (error instanceof ProjectTargetExistsError) throw error;
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+  }
+
+  const templateDirectory = options.templateDirectory ?? packagedTemplateDirectory;
+  return {
+    projectName,
+    target,
+    packageManager: options.packageManager ?? 'pnpm',
+    install: options.install ?? false,
+    initializeGit: options.initializeGit ?? false,
+    files: await listTemplateFiles(templateDirectory),
+  };
 }
 
 export async function createProjectDirectory(

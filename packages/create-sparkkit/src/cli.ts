@@ -3,6 +3,7 @@
 import {
   createSparkKitProject,
   parseCliArguments,
+  planSparkKitProject,
   setupSparkKitProject,
 } from './index.js';
 
@@ -15,10 +16,12 @@ Options:
   --package-manager, --pm <pnpm|npm|yarn|bun>  Package manager (default: pnpm)
   --install | --no-install                       Install dependencies (default: no)
   --git | --no-git                               Initialize Git (default: no)
+  --dry-run                                      Preview without changing files or running commands
   --help, -h                                     Show this help
 
 Example:
   create-sparkkit customer-portal --pm pnpm --install --git
+  create-sparkkit customer-portal --pm pnpm --install --git --dry-run
 
 Project names must use lowercase kebab-case. Existing targets are never overwritten.`;
 
@@ -29,6 +32,22 @@ async function main(args: string[]): Promise<void> {
   }
 
   const options = parseCliArguments(args);
+  if (options.dryRun) {
+    const plan = await planSparkKitProject(options.projectName, {
+      packageManager: options.packageManager,
+      install: options.install,
+      initializeGit: options.initializeGit,
+    });
+    console.log('Dry run: no files or directories were created, and no commands were run.');
+    console.log(`Target directory: ${plan.target}`);
+    console.log(`Package manager: ${plan.packageManager}`);
+    console.log(`Install dependencies: ${plan.install ? 'yes' : 'no'}`);
+    console.log(`Initialize Git: ${plan.initializeGit ? 'yes' : 'no'}`);
+    console.log('Files to generate:');
+    for (const file of plan.files) console.log(`  ${file}`);
+    return;
+  }
+
   const target = await createSparkKitProject(options.projectName, {
     packageManager: options.packageManager,
   });
