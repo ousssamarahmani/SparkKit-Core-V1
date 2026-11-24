@@ -11,6 +11,7 @@ import {
   createProjectDirectory,
   createSparkKitProject,
   parseCliArguments,
+  planSparkKitProject,
   ProjectNameError,
   ProjectTemplateError,
   ProjectTargetExistsError,
@@ -41,6 +42,7 @@ test('parses deterministic package-manager, install, and Git choices', () => {
       packageManager: 'npm',
       install: true,
       initializeGit: true,
+      dryRun: false,
     },
   );
   assert.deepEqual(parseCliArguments(['customer-portal']), {
@@ -48,11 +50,70 @@ test('parses deterministic package-manager, install, and Git choices', () => {
     packageManager: 'pnpm',
     install: false,
     initializeGit: false,
+    dryRun: false,
   });
   assert.throws(() => parseCliArguments(['app', '--pm', 'unknown']), /Unsupported/);
   assert.throws(() => parseCliArguments(['app', '--install', '--no-install']), /only one/);
   assert.throws(() => parseCliArguments(['app', '--git', '--no-git']), /only one/);
   assert.throws(() => parseCliArguments(['app', '--mystery']), /Unknown option/);
+  assert.equal(parseCliArguments(['app', '--dry-run']).dryRun, true);
+});
+
+test('plans accurate dry runs for every package manager and selected setup options', async (t) => {
+  const cwd = await mkdtemp(path.join(tmpdir(), 'create-sparkkit-plan-'));
+  t.after(() => rm(cwd, { recursive: true, force: true }));
+
+  for (const packageManager of ['pnpm', 'npm', 'yarn', 'bun']) {
+    const plan = await planSparkKitProject(`${packageManager}-app`, {
+      cwd,
+      packageManager,
+      install: true,
+      initializeGit: true,
+    });
+    assert.equal(plan.target, path.join(cwd, `${packageManager}-app`));
+    assert.equal(plan.packageManager, packageManager);
+    assert.equal(plan.install, true);
+    assert.equal(plan.initializeGit, true);
+    assert.ok(plan.files.includes(path.join('apps', 'web', 'package.json')));
+    assert.ok(plan.files.includes('package.json'));
+  }
+});
+
+test('dry run validates names and existing targets without filesystem changes', async (t) => {
+  const cwd = await mkdtemp(path.join(tmpdir(), 'create-sparkkit-dry-run-'));
+  t.after(() => rm(cwd, { recursive: true, force: true }));
+  const before = await listFiles(cwd);
+
+  await assert.rejects(planSparkKitProject('../unsafe', { cwd }), ProjectNameError);
+  await mkdir(path.join(cwd, 'already-there'));
+  await assert.rejects(
+    planSparkKitProject('already-there', { cwd }),
+    ProjectTargetExistsError,
+  );
+  await rm(path.join(cwd, 'already-there'), { recursive: true });
+
+  const dryRun = await execFileAsync(
+    process.execPath,
+    [cliPath, 'preview-app', '--pm', 'yarn', '--install', '--git', '--dry-run'],
+    { cwd },
+  );
+  assert.match(dryRun.stdout, /Target directory: .*preview-app/);
+  assert.match(dryRun.stdout, /Package manager: yarn/);
+  assert.match(dryRun.stdout, /Install dependencies: yes/);
+  assert.match(dryRun.stdout, /Initialize Git: yes/);
+  assert.match(dryRun.stdout, /Files to generate:/);
+  assert.match(dryRun.stdout, /apps[\\/]web[\\/]package\.json/);
+  await assert.rejects(access(path.join(cwd, 'preview-app')));
+  assert.deepEqual(await listFiles(cwd), before);
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [cliPath, 'BadName', '--dry-run'], { cwd }),
+    (error) => {
+      assert.match(error.stderr, /lowercase kebab-case/);
+      return true;
+    },
+  );
+  assert.deepEqual(await listFiles(cwd), before);
 });
 
 test('creates a new target and refuses existing directories and files', async (t) => {
